@@ -9,8 +9,15 @@ const teasers = [
   { icon: '🗺️', title: 'How It Works', desc: 'A straightforward four-step process from discovery call to live campaign — no lengthy onboarding, no guesswork.', href: '/how-it-works', cta: 'See the process →' },
   { icon: '🏆', title: 'Client Results', desc: 'Real businesses, real numbers. See how our clients are driving higher open rates, more conversions, and faster growth.', href: '/results', cta: 'Read the stories →' },
   { icon: '📰', title: 'Insights', desc: 'Free articles, guides, and tips on email marketing, SMS, ad creative, and marketing automation — straight from our team.', href: '/insights', cta: 'Read the blog →' },
-  { icon: '💬', title: 'Contact Us', desc: 'Ready to talk? Book a free 30-minute strategy session or send us a message. We\'ll get back to you within one business day.', href: '/contact', cta: 'Get in touch →' },
+  { icon: '💬', title: 'Contact Us', desc: "Ready to talk? Book a free 30-minute strategy session or send us a message. We'll get back to you within one business day.", href: '/contact', cta: 'Get in touch →' },
   { icon: '🤝', title: 'Constant Contact Partner', desc: 'As an authorized reseller, we give you access to enterprise-tier features at small-business pricing with full onboarding support.', href: '/contact', cta: 'Learn about reselling →' },
+];
+
+const cards = [
+  { icon: '📧', title: 'Email Open Rate',    val: '38.4%', label: 'vs. 21% industry avg',           delay: '0s' },
+  { icon: '📱', title: 'SMS Click-Through',  val: '22%',   label: 'Last 30-day campaign',            delay: '1s' },
+  { icon: '🎯', title: 'Lead Conversions',   val: '+3.1×', label: 'Automated vs. manual',            delay: '2s' },
+  { icon: '💰', title: 'Revenue Recovered',  val: '$40K',  label: 'Abandoned cart automation, Q1',   delay: '3s' },
 ];
 
 export default function Home() {
@@ -18,9 +25,11 @@ export default function Home() {
     <>
       {/* HERO */}
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'100px 0 90px',minHeight:'620px',display:'flex',alignItems:'center'}}>
-        <div style={{content:'',position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
+        <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
         <div className="container" style={{position:'relative',zIndex:2}}>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:60,alignItems:'center'}}>
+
+            {/* LEFT: copy */}
             <div>
               <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.75)',border:'1px solid rgba(232,85,42,0.25)',borderRadius:50,padding:'6px 16px',fontSize:'0.8rem',color:'var(--coral)',fontWeight:600,marginBottom:24}}>
                 Marketing Automation + Digital Growth
@@ -41,14 +50,10 @@ export default function Home() {
                 ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
               </p>
             </div>
-            {/* Floating metric cards — 2×2 grid */}
+
+            {/* RIGHT: 2×2 metric cards */}
             <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-              {[
-                {icon:'📧',title:'Email Open Rate',val:'38.4%',label:'vs. 21% industry avg',delay:'0s'},
-                {icon:'📱',title:'SMS Click-Through',val:'22%',label:'Last 30-day campaign',delay:'1s'},
-                {icon:'🎯',title:'Lead Conversions',val:'+3.1×',label:'Automated vs. manual',delay:'2s'},
-                {icon:'💰',title:'Revenue Recovered',val:'$40K',label:'Abandoned cart automation, Q1',delay:'3s'},
-              ].map((card, i) => (
+              {cards.map((card, i) => (
                 <div key={i} style={{
                   background:'var(--white)',
                   border:'1px solid rgba(232,85,42,0.12)',
@@ -64,10 +69,15 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            </div>
+
           </div>
         </div>
-        <style>{`@keyframes floatCard{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}`}</style>
+        <style>{`
+          @keyframes floatCard {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(-10px); }
+          }
+        `}</style>
       </section>
 
       {/* LOGOS */}
