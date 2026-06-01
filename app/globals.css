@@ -146,3 +146,47 @@ footer { background: var(--sand-deep); color: var(--warm-gray); padding: 72px 0 
   .container { padding: 0 16px; }
   .footer-bottom { flex-direction: column; align-items: flex-start; }
 }
+
+/* ── GLOBAL MOBILE GRID FIXES ── */
+@media(max-width:900px) {
+  /* All 2-col and 3-col grids collapse on tablet */
+  .services-grid,
+  .testi-grid,
+  .case-grid,
+  .more-grid,
+  .insights-grid,
+  .steps-full { grid-template-columns: 1fr 1fr !important; }
+
+  .steps,
+  .stats-grid,
+  .stats-band > .container > div { grid-template-columns: 1fr 1fr !important; }
+
+  .contact-wrapper,
+  .hiw-body .steps-full { grid-template-columns: 1fr !important; }
+}
+
+@media(max-width:600px) {
+  /* Everything single column on phone */
+  .services-grid,
+  .testi-grid,
+  .case-grid,
+  .more-grid,
+  .insights-grid,
+  .steps-full,
+  .steps,
+  .timeline-inner,
+  .contact-wrapper { grid-template-columns: 1fr !important; }
+
+  .stats-grid,
+  .stats-band > .container > div { grid-template-columns: 1fr 1fr !important; }
+
+  /* Fix any inline grid styles on mobile */
+  [style*="grid-template-columns: repeat(2"] { grid-template-columns: 1fr !important; }
+  [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+  [style*="gridTemplateColumns:'repeat(2"] { grid-template-columns: 1fr !important; }
+  [style*="gridTemplateColumns:'repeat(3"] { grid-template-columns: 1fr !important; }
+
+  /* Prevent any element from overflowing screen */
+  section, div { max-width: 100vw; }
+  .container > * { min-width: 0; overflow: hidden; }
+}
