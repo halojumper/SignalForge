@@ -82,8 +82,12 @@ export default function Home() {
                 ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
               </p>
             </div>
+
+            <div></div>
+
+          </div>
         </div>
-     </section>
+      </section>
 
       {/* METRIC CARDS — full width below hero */}
       <div style={{background:'var(--sand)',paddingBottom:60,display:'flex',justifyContent:'center',alignItems:'center'}}>
