@@ -48,10 +48,7 @@ export default function Home() {
             grid-template-columns: repeat(2, 1fr);
           }
         }
-        @media (max-width: 600px) {
-          .hero-cards-wrap {
-            display: none;
-          }
+       @media (max-width: 600px) {
           .teasers-grid {
             grid-template-columns: 1fr;
           }
@@ -85,15 +82,13 @@ export default function Home() {
                 ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
               </p>
             </div>
-
-            {/* RIGHT: animated cards */}
-            <div className="hero-cards-wrap">
-              <MetricCards />
-            </div>
-
-          </div>
         </div>
-      </section>
+     </section>
+
+      {/* METRIC CARDS — full width below hero */}
+      <div style={{background:'var(--sand)',paddingBottom:60,display:'flex',justifyContent:'center',alignItems:'center'}}>
+        <MetricCards />
+      </div>
 
       {/* LOGOS */}
       <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
