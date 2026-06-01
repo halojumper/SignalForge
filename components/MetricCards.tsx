@@ -23,8 +23,8 @@ export default function MetricCards() {
   const [angle, setAngle] = useState(0);
 
   useEffect(() => {
-    const fanTimer   = setTimeout(() => setPhase('fanning'),  2000);
-    const orbitTimer = setTimeout(() => setPhase('orbiting'), 2900);
+    const fanTimer   = setTimeout(() => setPhase('fanning'),  1000);
+    const orbitTimer = setTimeout(() => setPhase('orbiting'), 1900);
     return () => { clearTimeout(fanTimer); clearTimeout(orbitTimer); };
   }, []);
 
@@ -47,33 +47,36 @@ export default function MetricCards() {
   return (
     <div style={{ position: 'relative', width: SIZE, height: SIZE, flexShrink: 0 }}>
 
-      {/* Central logo — always visible */}
-      <div style={{ position: 'absolute', left: CENTER, top: CENTER, transform: 'translate(-50%, -50%)', width: LOGO_SIZE, height: LOGO_SIZE, background: 'var(--coral)', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 40px rgba(232,85,42,0.38)', zIndex: 10 }}>
+      {/* Logo — z-index 1, hidden under stacked cards, revealed as they fly out */}
+      <div style={{ position: 'absolute', left: CENTER, top: CENTER, transform: 'translate(-50%, -50%)', width: LOGO_SIZE, height: LOGO_SIZE, background: 'var(--coral)', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 40px rgba(232,85,42,0.38)', zIndex: 1 }}>
         <svg viewBox="0 0 24 24" style={{ width: 38, height: 38, fill: 'white' }}>
           <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
         </svg>
       </div>
 
       {/* Orbit ring */}
-      <div style={{ position: 'absolute', left: CENTER, top: CENTER, width: ORBIT_RADIUS * 2, height: ORBIT_RADIUS * 2, transform: 'translate(-50%, -50%)', borderRadius: '50%', border: '1.5px dashed rgba(232,85,42,0.2)', opacity: phase === 'orbiting' ? 1 : 0, transition: 'opacity 0.8s ease 0.3s', pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', left: CENTER, top: CENTER, width: ORBIT_RADIUS * 2, height: ORBIT_RADIUS * 2, transform: 'translate(-50%, -50%)', borderRadius: '50%', border: '1.5px dashed rgba(232,85,42,0.2)', opacity: phase === 'orbiting' ? 1 : 0, transition: 'opacity 0.8s ease 0.2s', pointerEvents: 'none', zIndex: 2 }} />
 
       {/* Cards */}
       {cards.map((card, i) => {
         const baseAngle = ORBIT_ANGLES[i];
-        let tx = 0, ty = 0, opacity = 1, scale = 1, zIndex = 5 - i, transition = '';
+        let tx = 0, ty = 0, opacity = 1, scale = 1, zIndex = 6 - i, transition = '';
 
         if (phase === 'stacked') {
           tx = i * 4; ty = i * 4;
           opacity = i === 0 ? 1 : 0;
           scale = 1 - i * 0.03;
+          zIndex = 6 - i;
           transition = 'none';
         } else if (phase === 'fanning') {
           const pos = getOrbitPos(baseAngle, ORBIT_RADIUS);
-          tx = pos.x; ty = pos.y; zIndex = 5;
-          transition = `transform 0.75s cubic-bezier(0.34,1.45,0.64,1) ${i * 0.06}s, opacity 0.35s ease ${i * 0.06}s`;
+          tx = pos.x; ty = pos.y;
+          opacity = 1; scale = 1; zIndex = 5;
+          transition = `transform 0.75s cubic-bezier(0.34,1.45,0.64,1) ${i * 0.055}s, opacity 0.3s ease ${i * 0.055}s`;
         } else {
           const pos = getOrbitPos(baseAngle + angle, ORBIT_RADIUS);
-          tx = pos.x; ty = pos.y; zIndex = 5;
+          tx = pos.x; ty = pos.y;
+          opacity = 1; scale = 1; zIndex = 5;
           transition = 'none';
         }
 
