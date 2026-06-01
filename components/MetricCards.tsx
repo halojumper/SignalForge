@@ -45,7 +45,15 @@ export default function MetricCards() {
   const SIZE = 430, CENTER = SIZE / 2, CARD_W = 164, CARD_H = 112, LOGO_SIZE = 76;
 
   return (
-    <div style={{ position: 'relative', width: SIZE, height: SIZE, flexShrink: 0 }}>
+    <div style={{
+      position: 'relative',
+      width: SIZE,
+      height: SIZE,
+      flexShrink: 0,
+      maxWidth: '100%',
+      WebkitTransform: 'translateZ(0)',
+      transform: 'translateZ(0)',
+    }}>
 
       {/* Logo — z-index 1, hidden under stacked cards, revealed as they fly out */}
       <div style={{ position: 'absolute', left: CENTER, top: CENTER, transform: 'translate(-50%, -50%)', width: LOGO_SIZE, height: LOGO_SIZE, background: 'var(--coral)', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 40px rgba(232,85,42,0.38)', zIndex: 1 }}>
@@ -81,7 +89,24 @@ export default function MetricCards() {
         }
 
         return (
-          <div key={i} style={{ position: 'absolute', left: CENTER, top: CENTER, width: CARD_W, height: CARD_H, marginLeft: -CARD_W / 2, marginTop: -CARD_H / 2, background: 'var(--white)', border: '1px solid rgba(232,85,42,0.14)', borderRadius: 18, boxShadow: '0 8px 28px rgba(180,80,30,0.11)', padding: '16px 18px', zIndex, opacity, transform: `translate(${tx}px, ${ty}px) scale(${scale})`, transition, pointerEvents: 'none' }}>
+          <div key={i} style={{
+            position: 'absolute',
+            left: CENTER, top: CENTER,
+            width: CARD_W, height: CARD_H,
+            marginLeft: -CARD_W / 2,
+            marginTop: -CARD_H / 2,
+            background: 'var(--white)',
+            border: '1px solid rgba(232,85,42,0.14)',
+            borderRadius: 18,
+            boxShadow: '0 8px 28px rgba(180,80,30,0.11)',
+            padding: '16px 18px',
+            zIndex, opacity,
+            transform: `translate(${tx}px, ${ty}px) scale(${scale})`,
+            WebkitTransform: `translate(${tx}px, ${ty}px) scale(${scale})`,
+            transition,
+            WebkitTransition: transition,
+            pointerEvents: 'none',
+          }}>
             <div style={{ fontSize: '1.3rem', marginBottom: 5 }}>{card.icon}</div>
             <div style={{ fontFamily: 'Syne,sans-serif', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>{card.title}</div>
             <div style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'Syne,sans-serif', color: 'var(--coral)', lineHeight: 1 }}>{card.val}</div>
