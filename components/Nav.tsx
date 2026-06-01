@@ -36,7 +36,6 @@ export default function Nav() {
             ))}
           </ul>
           <div className="nav-cta">
-            <Link href="/contact" className="btn btn-outline btn-sm">Schedule a Call</Link>
             <Link href="/services" className="btn btn-primary btn-sm">Get Started</Link>
           </div>
           <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>
