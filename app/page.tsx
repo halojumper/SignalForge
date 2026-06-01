@@ -41,32 +41,29 @@ export default function Home() {
                 ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
               </p>
             </div>
-            {/* Floating metric cards */}
-            <div style={{position:'relative',display:'flex',justifyContent:'center'}}>
-              <div style={{position:'relative',width:380,height:320}}>
-                {[
-                  {icon:'📧',title:'Email Open Rate',val:'38.4%',label:'vs. 21% industry avg',top:0,left:0,width:280,delay:'0s'},
-                  {icon:'📱',title:'SMS Click-Through',val:'22%',label:'Last 30-day campaign',bottom:0,right:0,width:260,delay:'1.5s'},
-                  {icon:'🎯',title:'Lead Conversions',val:'+3.1×',label:'Automated vs. manual',width:240,delay:'3s',centered:true},
-                ].map((card, i) => (
-                  <div key={i} style={{
-                    position:'absolute',background:'var(--white)',border:'1px solid rgba(232,85,42,0.12)',
-                    borderRadius:18,boxShadow:'0 8px 32px rgba(180,80,30,0.1)',padding:'22px 24px',
-                    width:card.width,
-                    top: card.centered ? '50%' : card.top,
-                    left: card.centered ? '50%' : card.left,
-                    bottom: card.bottom,
-                    right: card.right,
-                    transform: card.centered ? 'translate(-50%,-50%)' : undefined,
-                    animation:`floatCard 6s ease-in-out ${card.delay} infinite`,
-                  }}>
-                    <div style={{fontSize:'1.5rem',marginBottom:8}}>{card.icon}</div>
-                    <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700,color:'var(--text)',marginBottom:4}}>{card.title}</div>
-                    <div style={{fontSize:'1.6rem',fontWeight:700,fontFamily:'Syne,sans-serif',color:'var(--coral)'}}>{card.val}</div>
-                    <div style={{fontSize:'0.72rem',color:'var(--mid-gray)',marginTop:2}}>{card.label}</div>
-                  </div>
-                ))}
-              </div>
+            {/* Floating metric cards — 2×2 grid */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
+              {[
+                {icon:'📧',title:'Email Open Rate',val:'38.4%',label:'vs. 21% industry avg',delay:'0s'},
+                {icon:'📱',title:'SMS Click-Through',val:'22%',label:'Last 30-day campaign',delay:'1s'},
+                {icon:'🎯',title:'Lead Conversions',val:'+3.1×',label:'Automated vs. manual',delay:'2s'},
+                {icon:'💰',title:'Revenue Recovered',val:'$40K',label:'Abandoned cart automation, Q1',delay:'3s'},
+              ].map((card, i) => (
+                <div key={i} style={{
+                  background:'var(--white)',
+                  border:'1px solid rgba(232,85,42,0.12)',
+                  borderRadius:18,
+                  boxShadow:'0 8px 32px rgba(180,80,30,0.08)',
+                  padding:'20px 22px',
+                  animation:`floatCard 6s ease-in-out ${card.delay} infinite`,
+                }}>
+                  <div style={{fontSize:'1.4rem',marginBottom:8}}>{card.icon}</div>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.82rem',fontWeight:700,color:'var(--text)',marginBottom:4}}>{card.title}</div>
+                  <div style={{fontSize:'1.5rem',fontWeight:800,fontFamily:'Syne,sans-serif',color:'var(--coral)',lineHeight:1.1}}>{card.val}</div>
+                  <div style={{fontSize:'0.7rem',color:'var(--mid-gray)',marginTop:4,lineHeight:1.4}}>{card.label}</div>
+                </div>
+              ))}
+            </div>
             </div>
           </div>
         </div>
