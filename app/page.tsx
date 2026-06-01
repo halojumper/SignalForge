@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
+import MetricCards from '@/components/MetricCards';
 
 export const metadata: Metadata = { title: 'Home' };
 
@@ -13,13 +14,6 @@ const teasers = [
   { icon: '🤝', title: 'Constant Contact Partner', desc: 'As an authorized reseller, we give you access to enterprise-tier features at small-business pricing with full onboarding support.', href: '/contact', cta: 'Learn about reselling →' },
 ];
 
-const cards = [
-  { icon: '📧', title: 'Email Open Rate',    val: '38.4%', label: 'vs. 21% industry avg',           delay: '0s' },
-  { icon: '📱', title: 'SMS Click-Through',  val: '22%',   label: 'Last 30-day campaign',            delay: '1s' },
-  { icon: '🎯', title: 'Lead Conversions',   val: '+3.1×', label: 'Automated vs. manual',            delay: '2s' },
-  { icon: '💰', title: 'Revenue Recovered',  val: '$40K',  label: 'Abandoned cart automation, Q1',   delay: '3s' },
-];
-
 export default function Home() {
   return (
     <>
@@ -28,8 +22,6 @@ export default function Home() {
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
         <div className="container" style={{position:'relative',zIndex:2}}>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:60,alignItems:'center'}}>
-
-            {/* LEFT: copy */}
             <div>
               <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.75)',border:'1px solid rgba(232,85,42,0.25)',borderRadius:50,padding:'6px 16px',fontSize:'0.8rem',color:'var(--coral)',fontWeight:600,marginBottom:24}}>
                 Marketing Automation + Digital Growth
@@ -50,34 +42,12 @@ export default function Home() {
                 ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
               </p>
             </div>
-
-            {/* RIGHT: 2×2 metric cards */}
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}}>
-              {cards.map((card, i) => (
-                <div key={i} style={{
-                  background:'var(--white)',
-                  border:'1px solid rgba(232,85,42,0.12)',
-                  borderRadius:18,
-                  boxShadow:'0 8px 32px rgba(180,80,30,0.08)',
-                  padding:'20px 22px',
-                  animation:`floatCard 6s ease-in-out ${card.delay} infinite`,
-                }}>
-                  <div style={{fontSize:'1.4rem',marginBottom:8}}>{card.icon}</div>
-                  <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.82rem',fontWeight:700,color:'var(--text)',marginBottom:4}}>{card.title}</div>
-                  <div style={{fontSize:'1.5rem',fontWeight:800,fontFamily:'Syne,sans-serif',color:'var(--coral)',lineHeight:1.1}}>{card.val}</div>
-                  <div style={{fontSize:'0.7rem',color:'var(--mid-gray)',marginTop:4,lineHeight:1.4}}>{card.label}</div>
-                </div>
-              ))}
+            {/* Animated metric cards */}
+            <div style={{display:'flex',justifyContent:'center',alignItems:'center'}}>
+              <MetricCards />
             </div>
-
           </div>
         </div>
-        <style>{`
-          @keyframes floatCard {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(-10px); }
-          }
-        `}</style>
       </section>
 
       {/* LOGOS */}
