@@ -60,3 +60,83 @@ export default function Home() {
 
       {/* HERO */}
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'80px 0',display:'flex',alignItems:'center'}}>
+        <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
+        <div className="container" style={{position:'relative',zIndex:2,width:'100%'}}>
+          <div className="hero-grid">
+
+            {/* LEFT: copy */}
+            <div>
+              <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.75)',border:'1px solid rgba(232,85,42,0.25)',borderRadius:50,padding:'6px 16px',fontSize:'0.8rem',color:'var(--coral)',fontWeight:600,marginBottom:24}}>
+                Marketing Automation + Digital Growth
+              </div>
+              <h1 style={{fontSize:'clamp(2rem,4.5vw,3.6rem)',fontWeight:800,color:'var(--text)',marginBottom:22,lineHeight:1.1}}>
+                Reach More Customers.{' '}
+                <em style={{fontStyle:'normal',color:'var(--coral)'}}>Automate Smarter.</em>{' '}
+                Grow Faster.
+              </h1>
+              <p style={{fontSize:'1.05rem',color:'var(--text-light)',lineHeight:1.75,marginBottom:36,maxWidth:480}}>
+                Full-service marketing platform consulting and campaign execution — from email automation and SMS campaigns to ad creative, social media, and event marketing.
+              </p>
+              <div style={{display:'flex',gap:14,flexWrap:'wrap',alignItems:'center'}}>
+                <Link href="/services" className="btn btn-primary">Explore Services</Link>
+                <Link href="/how-it-works" className="btn btn-outline">See How It Works</Link>
+              </div>
+              <p style={{fontSize:'0.8rem',color:'var(--mid-gray)',marginTop:18}}>
+                ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
+              </p>
+            </div>
+
+            {/* RIGHT: animated cards */}
+            <div className="hero-cards-wrap">
+              <MetricCards />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* LOGOS */}
+      <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
+        <div className="container">
+          <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap',justifyContent:'center'}}>
+            <span style={{fontSize:'0.8rem',fontWeight:600,textTransform:'uppercase',letterSpacing:'0.1em',color:'var(--mid-gray)',width:'100%',textAlign:'center'}}>Platforms we work with</span>
+            {[['#e8552a','Constant Contact'],['#f5a623','Mailchimp'],['#e07b3a','HubSpot'],['#d44420','Klaviyo'],['#c9460f','Meta Ads'],['#a83a0a','LinkedIn']].map(([color, name]) => (
+              <div key={name} style={{display:'flex',alignItems:'center',gap:8,padding:'8px 16px',background:'var(--sand)',borderRadius:50,border:'1px solid rgba(0,0,0,0.07)',fontFamily:'Syne,sans-serif',fontSize:'0.82rem',fontWeight:700,color:'var(--text-light)'}}>
+                <span style={{width:8,height:8,borderRadius:'50%',background:color,display:'inline-block',flexShrink:0}}/>
+                {name}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* SECTION TEASERS */}
+      <div style={{padding:'80px 0',background:'var(--cream)'}}>
+        <div className="container">
+          <div style={{textAlign:'center',marginBottom:48}}>
+            <span className="section-label">Everything You Need</span>
+            <h2 className="section-title">One Partner. Every Channel.</h2>
+            <p className="section-sub" style={{margin:'0 auto'}}>Explore what SignalForge can do for your business — from automation to creative to live events.</p>
+          </div>
+          <div className="teasers-grid">
+            {teasers.map(t => (
+              <div key={t.title} style={{background:'var(--white)',border:'1px solid rgba(0,0,0,0.07)',borderRadius:18,padding:'28px 24px',textAlign:'center'}}>
+                <div style={{fontSize:'2.2rem',marginBottom:14}}>{t.icon}</div>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)',marginBottom:10}}>{t.title}</div>
+                <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:16}}>{t.desc}</p>
+                <Link href={t.href} style={{fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700,color:'var(--coral)'}}>{t.cta}</Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <CtaBand
+        heading="Let's Start a Conversation"
+        sub="Book a free 30-minute strategy session and find out exactly how SignalForge can help your business grow."
+        primaryLabel="Schedule a Free Call"
+        secondaryLabel="Explore Services"
+      />
+    </>
+  );
+}
