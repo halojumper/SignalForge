@@ -1,16 +1,27 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function CookieBanner() {
-  const [hidden, setHidden] = useState(false);
+  const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
 
-  function dismiss() {
+  useEffect(() => {
+    // Only runs in the browser — safe from Next.js server rendering
+    if (!localStorage.getItem('sf_cookie_consent')) {
+      setVisible(true);
+    }
+  }, []);
+
+  function dismiss(choice: string) {
     setHiding(true);
-    setTimeout(() => setHidden(true), 320);
+    setTimeout(() => {
+      localStorage.setItem('sf_cookie_consent', choice);
+      setVisible(false);
+      setHiding(false);
+    }, 320);
   }
 
-  if (hidden) return null;
+  if (!visible) return null;
 
   return (
     <div className={`cookie-banner${hiding ? ' hiding' : ''}`} role="dialog" aria-label="Cookie consent">
@@ -24,8 +35,8 @@ export default function CookieBanner() {
           </p>
         </div>
         <div className="cookie-actions">
-          <button className="btn-cookie btn-cookie-deny" onClick={dismiss}>Deny</button>
-          <button className="btn-cookie btn-cookie-accept" onClick={dismiss}>Accept</button>
+          <button className="btn-cookie btn-cookie-deny" onClick={() => dismiss('deny')}>Deny</button>
+          <button className="btn-cookie btn-cookie-accept" onClick={() => dismiss('accept')}>Accept</button>
         </div>
       </div>
     </div>
