@@ -15,6 +15,19 @@ const articles = [
 export default function Insights() {
   return (
     <>
+      <style>{`
+        .insights-top  { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:24px; margin-bottom:24px; }
+        .insights-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+        @media(max-width:900px) {
+          .insights-top  { grid-template-columns:1fr 1fr; }
+          .insights-grid { grid-template-columns:1fr 1fr; }
+        }
+        @media(max-width:560px) {
+          .insights-top  { grid-template-columns:1fr; }
+          .insights-grid { grid-template-columns:1fr; }
+        }
+      `}</style>
+
       <div className="page-hero"><div className="container page-hero-inner">
         <div className="breadcrumb"><Link href="/">Home</Link><span>›</span><span>Insights</span></div>
         <span className="section-label">Insights &amp; Tips</span>
@@ -22,17 +35,17 @@ export default function Insights() {
         <p>Practical guides, data-backed tips, and honest takes on email marketing, SMS, ad creative, and automation — straight from our team.</p>
       </div></div>
 
-      <section style={{padding:'80px 0',background:'var(--cream)'}}>
+      <section style={{padding:'56px 0 64px',background:'var(--cream)'}}>
         <div className="container">
-          <div style={{display:'grid',gridTemplateColumns:'1.6fr 1fr 1fr',gap:24,marginBottom:24}}>
+          <div className="insights-top">
             {articles.slice(0,3).map(a=>(
               <div key={a.title} style={{borderRadius:18,overflow:'hidden',border:'1px solid rgba(0,0,0,0.07)',background:'var(--white)'}}>
-                <div style={{height:a.large?240:190,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:a.large?'4rem':'3rem'}}>{a.icon}</div>
-                <div style={{padding:'24px 22px'}}>
+                <div style={{height:a.large?220:180,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:a.large?'4rem':'3rem'}}>{a.icon}</div>
+                <div style={{padding:'22px 20px'}}>
                   <div style={{fontSize:'0.72rem',fontFamily:'Syne,sans-serif',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--coral)',marginBottom:8}}>{a.cat}</div>
-                  <div style={{fontFamily:'Syne,sans-serif',fontSize:a.large?'1.3rem':'1.05rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
-                  <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:16}}>{a.desc}</p>
-                  <div style={{display:'flex',gap:16,alignItems:'center'}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:a.large?'1.2rem':'1rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
+                  <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:14}}>{a.desc}</p>
+                  <div style={{display:'flex',gap:14,alignItems:'center'}}>
                     <span style={{fontSize:'0.78rem',color:'var(--mid-gray)'}}>{a.date}</span>
                     <span style={{fontSize:'0.78rem',fontWeight:600,color:'var(--coral)'}}>{a.read}</span>
                   </div>
@@ -40,15 +53,15 @@ export default function Insights() {
               </div>
             ))}
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24}}>
+          <div className="insights-grid">
             {articles.slice(3).map(a=>(
               <div key={a.title} style={{borderRadius:18,overflow:'hidden',border:'1px solid rgba(0,0,0,0.07)',background:'var(--white)'}}>
-                <div style={{height:190,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'3rem'}}>{a.icon}</div>
-                <div style={{padding:'24px 22px'}}>
+                <div style={{height:180,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'3rem'}}>{a.icon}</div>
+                <div style={{padding:'22px 20px'}}>
                   <div style={{fontSize:'0.72rem',fontFamily:'Syne,sans-serif',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--coral)',marginBottom:8}}>{a.cat}</div>
-                  <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.05rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
-                  <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:16}}>{a.desc}</p>
-                  <div style={{display:'flex',gap:16}}>
+                  <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
+                  <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:14}}>{a.desc}</p>
+                  <div style={{display:'flex',gap:14}}>
                     <span style={{fontSize:'0.78rem',color:'var(--mid-gray)'}}>{a.date}</span>
                     <span style={{fontSize:'0.78rem',fontWeight:600,color:'var(--coral)'}}>{a.read}</span>
                   </div>
@@ -59,19 +72,7 @@ export default function Insights() {
         </div>
       </section>
 
-      <div style={{background:'var(--sand-mid)',padding:'72px 0'}}>
-        <div className="container" style={{maxWidth:560,textAlign:'center'}}>
-          <span className="section-label">Stay Sharp</span>
-          <h2 className="section-title">Get Insights in Your Inbox</h2>
-          <p className="section-sub" style={{margin:'0 auto 28px'}}>One email per week. Practical marketing tips, platform updates, and campaign ideas — no fluff.</p>
-          <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-            <input type="email" placeholder="your@email.com" style={{flex:1,minWidth:200,padding:'12px 18px',border:'1.5px solid rgba(0,0,0,0.12)',borderRadius:50,fontSize:'0.92rem',fontFamily:'DM Sans,sans-serif',outline:'none',background:'var(--white)'}} />
-            <button className="btn btn-primary">Subscribe Free</button>
-          </div>
-        </div>
-      </div>
-
-      <CtaBand heading="Ready to Put These Ideas to Work?" sub="Book a free strategy call and we'll build a custom plan around what you've been reading about." primaryLabel="Schedule a Free Call" secondaryLabel="View Services" secondaryHref="/services" />
+      <CtaBand heading="Want Tips Like These In Your Inbox?" sub="Join hundreds of small business owners who get our best marketing insights delivered weekly." primaryLabel="Subscribe Free" secondaryLabel="Browse All Articles" secondaryHref="/insights" />
     </>
   );
 }
