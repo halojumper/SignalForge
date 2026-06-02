@@ -79,4 +79,4 @@ export default function Home() {
           <div style={{textAlign:'center',marginBottom:48}}>
             <span className="section-label">Everything You Need</span>
             <h2 className="section-title">One Partner. Every Channel.</h2>
-            <p c
+            <p className="section-sub" style={{margin:'0 auto'}}>Explore what SignalForge can do for your business.</p>
