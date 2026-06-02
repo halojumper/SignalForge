@@ -15,6 +15,17 @@ const services = [
 export default function Services() {
   return (
     <>
+      <style>{`
+        .services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+        .platforms-row { display:flex; flex-wrap:wrap; justify-content:center; gap:12px; margin-top:28px; }
+        @media(max-width:900px) {
+          .services-grid { grid-template-columns:1fr 1fr; }
+        }
+        @media(max-width:560px) {
+          .services-grid { grid-template-columns:1fr; }
+        }
+      `}</style>
+
       <div className="page-hero"><div className="container page-hero-inner">
         <div className="breadcrumb"><Link href="/">Home</Link><span>›</span><span>Services</span></div>
         <span className="section-label">What We Do</span>
@@ -22,16 +33,16 @@ export default function Services() {
         <p>From platform setup and automation workflows to creative production and live event promotion — we handle the full marketing picture.</p>
       </div></div>
 
-      <section style={{padding:'80px 0',background:'var(--cream)'}}>
+      <section style={{padding:'56px 0 64px',background:'var(--cream)'}}>
         <div className="container">
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24}}>
-            {services.map(s => (
-              <div key={s.title} style={{border:'1px solid',borderColor:s.featured?'var(--coral)':'rgba(0,0,0,0.07)',borderRadius:18,padding:'36px 28px',background:s.featured?'var(--coral)':'var(--white)'}}>
-                <div style={{width:52,height:52,borderRadius:14,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.5rem',marginBottom:22,background:s.featured?'rgba(255,255,255,0.2)':'rgba(232,85,42,0.1)'}}>{s.icon}</div>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.15rem',fontWeight:700,color:s.featured?'var(--white)':'var(--text)',marginBottom:12}}>{s.title}</div>
-                <p style={{fontSize:'0.92rem',color:s.featured?'rgba(255,255,255,0.75)':'var(--warm-gray)',lineHeight:1.7,marginBottom:16}}>{s.desc}</p>
-                <ul style={{listStyle:'none',marginBottom:22}}>
-                  {s.bullets.map(b=><li key={b} style={{fontSize:'0.88rem',color:s.featured?'rgba(255,255,255,0.75)':'var(--warm-gray)',padding:'4px 0',display:'flex',gap:8}}><span style={{color:s.featured?'var(--amber-lt)':'var(--coral)',fontWeight:700,flexShrink:0}}>✓</span>{b}</li>)}
+          <div className="services-grid">
+            {services.map(s=>(
+              <div key={s.title} style={{border:'1px solid',borderColor:s.featured?'var(--coral)':'rgba(0,0,0,0.07)',borderRadius:18,padding:'32px 24px',background:s.featured?'var(--coral)':'var(--white)'}}>
+                <div style={{width:48,height:48,borderRadius:12,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'1.4rem',marginBottom:18,background:s.featured?'rgba(255,255,255,0.2)':'rgba(232,85,42,0.1)'}}>{s.icon}</div>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.05rem',fontWeight:700,color:s.featured?'var(--white)':'var(--text)',marginBottom:10}}>{s.title}</div>
+                <p style={{fontSize:'0.9rem',color:s.featured?'rgba(255,255,255,0.75)':'var(--warm-gray)',lineHeight:1.7,marginBottom:14}}>{s.desc}</p>
+                <ul style={{listStyle:'none',marginBottom:20}}>
+                  {s.bullets.map(b=><li key={b} style={{fontSize:'0.86rem',color:s.featured?'rgba(255,255,255,0.75)':'var(--warm-gray)',padding:'4px 0',display:'flex',gap:8}}><span style={{color:s.featured?'var(--amber-lt)':'var(--coral)',fontWeight:700,flexShrink:0}}>✓</span>{b}</li>)}
                 </ul>
                 <Link href="/contact" style={{fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700,color:s.featured?'var(--amber-lt)':'var(--coral)'}}>Get started →</Link>
               </div>
@@ -40,17 +51,18 @@ export default function Services() {
         </div>
       </section>
 
-      <div style={{background:'var(--sand-mid)',padding:'60px 0',textAlign:'center'}}>
-        <div className="container">
+      <div style={{background:'var(--sand-mid)',padding:'56px 0'}}>
+        <div className="container" style={{textAlign:'center'}}>
           <span className="section-label">Platforms We Work With</span>
           <h2 className="section-title">Tools We Know Inside and Out</h2>
-          <div style={{display:'flex',flexWrap:'wrap',justifyContent:'center',gap:16,marginTop:32}}>
+          <div className="platforms-row">
             {['📧 Constant Contact','🐒 Mailchimp','🔶 HubSpot','🎯 Klaviyo','📘 Meta Ads','💼 LinkedIn Ads','🔍 Google Ads','📊 Google Analytics'].map(p=>(
-              <div key={p} style={{display:'flex',alignItems:'center',gap:10,padding:'12px 22px',background:'var(--white)',border:'1px solid rgba(0,0,0,0.08)',borderRadius:50,fontFamily:'Syne,sans-serif',fontSize:'0.88rem',fontWeight:700}}>{p}</div>
+              <div key={p} style={{display:'flex',alignItems:'center',gap:10,padding:'10px 20px',background:'var(--white)',border:'1px solid rgba(0,0,0,0.08)',borderRadius:50,fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700}}>{p}</div>
             ))}
           </div>
         </div>
       </div>
+
       <CtaBand heading="Not Sure Which Service You Need?" sub="Book a free call and we'll map out the right combination of services for your goals and budget." secondaryLabel="See How It Works" secondaryHref="/how-it-works" />
     </>
   );
