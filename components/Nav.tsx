@@ -4,12 +4,12 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const links = [
-  { href: '/',              label: 'Home' },
-  { href: '/services',      label: 'Services' },
-  { href: '/how-it-works',  label: 'How It Works' },
-  { href: '/results',       label: 'Results' },
-  { href: '/insights',      label: 'Insights' },
-  { href: '/contact',       label: 'Contact' },
+  { href: '/',                label: 'Home' },
+  { href: '/services',        label: 'Services' },
+  { href: '/how-it-works',    label: 'How It Works' },
+  { href: '/results',         label: 'Results' },
+  { href: '/insights',        label: 'Insights' },
+  { href: '/contact',         label: 'Contact' },
 ];
 
 export default function Nav() {
@@ -20,7 +20,7 @@ export default function Nav() {
     <nav>
       <div className="container">
         <div className={`nav-inner ${open ? 'nav-mobile-open' : ''}`} style={{position:'relative'}}>
-          <Link href="/" className="nav-logo">
+          <Link href="/" className="nav-logo" onClick={() => setOpen(false)}>
             <div className="logo-icon">
               <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </div>
@@ -29,11 +29,14 @@ export default function Nav() {
           <ul className="nav-links">
             {links.map(l => (
               <li key={l.href}>
-                <Link href={l.href} className={pathname === l.href ? 'active' : ''}>
+                <Link href={l.href} className={pathname === l.href ? 'active' : ''} onClick={() => setOpen(false)}>
                   {l.label}
                 </Link>
               </li>
             ))}
+            <li className="nav-mobile-cta-item">
+              <Link href="/services" className="btn btn-primary btn-sm" style={{display:'block',textAlign:'center'}} onClick={() => setOpen(false)}>Get Started</Link>
+            </li>
           </ul>
           <div className="nav-cta">
             <Link href="/services" className="btn btn-primary btn-sm">Get Started</Link>
