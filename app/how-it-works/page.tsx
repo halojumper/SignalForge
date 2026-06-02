@@ -27,6 +27,15 @@ const stats = [
 export default function HowItWorks() {
   return (
     <>
+      <style>{`
+        .steps-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; }
+        .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+        @media(max-width:768px) {
+          .steps-grid { grid-template-columns:1fr; }
+          .stats-grid { grid-template-columns:1fr 1fr; }
+        }
+      `}</style>
+
       <div className="page-hero"><div className="container page-hero-inner">
         <div className="breadcrumb"><Link href="/">Home</Link><span>›</span><span>How It Works</span></div>
         <span className="section-label">The Process</span>
@@ -34,18 +43,20 @@ export default function HowItWorks() {
         <p>No guesswork. No lengthy onboarding. We move fast and get your campaigns live within days — with full transparency at every step.</p>
       </div></div>
 
-      <section style={{padding:'80px 0',background:'var(--cream)'}}>
+      <section style={{padding:'56px 0 64px',background:'var(--cream)'}}>
         <div className="container">
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:32}}>
+          <div className="steps-grid">
             {steps.map(s=>(
-              <div key={s.num} style={{background:'var(--white)',border:'1px solid rgba(0,0,0,0.07)',borderRadius:20,padding:'36px 32px',display:'flex',gap:24,alignItems:'flex-start'}}>
-                <div style={{width:56,height:56,flexShrink:0,borderRadius:'50%',background:'var(--white)',border:`2px solid ${s.color}`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1.2rem',color:s.color}}>{s.num}</div>
-                <div>
-                  <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.15rem',fontWeight:700,color:'var(--text)',marginBottom:10}}>{s.title}</div>
-                  <p style={{fontSize:'0.92rem',color:'var(--warm-gray)',lineHeight:1.7,marginBottom:14}}>{s.desc}</p>
-                  <ul style={{listStyle:'none'}}>
-                    {s.details.map(d=><li key={d} style={{fontSize:'0.86rem',color:'var(--warm-gray)',padding:'3px 0',display:'flex',gap:8}}><span style={{color:'var(--coral)',fontWeight:700}}>→</span>{d}</li>)}
-                  </ul>
+              <div key={s.num} style={{background:'var(--white)',border:'1px solid rgba(0,0,0,0.07)',borderRadius:20,padding:'28px 24px'}}>
+                <div style={{display:'flex',gap:18,alignItems:'flex-start'}}>
+                  <div style={{width:48,height:48,flexShrink:0,borderRadius:'50%',background:'var(--white)',border:`2px solid ${s.color}`,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:'Syne,sans-serif',fontWeight:800,fontSize:'1.1rem',color:s.color}}>{s.num}</div>
+                  <div>
+                    <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.05rem',fontWeight:700,color:'var(--text)',marginBottom:8}}>{s.title}</div>
+                    <p style={{fontSize:'0.9rem',color:'var(--warm-gray)',lineHeight:1.7,marginBottom:12}}>{s.desc}</p>
+                    <ul style={{listStyle:'none'}}>
+                      {s.details.map(d=><li key={d} style={{fontSize:'0.84rem',color:'var(--warm-gray)',padding:'3px 0',display:'flex',gap:8}}><span style={{color:'var(--coral)',fontWeight:700}}>→</span>{d}</li>)}
+                    </ul>
+                  </div>
                 </div>
               </div>
             ))}
@@ -53,32 +64,32 @@ export default function HowItWorks() {
         </div>
       </section>
 
-      <div style={{background:'var(--sand-mid)',padding:'72px 0'}}>
+      <div style={{background:'var(--sand-mid)',padding:'56px 0 64px'}}>
         <div className="container">
-          <div style={{textAlign:'center',marginBottom:48}}>
+          <div style={{textAlign:'center',marginBottom:40}}>
             <span className="section-label">Typical Timeline</span>
             <h2 className="section-title">Live in as Little as 48 Hours</h2>
           </div>
-          <div style={{display:'flex',gap:0,position:'relative'}}>
-            <div style={{position:'absolute',top:28,left:'12.5%',right:'12.5%',height:2,background:'linear-gradient(90deg,var(--coral),var(--amber))'}}/>
+          <div style={{display:'flex',gap:0,position:'relative',overflowX:'auto',paddingBottom:8}}>
+            <div style={{position:'absolute',top:28,left:'12.5%',right:'12.5%',height:2,background:'linear-gradient(90deg,var(--coral),var(--amber))',pointerEvents:'none'}}/>
             {timeline.map((t,i)=>(
-              <div key={t.label} style={{flex:1,textAlign:'center',padding:'0 16px',position:'relative',zIndex:1}}>
-                <div style={{width:56,height:56,borderRadius:'50%',background:'var(--white)',border:`2px solid ${['var(--coral)','var(--amber)','#e07b3a','var(--terra)'][i]}`,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 20px',fontSize:'1.4rem',boxShadow:'0 4px 16px rgba(232,85,42,0.15)'}}>{t.icon}</div>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700,color:'var(--text)',marginBottom:6}}>{t.label}</div>
-                <div style={{fontSize:'0.78rem',color:'var(--coral)',fontWeight:600,fontFamily:'Syne,sans-serif'}}>{t.time}</div>
+              <div key={t.label} style={{flex:'1 0 80px',textAlign:'center',padding:'0 12px',position:'relative',zIndex:1}}>
+                <div style={{width:56,height:56,borderRadius:'50%',background:'var(--white)',border:`2px solid ${['var(--coral)','var(--amber)','#e07b3a','var(--terra)'][i]}`,display:'flex',alignItems:'center',justifyContent:'center',margin:'0 auto 16px',fontSize:'1.4rem',boxShadow:'0 4px 16px rgba(232,85,42,0.15)'}}>{t.icon}</div>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.82rem',fontWeight:700,color:'var(--text)',marginBottom:4}}>{t.label}</div>
+                <div style={{fontSize:'0.75rem',color:'var(--coral)',fontWeight:600,fontFamily:'Syne,sans-serif'}}>{t.time}</div>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      <div style={{background:'var(--amber)',padding:'80px 0'}}>
+      <div style={{background:'var(--amber)',padding:'56px 0'}}>
         <div className="container">
-          <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)'}}>
+          <div className="stats-grid">
             {stats.map((s,i)=>(
-              <div key={s.label} style={{textAlign:'center',padding:'32px 20px',borderRight:i<3?'1px solid rgba(255,255,255,0.3)':undefined}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:'3rem',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:8}}>{s.num}<span style={{color:'rgba(255,255,255,0.7)'}}>{s.suf}</span></div>
-                <div style={{fontSize:'0.9rem',color:'rgba(255,255,255,0.85)',fontWeight:500}}>{s.label}</div>
+              <div key={s.label} style={{textAlign:'center',padding:'20px 16px',borderRight:(i+1)%2!==0?'1px solid rgba(255,255,255,0.3)':undefined}}>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(2rem,4vw,2.8rem)',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:6}}>{s.num}<span style={{color:'rgba(255,255,255,0.7)'}}>{s.suf}</span></div>
+                <div style={{fontSize:'0.85rem',color:'rgba(255,255,255,0.85)',fontWeight:500}}>{s.label}</div>
               </div>
             ))}
           </div>
