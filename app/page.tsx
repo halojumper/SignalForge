@@ -6,13 +6,31 @@ import MetricCards from '@/components/MetricCards';
 export const metadata: Metadata = { title: 'Home' };
 
 const teasers = [
-  { icon: '⚡', title: 'Services', desc: 'Marketing automation, SMS, social campaigns, ad creative, website builds, and event marketing — all under one roof.', href: '/services', cta: 'See all services →' },
-  { icon: '🗺️', title: 'How It Works', desc: 'A straightforward four-step process from discovery call to live campaign — no lengthy onboarding, no guesswork.', href: '/how-it-works', cta: 'See the process →' },
-  { icon: '🏆', title: 'Client Results', desc: 'Real businesses, real numbers. See how our clients are driving higher open rates, more conversions, and faster growth.', href: '/results', cta: 'Read the stories →' },
-  { icon: '📰', title: 'Insights', desc: 'Free articles, guides, and tips on email marketing, SMS, ad creative, and marketing automation — straight from our team.', href: '/insights', cta: 'Read the blog →' },
-  { icon: '💬', title: 'Contact Us', desc: "Ready to talk? Book a free 30-minute strategy session or send us a message. We'll get back to you within one business day.", href: '/contact', cta: 'Get in touch →' },
-  { icon: '🤝', title: 'Constant Contact Partner', desc: 'As an authorized reseller, we give you access to enterprise-tier features at small-business pricing with full onboarding support.', href: '/constant-contact', cta: 'Learn about reselling →' },
+  { icon: 'lightning', title: 'Services', desc: 'Marketing automation, SMS, social campaigns, ad creative, website builds, and event marketing - all under one roof.', href: '/services', cta: 'See all services' },
+  { icon: 'map', title: 'How It Works', desc: 'A straightforward four-step process from discovery call to live campaign - no lengthy onboarding, no guesswork.', href: '/how-it-works', cta: 'See the process' },
+  { icon: 'trophy', title: 'Client Results', desc: 'Real businesses, real numbers. See how our clients are driving higher open rates, more conversions, and faster growth.', href: '/results', cta: 'Read the stories' },
+  { icon: 'newspaper', title: 'Insights', desc: 'Free articles, guides, and tips on email marketing, SMS, ad creative, and marketing automation - straight from our team.', href: '/insights', cta: 'Read the blog' },
+  { icon: 'chat', title: 'Contact Us', desc: 'Ready to talk? Book a free 30-minute strategy session or send us a message. We will get back to you within one business day.', href: '/contact', cta: 'Get in touch' },
+  { icon: 'handshake', title: 'Constant Contact Partner', desc: 'As an authorized reseller, we give you access to enterprise-tier features at small-business pricing with full onboarding support.', href: '/constant-contact', cta: 'Learn about reselling' },
 ];
+
+const iconMap: Record<string, string> = {
+  lightning: 'lightning',
+  map: 'map',
+  trophy: 'trophy',
+  newspaper: 'newspaper',
+  chat: 'chat',
+  handshake: 'handshake',
+};
+
+const emojiMap: Record<string, string> = {
+  lightning: '\u26A1',
+  map: '\uD83D\uDDFA\uFE0F',
+  trophy: '\uD83C\uDFC6',
+  newspaper: '\uD83D\uDCF0',
+  chat: '\uD83D\uDCAC',
+  handshake: '\uD83E\uDD1D',
+};
 
 export default function Home() {
   return (
@@ -28,7 +46,6 @@ export default function Home() {
         }
       `}</style>
 
-      {/* HERO */}
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'80px 0 40px'}}>
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
         <div className="container" style={{position:'relative',zIndex:2,width:'100%'}}>
@@ -41,24 +58,22 @@ export default function Home() {
             Grow Faster.
           </h1>
           <p style={{fontSize:'1.05rem',color:'var(--text-light)',lineHeight:1.75,marginBottom:36,maxWidth:600}}>
-            Full-service marketing platform consulting and campaign execution — from email automation and SMS campaigns to ad creative, social media, and event marketing.
+            Full-service marketing platform consulting and campaign execution - from email automation and SMS campaigns to ad creative, social media, and event marketing.
           </p>
           <div className="hero-btns">
             <Link href="/services" className="btn btn-primary">Explore Services</Link>
             <Link href="/how-it-works" className="btn btn-outline">See How It Works</Link>
           </div>
           <p style={{fontSize:'0.8rem',color:'var(--mid-gray)',marginTop:18}}>
-            ✓ Constant Contact Authorized Partner &nbsp;·&nbsp; ✓ No long-term contracts
+            Constant Contact Authorized Partner - No long-term contracts
           </p>
         </div>
       </section>
 
-      {/* METRIC CARDS */}
       <div className="metric-cards-wrap" style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,display:'flex',justifyContent:'center',alignItems:'center'}}>
         <MetricCards />
       </div>
 
-      {/* LOGOS */}
       <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
         <div className="container">
           <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap',justifyContent:'center'}}>
@@ -73,10 +88,32 @@ export default function Home() {
         </div>
       </div>
 
-      {/* SECTION TEASERS */}
       <div style={{padding:'72px 0',background:'var(--cream)'}}>
         <div className="container">
           <div style={{textAlign:'center',marginBottom:48}}>
             <span className="section-label">Everything You Need</span>
             <h2 className="section-title">One Partner. Every Channel.</h2>
             <p className="section-sub" style={{margin:'0 auto'}}>Explore what SignalForge can do for your business.</p>
+          </div>
+          <div className="teasers-grid">
+            {teasers.map(t => (
+              <div key={t.title} style={{background:'var(--white)',border:'1px solid rgba(0,0,0,0.07)',borderRadius:18,padding:'28px 24px',textAlign:'center'}}>
+                <div style={{fontSize:'2.2rem',marginBottom:14}}>{emojiMap[t.icon]}</div>
+                <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)',marginBottom:10}}>{t.title}</div>
+                <p style={{fontSize:'0.88rem',color:'var(--warm-gray)',lineHeight:1.65,marginBottom:16}}>{t.desc}</p>
+                <Link href={t.href} style={{fontFamily:'Syne,sans-serif',fontSize:'0.85rem',fontWeight:700,color:'var(--coral)'}}>{t.cta} →</Link>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <CtaBand
+        heading="Let's Start a Conversation"
+        sub="Book a free 30-minute strategy session and find out exactly how SignalForge can help your business grow."
+        primaryLabel="Schedule a Free Call"
+        secondaryLabel="Explore Services"
+      />
+    </>
+  );
+}
