@@ -4,12 +4,12 @@ import CtaBand from '@/components/CtaBand';
 export const metadata: Metadata = { title: 'Insights' };
 
 const articles = [
-  { large:true, bg:'linear-gradient(135deg,#fdf0e0,#f5a623)', icon:'\uD83D\uDCE7', cat:'Email Marketing', title:'The 5 Automation Workflows Every Small Business Should Have Running Today', desc:'From welcome sequences to abandoned cart recovery, these five triggered automations do the work so you don\'t have to - 24 hours a day, 7 days a week.', date:'May 18, 2026', read:'8 min read', href:'/insights/automation-workflows' },
-  { bg:'linear-gradient(135deg,#ffe8d6,#e8552a)', icon:'\uD83D\uDCF1', cat:'SMS Marketing', title:'Why SMS Outperforms Email for Flash Sales', desc:'Open rates above 90% make SMS a category of its own. Here\'s how to use it without spamming your list.', date:'May 5, 2026', read:'5 min read', href:'/insights/sms-vs-email' },
-  { bg:'linear-gradient(135deg,#fff3d6,#fbbf47)', icon:'\uD83C\uDFA8', cat:'Ad Creative', title:'Creative Formats Driving the Highest CTR on Meta Ads in 2026', desc:'Static images aren\'t dead - but they\'re not enough on their own. The winning formula for paid social today.', date:'April 22, 2026', read:'6 min read', href:'/insights/meta-ads-creative' },
-  { bg:'linear-gradient(135deg,#fde8d8,#e07b3a)', icon:'\uD83D\uDCE3', cat:'Social Media', title:'How to Build a 90-Day Social Content Calendar in One Afternoon', desc:'A simple framework that takes the guesswork out of what to post and when.', date:'April 10, 2026', read:'7 min read', href:'/insights/social-content-calendar' },
-  { bg:'linear-gradient(135deg,#fdf6ee,#e8552a)', icon:'\uD83C\uDF9F\uFE0F', cat:'Event Marketing', title:'The Pre-Event Email Sequence That Fills Seats Every Time', desc:'A 5-email sequence template with timing, subject lines, and copy formulas that consistently drive registrations.', date:'March 28, 2026', read:'9 min read', href:'/insights/pre-event-email-sequence' },
-  { bg:'linear-gradient(135deg,#fff8e8,#fbbf47)', icon:'\u26A1', cat:'Automation', title:'Constant Contact vs. Klaviyo: Which Is Right for Your Business?', desc:'An honest, side-by-side breakdown of two leading platforms from a team that uses both every day.', date:'March 14, 2026', read:'10 min read', href:'/insights/constant-contact-vs-klaviyo' },
+  { large:true, img:'/images/automation-workflows.jpg', cat:'Email Marketing', title:'The 5 Automation Workflows Every Small Business Should Have Running Today', desc:'From welcome sequences to abandoned cart recovery, these five triggered automations do the work so you don\'t have to - 24 hours a day, 7 days a week.', date:'May 18, 2026', read:'8 min read', href:'/insights/automation-workflows' },
+  { img:'/images/sms-marketing.jpg', cat:'SMS Marketing', title:'Why SMS Outperforms Email for Flash Sales', desc:'Open rates above 90% make SMS a category of its own. Here\'s how to use it without spamming your list.', date:'May 5, 2026', read:'5 min read', href:'/insights/sms-vs-email' },
+  { img:'/images/meta-ads-creative.jpg', cat:'Ad Creative', title:'Creative Formats Driving the Highest CTR on Meta Ads in 2026', desc:'Static images aren\'t dead - but they\'re not enough on their own. The winning formula for paid social today.', date:'April 22, 2026', read:'6 min read', href:'/insights/meta-ads-creative' },
+  { img:'/images/social-content-calendar.jpg', cat:'Social Media', title:'How to Build a 90-Day Social Content Calendar in One Afternoon', desc:'A simple framework that takes the guesswork out of what to post and when.', date:'April 10, 2026', read:'7 min read', href:'/insights/social-content-calendar' },
+  { img:'/images/pre-event-email.jpg', cat:'Event Marketing', title:'The Pre-Event Email Sequence That Fills Seats Every Time', desc:'A 5-email sequence template with timing, subject lines, and copy formulas that consistently drive registrations.', date:'March 28, 2026', read:'9 min read', href:'/insights/pre-event-email-sequence' },
+  { img:'/images/constant-contact-vs-klaviyo.jpg', cat:'Automation', title:'Constant Contact vs. Klaviyo: Which Is Right for Your Business?', desc:'An honest, side-by-side breakdown of two leading platforms from a team that uses both every day.', date:'March 14, 2026', read:'10 min read', href:'/insights/constant-contact-vs-klaviyo' },
 ];
 
 export default function Insights() {
@@ -18,6 +18,7 @@ export default function Insights() {
       <style>{`
         .insights-top  { display:grid; grid-template-columns:1.6fr 1fr 1fr; gap:24px; margin-bottom:24px; }
         .insights-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+        .article-img { width:100%; object-fit:cover; display:block; }
         @media(max-width:900px) {
           .insights-top  { grid-template-columns:1fr 1fr; }
           .insights-grid { grid-template-columns:1fr 1fr; }
@@ -41,7 +42,7 @@ export default function Insights() {
             {articles.slice(0,3).map(a=>(
               <Link key={a.title} href={a.href} style={{textDecoration:'none'}}>
                 <div style={{borderRadius:18,overflow:'hidden',border:'1px solid rgba(0,0,0,0.07)',background:'var(--white)',cursor:'pointer'}}>
-                  <div style={{height:a.large?220:180,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:a.large?'4rem':'3rem'}}>{a.icon}</div>
+                  <img src={a.img} alt={a.title} className="article-img" style={{height:a.large?220:180}} />
                   <div style={{padding:'22px 20px'}}>
                     <div style={{fontSize:'0.72rem',fontFamily:'Syne,sans-serif',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--coral)',marginBottom:8}}>{a.cat}</div>
                     <div style={{fontFamily:'Syne,sans-serif',fontSize:a.large?'1.2rem':'1rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
@@ -59,7 +60,7 @@ export default function Insights() {
             {articles.slice(3).map(a=>(
               <Link key={a.title} href={a.href} style={{textDecoration:'none'}}>
                 <div style={{borderRadius:18,overflow:'hidden',border:'1px solid rgba(0,0,0,0.07)',background:'var(--white)',cursor:'pointer'}}>
-                  <div style={{height:180,background:a.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'3rem'}}>{a.icon}</div>
+                  <img src={a.img} alt={a.title} className="article-img" style={{height:180}} />
                   <div style={{padding:'22px 20px'}}>
                     <div style={{fontSize:'0.72rem',fontFamily:'Syne,sans-serif',fontWeight:700,letterSpacing:'0.1em',textTransform:'uppercase',color:'var(--coral)',marginBottom:8}}>{a.cat}</div>
                     <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)',marginBottom:10,lineHeight:1.3}}>{a.title}</div>
