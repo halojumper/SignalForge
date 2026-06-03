@@ -46,7 +46,7 @@ export default function Footer() {
             <p>Full-service marketing automation and digital campaign execution for small and mid-sized businesses across New England and beyond.</p>
             <div className="footer-socials">
               <a href="#" className="social-btn" style={{background:'transparent',border:'none',padding:4}}><FacebookIcon /></a>
-              <a href="#" className="social-btn" style={{background:'transparent',border:'none',padding:4}}><LinkedInIcon /></a>
+              <a href="https://www.linkedin.com/company/signalforgemarketing/" target="_blank" rel="noopener noreferrer" className="social-btn" style={{background:'transparent',border:'none',padding:4}}><LinkedInIcon /></a>
               <a href="#" className="social-btn" style={{background:'transparent',border:'none',padding:4}}><InstagramIcon /></a>
               <a href="#" className="social-btn" style={{background:'transparent',border:'none',padding:4}}><XIcon /></a>
             </div>
