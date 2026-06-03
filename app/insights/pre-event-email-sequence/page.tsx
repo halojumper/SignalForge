@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+Here's the complete fixed app/insights/pre-event-email-sequence/page.tsx:
+tsximport type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -22,8 +23,8 @@ export default function PreEventEmailSequence() {
       <div style={{background:'linear-gradient(135deg,#fdf6ee,#e8552a)',padding:'56px 0 48px'}}>
         <div className="container" style={{maxWidth:760}}>
           <div className="breadcrumb">
-            <Link href="/">Home</Link><span>›</span>
-            <Link href="/insights">Insights</Link><span>›</span>
+            <Link href="/">Home</Link><span>&#8250;</span>
+            <Link href="/insights">Insights</Link><span>&#8250;</span>
             <span>Pre-Event Email Sequence</span>
           </div>
           <div style={{marginTop:20}}>
@@ -43,17 +44,17 @@ export default function PreEventEmailSequence() {
       <div style={{background:'var(--cream)',padding:'56px 0 72px'}}>
         <div className="container article-body" style={{maxWidth:760}}>
 
-          <p>Most event organizers send one email to promote their event and wonder why seats are empty. The businesses that consistently sell out their events — whether it is a webinar, a workshop, a grand opening, or a live show — use a structured pre-event email sequence that builds anticipation, handles objections, and creates urgency at exactly the right moments.</p>
+          <p>Most event organizers send one email to promote their event and wonder why seats are empty. The businesses that consistently sell out their events use a structured pre-event email sequence that builds anticipation, handles objections, and creates urgency at exactly the right moments.</p>
 
           <p>Here is the exact 5-email sequence we use for our clients, including timing, subject line formulas, and what each email needs to accomplish.</p>
 
           <h2>Email 1 — The Announcement (3 to 4 Weeks Before)</h2>
           <p>This is your first impression. The goal is to generate initial excitement and get early registrations from your most engaged subscribers.</p>
           <ul>
-            <li><span>→</span>Subject line formula: "You are invited: [Event Name] on [Date]"</li>
-            <li><span>→</span>Lead with the biggest benefit of attending</li>
-            <li><span>→</span>Include date, time, location or link, and a clear registration CTA</li>
-            <li><span>→</span>Keep it short — excitement, not information overload</li>
+            <li><span>&#8594;</span>Subject line formula: You are invited to [Event Name] on [Date]</li>
+            <li><span>&#8594;</span>Lead with the biggest benefit of attending</li>
+            <li><span>&#8594;</span>Include date, time, location or link, and a clear registration CTA</li>
+            <li><span>&#8594;</span>Keep it short — excitement, not information overload</li>
           </ul>
           <div className="article-tip">
             <p>Send this to your full list. Early registrations create social proof that makes later emails more convincing.</p>
@@ -62,44 +63,44 @@ export default function PreEventEmailSequence() {
           <h2>Email 2 — The Value Email (2 Weeks Before)</h2>
           <p>Now that you have made the announcement, it is time to go deeper on why this event is worth attending. This email is for the people who opened your first email but did not register yet.</p>
           <ul>
-           <li><span>→</span>Subject line formula: &quot;Here is exactly what you will learn at [Event Name]&quot;</li>
-            <li><span>→</span>Break down the agenda or key takeaways in bullet points</li>
-            <li><span>→</span>Introduce any speakers, guests, or special features</li>
-            <li><span>→</span>Include a registration CTA with the current attendee count if possible</li>
+            <li><span>&#8594;</span>Subject line formula: Here is exactly what you will learn at [Event Name]</li>
+            <li><span>&#8594;</span>Break down the agenda or key takeaways in bullet points</li>
+            <li><span>&#8594;</span>Introduce any speakers, guests, or special features</li>
+            <li><span>&#8594;</span>Include a registration CTA with the current attendee count if possible</li>
           </ul>
 
           <h2>Email 3 — Social Proof (1 Week Before)</h2>
           <p>By now you have registrations coming in. Use them as social proof. This email targets non-registrants and uses the momentum of early sign-ups to create FOMO.</p>
           <ul>
-            <li><span>→</span>Subject line formula: "[Number] people have already registered for [Event Name]"</li>
-            <li><span>→</span>Share early registrant testimonials or excitement if available</li>
-            <li><span>→</span>Mention any capacity limit if applicable</li>
-            <li><span>→</span>Strong CTA with urgency — seats are filling up</li>
+            <li><span>&#8594;</span>Subject line formula: [Number] people have already registered for [Event Name]</li>
+            <li><span>&#8594;</span>Share early registrant testimonials or excitement if available</li>
+            <li><span>&#8594;</span>Mention any capacity limit if applicable</li>
+            <li><span>&#8594;</span>Strong CTA with urgency — seats are filling up</li>
           </ul>
           <div className="article-tip">
-            <p>Even if you do not have a capacity limit, creating perceived scarcity drives registrations. "We are keeping this intimate — limited to 50 attendees" works even for free events.</p>
+            <p>Even if you do not have a capacity limit, creating perceived scarcity drives registrations. Keeping the event intimate and limited to 50 attendees works even for free events.</p>
           </div>
 
           <h2>Email 4 — Last Chance (2 Days Before)</h2>
           <p>This is your urgency email. The goal is simple: get every fence-sitter to register before it is too late. Keep it short, direct, and focused on a single CTA.</p>
           <ul>
-            <li><span>→</span>Subject line formula: "Last chance to register for [Event Name] - [Day]"</li>
-            <li><span>→</span>One paragraph, one CTA, no distractions</li>
-            <li><span>→</span>Remind them of the date and time</li>
-            <li><span>→</span>Mention what they will miss if they do not attend</li>
+            <li><span>&#8594;</span>Subject line formula: Last chance to register for [Event Name] on [Day]</li>
+            <li><span>&#8594;</span>One paragraph, one CTA, no distractions</li>
+            <li><span>&#8594;</span>Remind them of the date and time</li>
+            <li><span>&#8594;</span>Mention what they will miss if they do not attend</li>
           </ul>
 
           <h2>Email 5 — Day-Of Reminder (Morning of the Event)</h2>
           <p>This email goes to everyone who registered. Its job is to reduce no-shows by making it as easy as possible to show up.</p>
           <ul>
-            <li><span>→</span>Subject line formula: "See you today at [Time] - here is your link"</li>
-            <li><span>→</span>Include the event link, address, or access instructions prominently</li>
-            <li><span>→</span>Remind them what they are about to experience</li>
-            <li><span>→</span>Build excitement one more time</li>
+            <li><span>&#8594;</span>Subject line formula: See you today at [Time] — here is your link</li>
+            <li><span>&#8594;</span>Include the event link, address, or access instructions prominently</li>
+            <li><span>&#8594;</span>Remind them what they are about to experience</li>
+            <li><span>&#8594;</span>Build excitement one more time</li>
           </ul>
 
           <h2>The Sequence Works — Here Is Why</h2>
-          <p>Each email in this sequence serves a different psychological purpose: awareness, desire, social proof, urgency, and ease of action. Together they move a cold subscriber from "I might check this out" to "I am definitely going" over the course of three to four weeks.</p>
+          <p>Each email in this sequence serves a different psychological purpose: awareness, desire, social proof, urgency, and ease of action. Together they move a cold subscriber from considering attendance to committing to it over the course of three to four weeks.</p>
           <p>At SignalForge we build and automate event email sequences for clients across New England and beyond. If you have an event coming up and want to fill every seat, we can have your sequence live within 48 hours.</p>
 
           <div style={{marginTop:40,paddingTop:32,borderTop:'1px solid rgba(0,0,0,0.08)',display:'flex',gap:16,flexWrap:'wrap'}}>
@@ -110,9 +111,9 @@ export default function PreEventEmailSequence() {
           <div style={{marginTop:48,paddingTop:32,borderTop:'1px solid rgba(0,0,0,0.08)'}}>
             <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.8rem',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.1em',color:'var(--mid-gray)',marginBottom:16}}>More Articles</div>
             <div style={{display:'flex',flexDirection:'column',gap:12}}>
-              <Link href="/insights/automation-workflows" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>The 5 Automation Workflows Every Small Business Should Have Running Today →</Link>
-              <Link href="/insights/sms-vs-email" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>Why SMS Outperforms Email for Flash Sales →</Link>
-              <Link href="/insights/constant-contact-vs-klaviyo" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>Constant Contact vs. Klaviyo: Which Is Right for Your Business? →</Link>
+              <Link href="/insights/automation-workflows" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>The 5 Automation Workflows Every Small Business Should Have Running Today &#8594;</Link>
+              <Link href="/insights/sms-vs-email" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>Why SMS Outperforms Email for Flash Sales &#8594;</Link>
+              <Link href="/insights/constant-contact-vs-klaviyo" style={{fontSize:'0.92rem',color:'var(--coral)',fontWeight:600}}>Constant Contact vs. Klaviyo: Which Is Right for Your Business? &#8594;</Link>
             </div>
           </div>
 
@@ -121,4 +122,3 @@ export default function PreEventEmailSequence() {
     </>
   );
 }
-Paste, Ctrl+S, then GitHub Desktop — summary: Add pre-event email sequence article → Commit to main → Push origin.
