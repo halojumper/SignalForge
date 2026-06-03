@@ -62,7 +62,7 @@ export default function PreEventEmailSequence() {
           <h2>Email 2 — The Value Email (2 Weeks Before)</h2>
           <p>Now that you have made the announcement, it is time to go deeper on why this event is worth attending. This email is for the people who opened your first email but did not register yet.</p>
           <ul>
-            <li><span>→</span>Subject line formula: "Here is exactly what you will learn at [Event Name]"</li>
+           <li><span>→</span>Subject line formula: &quot;Here is exactly what you will learn at [Event Name]&quot;</li>
             <li><span>→</span>Break down the agenda or key takeaways in bullet points</li>
             <li><span>→</span>Introduce any speakers, guests, or special features</li>
             <li><span>→</span>Include a registration CTA with the current attendee count if possible</li>
