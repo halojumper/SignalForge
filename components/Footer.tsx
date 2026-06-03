@@ -1,4 +1,3 @@
-Here's the complete fixed components/Footer.tsx with real SVG social media icons:
 tsximport Link from 'next/link';
 
 const FacebookIcon = () => (
