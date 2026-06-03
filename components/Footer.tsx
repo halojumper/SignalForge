@@ -1,4 +1,4 @@
-tsximport Link from 'next/link';
+import Link from 'next/link';
 
 const FacebookIcon = () => (
   <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
