@@ -1,5 +1,4 @@
-Here's the complete fixed components/Footer.tsx with branded color icons and no circles:
-tsximport Link from 'next/link';
+import Link from 'next/link';
 
 const FacebookIcon = () => (
   <svg viewBox="0 0 24 24" width="22" height="22" fill="#1877F2">
