@@ -1,5 +1,4 @@
-Here's the complete fixed app/insights/pre-event-email-sequence/page.tsx:
-tsximport type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
