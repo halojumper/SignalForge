@@ -27,10 +27,10 @@ export default function MetricCards() {
 
   useEffect(() => {
     function updateScale() {
-      const available = window.innerWidth;
-      const newScale = Math.min(1, available / BASE_SIZE);
-      setScale(newScale);
-    }
+  const available = window.innerWidth - 32;
+  const newScale = Math.min(1, available / BASE_SIZE);
+  setScale(newScale);
+  }
     updateScale();
     window.addEventListener('resize', updateScale);
     return () => window.removeEventListener('resize', updateScale);
