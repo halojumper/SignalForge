@@ -1,4 +1,4 @@
-mport type { Metadata } from 'next';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import MetricCards from '@/components/MetricCards';
