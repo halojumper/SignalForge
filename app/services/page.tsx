@@ -11,10 +11,9 @@ const AutomationIcon = () => (
 const SmsIcon = () => (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <rect x="5" y="2" width="11" height="18" rx="2"/>
-    <path d="M8 6h5M8 10h3"/>
-    <rect x="12" y="12" width="8" height="6" rx="1.5" fill="white" fillOpacity="0.25" stroke="white"/>
-    <path d="M14 18l-1 2 3-2"/>
-    <path d="M14.5 15h3M14.5 17h2"/>
+    <rect x="11" y="4" width="8" height="6" rx="1.5" fill="white" fillOpacity="0.25" stroke="white"/>
+    <path d="M13 10l-1 2 3-2"/>
+    <path d="M13 7h4M13 9h2"/>
   </svg>
 );
 const SocialIcon = () => (
