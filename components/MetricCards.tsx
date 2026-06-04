@@ -27,9 +27,9 @@ export default function MetricCards() {
 
   useEffect(() => {
     function updateScale() {
-      if (!wrapRef.current) return;
-      const available = wrapRef.current.parentElement?.clientWidth ?? BASE_SIZE;
-      setScale(Math.min(1, available / BASE_SIZE));
+      const available = window.innerWidth;
+      const newScale = Math.min(1, available / BASE_SIZE);
+      setScale(newScale);
     }
     updateScale();
     window.addEventListener('resize', updateScale);
@@ -62,28 +62,31 @@ export default function MetricCards() {
   const CARD_H = 112;
   const LOGO_SIZE = 76;
 
+  const scaledHeight = SIZE * scale;
+  const marginCompensation = (scaledHeight - SIZE) / 2;
+
   return (
-    <div ref={wrapRef} style={{ width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+    <div ref={wrapRef} style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
       <div style={{
-        position: 'relative',
-        width: SIZE,
-        height: SIZE,
-        flexShrink: 0,
-        transform: `scale(${scale})`,
-        transformOrigin: 'center center',
-        marginTop: scale < 1 ? `${(SIZE * scale - SIZE) / 2}px` : 0,
-        marginBottom: scale < 1 ? `${(SIZE * scale - SIZE) / 2}px` : 0,
+        position:'relative',
+        width:SIZE,
+        height:SIZE,
+        flexShrink:0,
+        transform:`scale(${scale})`,
+        transformOrigin:'center center',
+        marginTop:`${marginCompensation}px`,
+        marginBottom:`${marginCompensation}px`,
       }}>
 
         {/* Logo */}
-        <div style={{ position: 'absolute', left: CENTER, top: CENTER, transform: 'translate(-50%, -50%)', width: LOGO_SIZE, height: LOGO_SIZE, background: 'var(--coral)', borderRadius: 20, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 10px 40px rgba(232,85,42,0.38)', zIndex: 1 }}>
-          <svg viewBox="0 0 24 24" style={{ width: 38, height: 38, fill: 'white' }}>
-            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+        <div style={{position:'absolute',left:CENTER,top:CENTER,transform:'translate(-50%, -50%)',width:LOGO_SIZE,height:LOGO_SIZE,background:'var(--coral)',borderRadius:20,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 10px 40px rgba(232,85,42,0.38)',zIndex:1}}>
+          <svg viewBox="0 0 24 24" style={{width:38,height:38,fill:'white'}}>
+            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
           </svg>
         </div>
 
         {/* Orbit ring */}
-        <div style={{ position: 'absolute', left: CENTER, top: CENTER, width: ORBIT_RADIUS * 2, height: ORBIT_RADIUS * 2, transform: 'translate(-50%, -50%)', borderRadius: '50%', border: '1.5px dashed rgba(232,85,42,0.2)', opacity: phase === 'orbiting' ? 1 : 0, transition: 'opacity 0.8s ease 0.2s', pointerEvents: 'none', zIndex: 2 }} />
+        <div style={{position:'absolute',left:CENTER,top:CENTER,width:ORBIT_RADIUS*2,height:ORBIT_RADIUS*2,transform:'translate(-50%, -50%)',borderRadius:'50%',border:'1.5px dashed rgba(232,85,42,0.2)',opacity:phase==='orbiting'?1:0,transition:'opacity 0.8s ease 0.2s',pointerEvents:'none',zIndex:2}}/>
 
         {/* Cards */}
         {cards.map((card, i) => {
@@ -110,25 +113,25 @@ export default function MetricCards() {
 
           return (
             <div key={i} style={{
-              position: 'absolute',
-              left: CENTER, top: CENTER,
-              width: CARD_W, height: CARD_H,
-              marginLeft: -CARD_W / 2,
-              marginTop: -CARD_H / 2,
-              background: 'var(--white)',
-              border: '1px solid rgba(232,85,42,0.14)',
-              borderRadius: 18,
-              boxShadow: '0 8px 28px rgba(180,80,30,0.11)',
-              padding: '16px 18px',
-              zIndex, opacity,
-              transform: `translate(${tx}px, ${ty}px) scale(${cardScale})`,
+              position:'absolute',
+              left:CENTER,top:CENTER,
+              width:CARD_W,height:CARD_H,
+              marginLeft:-CARD_W/2,
+              marginTop:-CARD_H/2,
+              background:'var(--white)',
+              border:'1px solid rgba(232,85,42,0.14)',
+              borderRadius:18,
+              boxShadow:'0 8px 28px rgba(180,80,30,0.11)',
+              padding:'16px 18px',
+              zIndex,opacity,
+              transform:`translate(${tx}px, ${ty}px) scale(${cardScale})`,
               transition,
-              pointerEvents: 'none',
+              pointerEvents:'none',
             }}>
-              <div style={{ fontSize: '1.3rem', marginBottom: 5 }}>{card.icon}</div>
-              <div style={{ fontFamily: 'Syne,sans-serif', fontSize: '0.76rem', fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>{card.title}</div>
-              <div style={{ fontSize: '1.35rem', fontWeight: 800, fontFamily: 'Syne,sans-serif', color: 'var(--coral)', lineHeight: 1 }}>{card.val}</div>
-              <div style={{ fontSize: '0.65rem', color: 'var(--mid-gray)', marginTop: 4, lineHeight: 1.3 }}>{card.label}</div>
+              <div style={{fontSize:'1.3rem',marginBottom:5}}>{card.icon}</div>
+              <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.76rem',fontWeight:700,color:'var(--text)',marginBottom:3}}>{card.title}</div>
+              <div style={{fontSize:'1.35rem',fontWeight:800,fontFamily:'Syne,sans-serif',color:'var(--coral)',lineHeight:1}}>{card.val}</div>
+              <div style={{fontSize:'0.65rem',color:'var(--mid-gray)',marginTop:4,lineHeight:1.3}}>{card.label}</div>
             </div>
           );
         })}
