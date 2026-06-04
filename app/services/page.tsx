@@ -17,7 +17,6 @@ const SmsIcon = () => (
     <path d="M14.5 15h3M14.5 17h2"/>
   </svg>
 );
-Ctrl+S, commit and push
 const SocialIcon = () => (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
