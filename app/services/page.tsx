@@ -10,11 +10,14 @@ const AutomationIcon = () => (
 );
 const SmsIcon = () => (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="5" y="2" width="14" height="20" rx="2"/>
-    <path d="M8 10h8M8 14h5"/>
-    <circle cx="17" cy="14" r="0.5" fill="white"/>
+    <rect x="5" y="2" width="11" height="18" rx="2"/>
+    <path d="M8 6h5M8 10h3"/>
+    <rect x="12" y="12" width="8" height="6" rx="1.5" fill="white" fillOpacity="0.25" stroke="white"/>
+    <path d="M14 18l-1 2 3-2"/>
+    <path d="M14.5 15h3M14.5 17h2"/>
   </svg>
 );
+Ctrl+S, commit and push
 const SocialIcon = () => (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
     <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
