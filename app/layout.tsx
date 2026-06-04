@@ -4,6 +4,7 @@ import Topbar from '@/components/Topbar';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
+import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
   title: { default: 'SignalForge | Marketing Automation & Digital Growth', template: '%s | SignalForge' },
@@ -18,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Nav />
         <main>{children}</main>
         <Footer />
-        <CookieBanner />
+        <CookieBanner /><ChatWidget />
       </body>
     </html>
   );
