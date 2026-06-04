@@ -5,7 +5,11 @@ export const metadata: Metadata = { title: 'Services' };
 
 const AutomationIcon = () => (
   <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
+    <rect x="3" y="3" width="5" height="5" rx="1"/>
+    <rect x="16" y="3" width="5" height="5" rx="1"/>
+    <rect x="9.5" y="16" width="5" height="5" rx="1"/>
+    <path d="M5.5 8v3c0 1.1.9 2 2 2h9a2 2 0 0 0 2-2V8"/>
+    <path d="M12 13v3"/>
   </svg>
 );
 const SmsIcon = () => (
