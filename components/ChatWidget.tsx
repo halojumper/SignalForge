@@ -1,6 +1,4 @@
-Yes — I'll build it with session-level persistence built in from the start. The message history will live in React state so it survives the widget being opened and closed during the same visit.
-Here's the complete components/ChatWidget.tsx:
-tsx'use client';
+use client';
 import { useState, useRef, useEffect } from 'react';
 
 interface Message {
