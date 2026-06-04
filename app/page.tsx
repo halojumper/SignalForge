@@ -1,9 +1,9 @@
-import type { Metadata } from 'next';
+'use client';
+import { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import CtaBand from '@/components/CtaBand';
 import MetricCards from '@/components/MetricCards';
-
-export const metadata: Metadata = { title: 'Home' };
 
 const ServicesIllustration = () => (
   <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
@@ -103,6 +103,17 @@ const teasers = [
 ];
 
 export default function Home() {
+  const router = useRouter();
+  const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
+
+  function handleCardClick(index: number, href: string) {
+    if (flippedIndex === index) {
+      router.push(href);
+    } else {
+      setFlippedIndex(index);
+    }
+  }
+
   return (
     <>
       <style>{`
@@ -110,21 +121,13 @@ export default function Home() {
         .hero-btns { display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
         .flip-card { perspective:1000px; cursor:pointer; height:280px; }
         .flip-card-inner { position:relative; width:100%; height:100%; transition:transform 0.6s; transform-style:preserve-3d; }
-        .flip-card:hover .flip-card-inner { transform:rotateY(180deg); }
+        .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform:rotateY(180deg); }
         .flip-card-front, .flip-card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:18px; border:1px solid rgba(0,0,0,0.07); }
         .flip-card-front { background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; }
         .flip-card-back { background:var(--coral); transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; gap:12px; }
         .flip-cta { background:white; color:#1a1208; font-family:Syne,sans-serif; font-size:0.82rem; font-weight:700; padding:8px 20px; border-radius:8px; display:inline-block; margin-top:4px; }
         @media(max-width:900px) { .teasers-grid { grid-template-columns:repeat(2,1fr); } }
-        @media(max-width:560px) {
-          .teasers-grid { grid-template-columns:1fr; }
-          .hero-btns { flex-direction:column; align-items:stretch; }
-          .hero-btns .btn { text-align:center; }
-          .flip-card { height:auto; }
-          .flip-card-inner { transform:none !important; }
-          .flip-card-front { position:relative; border-radius:18px 18px 0 0; border-bottom:none; height:auto; padding:24px; }
-          .flip-card-back { position:relative; transform:none; border-radius:0 0 18px 18px; border-top:none; height:auto; padding:20px 24px; }
-        }
+        @media(max-width:560px) { .teasers-grid { grid-template-columns:1fr; } .hero-btns { flex-direction:column; align-items:stretch; } .hero-btns .btn { text-align:center; } }
       `}</style>
 
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'80px 0 40px'}}>
@@ -177,24 +180,26 @@ export default function Home() {
             <p className="section-sub" style={{margin:'0 auto'}}>Hover over each card to explore what SignalForge can do for your business.</p>
           </div>
           <div className="teasers-grid">
-            {teasers.map(t => (
-              <Link key={t.title} href={t.href} style={{textDecoration:'none'}}>
-                <div className="flip-card">
-                  <div className="flip-card-inner">
-                    <div className="flip-card-front">
-                      <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:72,marginBottom:16}}>
-                        {t.illustration}
-                      </div>
-                      <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)'}}>{t.title}</div>
+            {teasers.map((t, i) => (
+              <div
+                key={t.title}
+                className={`flip-card${flippedIndex === i ? ' flipped' : ''}`}
+                onClick={() => handleCardClick(i, t.href)}
+              >
+                <div className="flip-card-inner">
+                  <div className="flip-card-front">
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:72,marginBottom:16}}>
+                      {t.illustration}
                     </div>
-                    <div className="flip-card-back">
-                      <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:800,color:'white',lineHeight:1.3}}>{t.back}</div>
-                      <p style={{fontSize:'0.84rem',color:'rgba(255,255,255,0.85)',lineHeight:1.6,margin:0}}>{t.desc}</p>
-                      <div className="flip-cta">{t.cta} →</div>
-                    </div>
+                    <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)'}}>{t.title}</div>
+                  </div>
+                  <div className="flip-card-back">
+                    <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:800,color:'white',lineHeight:1.3}}>{t.back}</div>
+                    <p style={{fontSize:'0.84rem',color:'rgba(255,255,255,0.85)',lineHeight:1.6,margin:0}}>{t.desc}</p>
+                    <div className="flip-cta">{t.cta} →</div>
                   </div>
                 </div>
-              </Link>
+              </div>
             ))}
           </div>
         </div>
