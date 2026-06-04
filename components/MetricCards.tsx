@@ -9,8 +9,8 @@ const cards = [
 ];
 
 const ORBIT_ANGLES = [315, 45, 225, 135];
-const ORBIT_RADIUS = 172;
-const BASE_SIZE = 430;
+const ORBIT_RADIUS = 155;
+const BASE_SIZE = 420;
 
 function getOrbitPos(angleDeg: number, radius: number) {
   const rad = (angleDeg * Math.PI) / 180;
@@ -25,16 +25,16 @@ export default function MetricCards() {
   const [scale, setScale] = useState(1);
   const wrapRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    function updateScale() {
-  const available = window.innerWidth - 32;
-  const newScale = Math.min(1, available / BASE_SIZE);
-  setScale(newScale);
+ useEffect(() => {
+  function updateScale() {
+    const available = window.innerWidth - 48;
+    const newScale = Math.min(1, available / BASE_SIZE);
+    setScale(newScale);
   }
-    updateScale();
-    window.addEventListener('resize', updateScale);
-    return () => window.removeEventListener('resize', updateScale);
-  }, []);
+  updateScale();
+  window.addEventListener('resize', updateScale);
+  return () => window.removeEventListener('resize', updateScale);
+}, []);
 
   useEffect(() => {
     const fanTimer   = setTimeout(() => setPhase('fanning'),  1000);
