@@ -23,6 +23,9 @@ Key facts:
 - Free 30-minute strategy call available
 - Based in Greater Boston, MA
 - Contact: hello@signalforge.marketing
+- Month-to-month contracts available - no long-term commitment required
+- Some services may require a minimum engagement period - discuss on the strategy call
+- All engagements start with a free 30-minute strategy call before any contract is signed
 
 Rules:
 - Keep answers SHORT — 2 to 3 sentences maximum
