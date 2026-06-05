@@ -9,8 +9,8 @@ const cards = [
 ];
 
 const ORBIT_ANGLES = [315, 45, 225, 135];
-const ORBIT_RADIUS = 155;
-const BASE_SIZE = 420;
+const ORBIT_RADIUS = 200;
+const BASE_SIZE = 560;
 
 function getOrbitPos(angleDeg: number, radius: number) {
   const rad = (angleDeg * Math.PI) / 180;
@@ -38,7 +38,7 @@ export default function MetricCards() {
 
   useEffect(() => {
     const fanTimer   = setTimeout(() => setPhase('fanning'),  1000);
-    const orbitTimer = setTimeout(() => setPhase('orbiting'), 1900);
+    const orbitTimer = setTimeout(() => setPhase('orbiting'), 1900);  
     return () => { clearTimeout(fanTimer); clearTimeout(orbitTimer); };
   }, []);
 
@@ -58,9 +58,9 @@ export default function MetricCards() {
 
   const SIZE = BASE_SIZE;
   const CENTER = SIZE / 2;
-  const CARD_W = 164;
-  const CARD_H = 112;
-  const LOGO_SIZE = 76;
+  const CARD_W = 190;
+  const CARD_H = 130;
+  const LOGO_SIZE = 90;
 
   const scaledHeight = SIZE * scale;
   const marginCompensation = (scaledHeight - SIZE) / 2;
