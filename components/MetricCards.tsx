@@ -127,7 +127,7 @@ export default function MetricCards() {
               transition,
               pointerEvents:'none',
             }}>
-              <div style={{fontSize:'1.3rem',marginBottom:5}}>{card.icon}</div>
+              <div style= {{fontSize:'1.3rem',marginBottom:5}}>{card.icon}</div>
               <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.76rem',fontWeight:700,color:'var(--text)',marginBottom:3}}>{card.title}</div>
               <div style={{fontSize:'1.35rem',fontWeight:800,fontFamily:'Syne,sans-serif',color:'var(--coral)',lineHeight:1}}>{card.val}</div>
               <div style={{fontSize:'0.65rem',color:'var(--mid-gray)',marginTop:4,lineHeight:1.3}}>{card.label}</div>

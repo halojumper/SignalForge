@@ -152,7 +152,8 @@ export default function Home() {
       </section>
 
       <div className="metric-cards-wrap" style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
-      </div>
+  <MetricCards />
+  </div>
 
       <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
         <div className="container">
