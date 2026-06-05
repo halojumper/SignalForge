@@ -41,7 +41,7 @@ export default function Footer() {
               <div className="logo-icon">
                 <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
               </div>
-              Signal<span style={{color:'var(--coral)'}}>Forge</span>
+             <span>Signal<span style={{color:'var(--coral)'}}>Forge</span></span>
             </Link>
             <p>Full-service marketing automation and digital campaign execution for small and mid-sized businesses across New England and beyond.</p>
             <div className="footer-socials">
