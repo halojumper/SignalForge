@@ -130,9 +130,10 @@ export default function Home() {
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'80px 0 40px'}}>
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
         <div className="container" style={{position:'relative',zIndex:2,width:'100%'}}>
-          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(255,255,255,0.75)',border:'1px solid rgba(232,85,42,0.25)',borderRadius:50,padding:'6px 16px',fontSize:'0.8rem',color:'var(--coral)',fontWeight:600,marginBottom:24}}>
-            Marketing Automation + Digital Growth
-          </div>
+          <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(232,85,42,0.08)',border:'1px solid rgba(232,85,42,0.3)',borderRadius:50,padding:'8px 20px',fontSize:'0.85rem',color:'var(--coral)',fontWeight:700,marginBottom:28,letterSpacing:'0.02em'}}>
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--coral)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+  Marketing Automation + Digital Growth
+</div>
           <h1 style={{fontSize:'clamp(2rem,4.5vw,3.6rem)',fontWeight:800,color:'var(--text)',marginBottom:22,lineHeight:1.1}}>
             Reach More Customers.{' '}
             <em style={{fontStyle:'normal',color:'var(--coral)'}}>Automate Smarter.</em>{' '}
