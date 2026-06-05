@@ -24,7 +24,7 @@ export default function Nav() {
             <div className="logo-icon">
               <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </div>
-            <span style={{letterSpacing:'-0.01em'}}>Signal<span style={{color:'var(--coral)'}}>Forge</span></span>
+            <span style={{color:'var(--text)',letterSpacing:'-0.01em'}}>Signal<span style={{color:'var(--coral)'}}>Forge</span></span>
           </Link>
           <ul className="nav-links">
             {links.map(l => (
