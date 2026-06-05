@@ -151,7 +151,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,position:'relative'}}>
+      <div style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,position:'relative',minHeight:200}}>
   <div style={{position:'absolute',left:0,top:0,bottom:0,width:200,background:'linear-gradient(to right, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
   <div style={{position:'absolute',right:0,top:0,bottom:0,width:200,background:'linear-gradient(to left, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
   <div style={{display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
