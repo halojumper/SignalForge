@@ -66,7 +66,7 @@ export default function MetricCards() {
   const marginCompensation = (scaledHeight - SIZE) / 2;
 
   return (
-    <div ref={wrapRef} style={{width:'100%',maxWidth:560,display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
+    <div ref={wrapRef} style={{width:'100%',display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
       <div style={{
         position:'relative',
         width:SIZE,
