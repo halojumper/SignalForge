@@ -151,9 +151,9 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="metric-cards-wrap" style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden',maxWidth:640,margin:'0 auto',width:'100%'}}>
+      <div className="metric-cards-wrap" style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
   <MetricCards />
-  </div>
+</div>
 
       <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
         <div className="container">
