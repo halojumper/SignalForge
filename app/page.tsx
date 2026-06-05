@@ -1,105 +1,100 @@
 'use client';
 import { useState } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import CtaBand from '@/components/CtaBand';
 import MetricCards from '@/components/MetricCards';
 
-const ServicesIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <rect x="8" y="10" width="64" height="48" rx="5" fill="#fdf0e8"/>
-    <rect x="8" y="10" width="64" height="13" rx="5" fill="#e8552a"/>
-    <circle cx="17" cy="16.5" r="2" fill="rgba(255,255,255,0.7)"/>
-    <circle cx="23" cy="16.5" r="2" fill="rgba(255,255,255,0.7)"/>
-    <circle cx="29" cy="16.5" r="2" fill="rgba(255,255,255,0.7)"/>
-    <rect x="18" y="44" width="8" height="12" rx="2" fill="#e8552a"/>
-    <rect x="30" y="36" width="8" height="20" rx="2" fill="#f5a623"/>
-    <rect x="42" y="29" width="8" height="27" rx="2" fill="#e8552a" opacity="0.6"/>
-    <rect x="54" y="22" width="8" height="34" rx="2" fill="#fbbf47"/>
-    <polyline points="22,44 34,36 46,29 58,22" fill="none" stroke="#c9460f" strokeWidth="1.5" strokeLinecap="round"/>
-  </svg>
-);
-
-const HowItWorksIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <circle cx="22" cy="22" r="12" fill="#e8552a"/>
-    <text x="22" y="22" textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontFamily="sans-serif" fontWeight="bold">1</text>
-    <line x1="34" y1="22" x2="44" y2="22" stroke="#e8552a" strokeWidth="2" strokeLinecap="round"/>
-    <polygon points="44,19 50,22 44,25" fill="#e8552a"/>
-    <circle cx="58" cy="22" r="12" fill="#f5a623"/>
-    <text x="58" y="22" textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontFamily="sans-serif" fontWeight="bold">2</text>
-    <line x1="58" y1="34" x2="58" y2="44" stroke="#f5a623" strokeWidth="2" strokeLinecap="round"/>
-    <polygon points="55,44 58,50 61,44" fill="#f5a623"/>
-    <circle cx="58" cy="56" r="12" fill="#c9460f"/>
-    <text x="58" y="56" textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontFamily="sans-serif" fontWeight="bold">3</text>
-    <line x1="46" y1="56" x2="36" y2="56" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <polygon points="36,53 30,56 36,59" fill="#fbbf47"/>
-    <circle cx="22" cy="56" r="12" fill="#fbbf47"/>
-    <text x="22" y="56" textAnchor="middle" dominantBaseline="middle" fontSize="13" fill="white" fontFamily="sans-serif" fontWeight="bold">4</text>
-  </svg>
-);
-
-const ResultsIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <path d="M26 8 h28 v24 a14 14 0 0 1 -28 0 Z" fill="#f5a623"/>
-    <path d="M26 16 h-8 a7 7 0 0 0 8 12" fill="none" stroke="#fbbf47" strokeWidth="3" strokeLinecap="round"/>
-    <path d="M54 16 h8 a7 7 0 0 1 -8 12" fill="none" stroke="#fbbf47" strokeWidth="3" strokeLinecap="round"/>
-    <rect x="34" y="44" width="12" height="8" rx="1" fill="#e8552a"/>
-    <rect x="28" y="52" width="24" height="5" rx="2.5" fill="#e8552a"/>
-    <path d="M40 14 l2 6 h6 l-5 3.5 2 6 -5 -3.5 -5 3.5 2 -6 -5 -3.5 h6 Z" fill="white"/>
-  </svg>
-);
-
-const InsightsIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <circle cx="40" cy="28" r="16" fill="#fbbf47"/>
-    <circle cx="34" cy="22" r="3" fill="rgba(255,255,255,0.4)"/>
-    <rect x="34" y="42" width="12" height="4" rx="1" fill="#e8552a"/>
-    <rect x="35" y="46" width="10" height="3" rx="1" fill="#e8552a" opacity="0.7"/>
-    <rect x="36" y="49" width="8" height="3" rx="1" fill="#e8552a" opacity="0.4"/>
-    <line x1="40" y1="6" x2="40" y2="2" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="56" y1="12" x2="59" y2="9" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="62" y1="28" x2="66" y2="28" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="24" y1="12" x2="21" y2="9" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="18" y1="28" x2="14" y2="28" stroke="#fbbf47" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="20" y1="60" x2="60" y2="60" stroke="#e8552a" strokeWidth="2" strokeLinecap="round"/>
-    <line x1="25" y1="65" x2="55" y2="65" stroke="#e8552a" strokeWidth="1.5" strokeLinecap="round" opacity="0.5"/>
-  </svg>
-);
-
-const ContactIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <rect x="10" y="22" width="60" height="40" rx="5" fill="#e8552a"/>
-    <path d="M10 27 L40 47 L70 27" fill="none" stroke="white" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"/>
-    <line x1="10" y1="62" x2="28" y2="44" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
-    <line x1="70" y1="62" x2="52" y2="44" stroke="white" strokeWidth="1.5" strokeLinecap="round" opacity="0.6"/>
-    <rect x="28" y="4" width="24" height="14" rx="5" fill="#fbbf47"/>
-    <polygon points="33,18 40,24 47,18" fill="#fbbf47"/>
-    <line x1="32" y1="10" x2="48" y2="10" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-    <line x1="32" y1="14" x2="44" y2="14" stroke="white" strokeWidth="1.8" strokeLinecap="round"/>
-  </svg>
-);
-
-const PartnerIllustration = () => (
-  <svg viewBox="0 0 80 70" width="72" height="63" style={{display:'block'}}>
-    <circle cx="20" cy="18" r="8" fill="#e8552a"/>
-    <path d="M8 42 C8 32 32 32 32 42" fill="#e8552a"/>
-    <circle cx="60" cy="18" r="8" fill="#f5a623"/>
-    <path d="M48 42 C48 32 72 32 72 42" fill="#f5a623"/>
-    <ellipse cx="40" cy="50" rx="14" ry="8" fill="#fbbf47"/>
-    <path d="M26 50 C26 42 54 42 54 50" fill="#f5a623"/>
-    <circle cx="40" cy="28" r="9" fill="#c9460f"/>
-    <path d="M35 28 l3.5 3.5 7 -7" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-  </svg>
-);
-
 const teasers = [
-  { illustration: <ServicesIllustration />, title: 'Services', back: 'Every Channel. One Trusted Partner.', desc: 'Marketing automation, SMS, social campaigns, ad creative, website builds, and event marketing.', href: '/services', cta: 'See all services' },
-  { illustration: <HowItWorksIllustration />, title: 'How It Works', back: 'From Discovery to Launch in 4 Steps', desc: 'No guesswork. No lengthy onboarding. Campaigns live within days with full transparency.', href: '/how-it-works', cta: 'See the process' },
-  { illustration: <ResultsIllustration />, title: 'Client Results', back: 'Real Businesses. Real Growth.', desc: 'See how our clients are driving higher open rates, more conversions, and faster growth.', href: '/results', cta: 'Read the stories' },
-  { illustration: <InsightsIllustration />, title: 'Insights', back: 'Marketing Intelligence, Delivered Free', desc: 'Free articles, guides, and tips on email marketing, SMS, ad creative, and automation.', href: '/insights', cta: 'Read the blog' },
-  { illustration: <ContactIllustration />, title: 'Contact Us', back: 'Lets Talk About Your Growth', desc: 'Book a free 30-minute strategy session. No obligation, no hard sell, just an honest conversation.', href: '/contact', cta: 'Get in touch' },
-  { illustration: <PartnerIllustration />, title: 'Constant Contact Partner', back: 'Enterprise Features at Small Business Pricing', desc: 'As an authorized reseller, we give you full onboarding support and ongoing strategy included.', href: '/constant-contact', cta: 'Learn about reselling' },
+  {
+    title: 'Services',
+    headerBg: 'linear-gradient(135deg,#e8552a,#c9460f)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="2" y="3" width="20" height="14" rx="2"/>
+        <path d="M8 21h8M12 17v4"/>
+        <path d="M6 7h4M6 11h8"/>
+      </svg>
+    ),
+    back: 'Every Channel. One Trusted Partner.',
+    desc: 'Marketing automation, SMS, social campaigns, ad creative, website builds, and event marketing.',
+    href: '/services',
+    cta: 'See all services',
+  },
+  {
+    title: 'How It Works',
+    headerBg: 'linear-gradient(135deg,#f5a623,#e07b3a)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <rect x="3" y="3" width="5" height="5" rx="1"/>
+        <rect x="16" y="3" width="5" height="5" rx="1"/>
+        <rect x="9.5" y="16" width="5" height="5" rx="1"/>
+        <path d="M5.5 8v3c0 1.1.9 2 2 2h9a2 2 0 0 0 2-2V8"/>
+        <path d="M12 13v3"/>
+      </svg>
+    ),
+    back: 'From Discovery to Launch in 4 Steps',
+    desc: 'No guesswork. No lengthy onboarding. Campaigns live within days with full transparency.',
+    href: '/how-it-works',
+    cta: 'See the process',
+  },
+  {
+    title: 'Client Results',
+    headerBg: 'linear-gradient(135deg,#c9460f,#a83a0a)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+      </svg>
+    ),
+    back: 'Real Businesses. Real Growth.',
+    desc: 'See how our clients are driving higher open rates, more conversions, and faster growth.',
+    href: '/results',
+    cta: 'Read the stories',
+  },
+  {
+    title: 'Insights',
+    headerBg: 'linear-gradient(135deg,#fbbf47,#f5a623)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 21h6M12 3a6 6 0 0 1 6 6c0 2.5-1.5 4.5-3 6H9c-1.5-1.5-3-3.5-3-6a6 6 0 0 1 6-6z"/>
+        <path d="M9 17h6"/>
+      </svg>
+    ),
+    back: 'Marketing Intelligence, Delivered Free',
+    desc: 'Free articles, guides, and tips on email marketing, SMS, ad creative, and automation.',
+    href: '/insights',
+    cta: 'Read the blog',
+  },
+  {
+    title: 'Contact Us',
+    headerBg: 'linear-gradient(135deg,#e8552a,#fbbf47)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+        <path d="M8 10h8M8 14h5"/>
+      </svg>
+    ),
+    back: 'Lets Talk About Your Growth',
+    desc: 'Book a free 30-minute strategy session. No obligation, no hard sell, just an honest conversation.',
+    href: '/contact',
+    cta: 'Get in touch',
+  },
+  {
+    title: 'Constant Contact Partner',
+    headerBg: 'linear-gradient(135deg,#a83a0a,#c9460f)',
+    icon: (
+      <svg viewBox="0 0 24 24" width="56" height="56" fill="none" stroke="white" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+        <circle cx="9" cy="7" r="4"/>
+        <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+        <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+      </svg>
+    ),
+    back: 'Enterprise Features at Small Business Pricing',
+    desc: 'As an authorized reseller, we give you full onboarding support and ongoing strategy included.',
+    href: '/constant-contact',
+    cta: 'Learn about reselling',
+  },
 ];
 
 export default function Home() {
@@ -119,11 +114,13 @@ export default function Home() {
       <style>{`
         .teasers-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
         .hero-btns { display:flex; gap:14px; flex-wrap:wrap; align-items:center; }
-        .flip-card { perspective:1000px; cursor:pointer; height:220px; }
+        .flip-card { perspective:1000px; cursor:pointer; height:260px; }
         .flip-card-inner { position:relative; width:100%; height:100%; transition:transform 0.6s; transform-style:preserve-3d; }
         .flip-card:hover .flip-card-inner, .flip-card.flipped .flip-card-inner { transform:rotateY(180deg); }
-        .flip-card-front, .flip-card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:18px; border:1px solid rgba(0,0,0,0.07); }
-        .flip-card-front { background:var(--white); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:16px; text-align:center; }
+        .flip-card-front, .flip-card-back { position:absolute; width:100%; height:100%; backface-visibility:hidden; border-radius:18px; overflow:hidden; border:1px solid rgba(0,0,0,0.07); }
+        .flip-card-front { background:var(--white); display:flex; flex-direction:column; }
+        .flip-card-header { display:flex; align-items:center; justify-content:center; height:160px; flex-shrink:0; }
+        .flip-card-label { padding:14px 16px; text-align:center; }
         .flip-card-back { background:var(--coral); transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; gap:12px; }
         .flip-cta { background:white; color:#1a1208; font-family:Syne,sans-serif; font-size:0.82rem; font-weight:700; padding:8px 20px; border-radius:8px; display:inline-block; margin-top:4px; }
         @media(max-width:900px) { .teasers-grid { grid-template-columns:repeat(2,1fr); } }
@@ -188,10 +185,12 @@ export default function Home() {
               >
                 <div className="flip-card-inner">
                   <div className="flip-card-front">
-                    <div style={{display:'flex',alignItems:'center',justifyContent:'center',height:72,marginBottom:16}}>
-                      {t.illustration}
+                    <div className="flip-card-header" style={{background:t.headerBg}}>
+                      {t.icon}
                     </div>
-                    <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)'}}>{t.title}</div>
+                    <div className="flip-card-label">
+                      <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:700,color:'var(--text)'}}>{t.title}</div>
+                    </div>
                   </div>
                   <div className="flip-card-back">
                     <div style={{fontFamily:'Syne,sans-serif',fontSize:'1rem',fontWeight:800,color:'white',lineHeight:1.3}}>{t.back}</div>
