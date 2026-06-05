@@ -25,20 +25,20 @@ export default function MetricCards() {
   const [scale, setScale] = useState(1);
   const wrapRef = useRef<HTMLDivElement>(null);
 
- useEffect(() => {
-  function updateScale() {
-    const available = window.innerWidth - 48;
-    const newScale = Math.min(1, available / BASE_SIZE);
-    setScale(newScale);
-  }
-  updateScale();
-  window.addEventListener('resize', updateScale);
-  return () => window.removeEventListener('resize', updateScale);
-}, []);
+  useEffect(() => {
+    function updateScale() {
+      const available = window.innerWidth - 48;
+      const newScale = Math.min(1, available / BASE_SIZE);
+      setScale(newScale);
+    }
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   useEffect(() => {
     const fanTimer   = setTimeout(() => setPhase('fanning'),  1000);
-    const orbitTimer = setTimeout(() => setPhase('orbiting'), 1900);  
+    const orbitTimer = setTimeout(() => setPhase('orbiting'), 1900);
     return () => { clearTimeout(fanTimer); clearTimeout(orbitTimer); };
   }, []);
 
@@ -77,10 +77,9 @@ export default function MetricCards() {
         marginTop:`${marginCompensation}px`,
         marginBottom:`${marginCompensation}px`,
       }}>
-
         {/* Logo */}
         <div style={{position:'absolute',left:CENTER,top:CENTER,transform:'translate(-50%, -50%)',width:LOGO_SIZE,height:LOGO_SIZE,background:'var(--coral)',borderRadius:20,display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 10px 40px rgba(232,85,42,0.38)',zIndex:1}}>
-          <svg viewBox="0 0 24 24" style={{width:38,height:38,fill:'white'}}>
+          <svg viewBox="0 0 24 24" style={{width:46,height:46,fill:'white'}}>
             <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
           </svg>
         </div>
