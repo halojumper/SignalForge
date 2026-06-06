@@ -1,7 +1,8 @@
-import type { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 import CtaBand from '@/components/CtaBand';
-export const metadata: Metadata = { title: 'Client Results' };
 
 const testimonials = [
   { initials:'LM', grad:'#e8552a,#f5a623', chips:['📧 41% open rate','↑ 2× revenue'], quote:'SignalForge set up our entire Constant Contact automation in a single week. Our open rates jumped from 18% to 41% and we\'ve never looked back. Truly a game changer for our salon franchise.', name:'Laura Mitchell', role:'Owner, Luxe Salon Group · Boston, MA' },
@@ -18,12 +19,59 @@ const cases = [
   { industry:'Real Estate', title:'Torres Realty — Website + Email Integration', metrics:[{val:'3×',label:'increase in qualified online inquiries within 60 days'},{val:'68%',label:'of new leads now captured via automated email nurture'},{val:'41%',label:'email open rate on new nurture sequence'}] },
 ];
 
-const aggStats = [
-  {n:'200',s:'+',l:'Campaigns Delivered'},
-  {n:'3.4',s:'×',l:'Avg. ROI Multiplier'},
-  {n:'98',s:'%',l:'Client Retention Rate'},
-  {n:'48',s:'h',l:'Average Time to Launch'},
+const AGG_STATS = [
+  { target: 200, suffix: '+', label: 'Campaigns Delivered',    numeric: true },
+  { target: 3.4, suffix: '×', label: 'Avg. ROI Multiplier',    numeric: true, decimal: true },
+  { target: 98,  suffix: '%', label: 'Client Retention Rate',  numeric: true },
+  { target: 48,  suffix: 'h', label: 'Average Time to Launch', numeric: true },
 ];
+
+function AggStats() {
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const ref = useRef<HTMLDivElement>(null);
+  const animated = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !animated.current) {
+        animated.current = true;
+        AGG_STATS.forEach((s, i) => {
+          const duration = 1600;
+          const steps = 50;
+          const increment = s.target / steps;
+          let current = 0;
+          const interval = setInterval(() => {
+            current = Math.min(current + increment, s.target);
+            setCounts(prev => {
+              const next = [...prev];
+              next[i] = s.decimal ? Math.round(current * 10) / 10 : Math.round(current);
+              return next;
+            });
+            if (current >= s.target) clearInterval(interval);
+          }, duration / steps);
+        });
+      }
+    }, { threshold: 0.3 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="agg-stats-grid" ref={ref}>
+      {AGG_STATS.map((s, i) => (
+        <div key={s.label} style={{textAlign:'center',padding:'20px 16px',borderRight:(i+1)%2!==0?'1px solid rgba(255,255,255,0.3)':undefined}}>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(2rem,4vw,2.8rem)',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:6}}>
+            {s.decimal ? counts[i].toFixed(1) : counts[i]}
+            <span style={{color:'#c9460f'}}>{s.suffix}</span>
+          </div>
+          <div style={{fontSize:'0.85rem',color:'rgba(255,255,255,0.85)'}}>{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function Results() {
   return (
@@ -104,16 +152,10 @@ export default function Results() {
         </div>
       </section>
 
+      {/* AGGREGATE STATS */}
       <div style={{background:'var(--amber)',padding:'56px 0'}}>
         <div className="container">
-          <div className="agg-stats-grid">
-            {aggStats.map((s,i)=>(
-              <div key={s.l} style={{textAlign:'center',padding:'20px 16px',borderRight:(i+1)%2!==0?'1px solid rgba(255,255,255,0.3)':undefined}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(2rem,4vw,2.8rem)',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:6}}>{s.n}<span style={{color:'rgba(255,255,255,0.7)'}}>{s.s}</span></div>
-                <div style={{fontSize:'0.85rem',color:'rgba(255,255,255,0.85)'}}>{s.l}</div>
-              </div>
-            ))}
-          </div>
+          <AggStats />
         </div>
       </div>
 
