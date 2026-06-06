@@ -56,7 +56,7 @@ nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-b
 .logo-icon { width: 36px; height: 36px; background: var(--coral); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .logo-icon svg { width: 20px; height: 20px; fill: var(--white); }
 .nav-links { display: flex; list-style: none; gap: 32px; align-items: center; }
-.nav-links a { font-size: 0.9rem; font-weight: 500; color: var(--text); transition: color var(--transition); }
+.nav-links a { font-size: 0.9rem; font-weight: 600; color: #222; transition: color var(--transition); }
 .nav-links a:hover, .nav-links a.active { color: var(--coral); }
 .nav-links a.active { font-weight: 700; }
 .nav-cta { display: flex; gap: 10px; align-items: center; }
