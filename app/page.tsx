@@ -272,7 +272,7 @@ export default function Home() {
                 src="/images/woman-smiling-mobile.webp"
                 alt="Small business owner on mobile phone"
                 fill
-                style={{objectFit:'cover',objectPosition:'right center'}}
+                style={{objectFit:'cover',objectPosition:'85% center'}}
               />
               {/* Soft left fade to blend into sand background */}
               <div style={{position:'absolute',inset:0,background:'linear-gradient(to right, var(--sand) 0%, transparent 25%)',pointerEvents:'none'}} />
