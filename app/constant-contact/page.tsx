@@ -1,15 +1,16 @@
-import type { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
+import { useState, useEffect, useRef } from 'react';
 import CtaBand from '@/components/CtaBand';
-export const metadata: Metadata = { title: 'Constant Contact Partner' };
 
 const features = [
-  { icon: '\uD83D\uDCE7', title: 'Email Marketing', desc: 'Professional templates, drag-and-drop builder, A/B testing, and advanced segmentation built for results.' },
-  { icon: '\uD83D\uDCF1', title: 'SMS Marketing', desc: 'Reach customers instantly with text message campaigns that average 90%+ open rates.' },
-  { icon: '\uD83E\uDD16', title: 'Marketing Automation', desc: 'Set up triggered workflows, drip sequences, and behavioral campaigns that run on autopilot.' },
-  { icon: '\uD83D\uDCCA', title: 'Reporting & Analytics', desc: 'Real-time dashboards showing opens, clicks, conversions, and revenue attribution.' },
-  { icon: '\uD83D\uDCCC', title: 'List Management', desc: 'Advanced segmentation, tagging, and contact management to keep your list clean and targeted.' },
-  { icon: '\uD83D\uDD17', title: 'Integrations', desc: 'Connect with Shopify, WordPress, Salesforce, QuickBooks, and hundreds of other tools.' },
+  { icon: '📧', title: 'Email Marketing', desc: 'Professional templates, drag-and-drop builder, A/B testing, and advanced segmentation built for results.' },
+  { icon: '📱', title: 'SMS Marketing', desc: 'Reach customers instantly with text message campaigns that average 90%+ open rates.' },
+  { icon: '🤖', title: 'Marketing Automation', desc: 'Set up triggered workflows, drip sequences, and behavioral campaigns that run on autopilot.' },
+  { icon: '📊', title: 'Reporting & Analytics', desc: 'Real-time dashboards showing opens, clicks, conversions, and revenue attribution.' },
+  { icon: '📌', title: 'List Management', desc: 'Advanced segmentation, tagging, and contact management to keep your list clean and targeted.' },
+  { icon: '🔗', title: 'Integrations', desc: 'Connect with Shopify, WordPress, Salesforce, QuickBooks, and hundreds of other tools.' },
 ];
 
 const plans = [
@@ -24,6 +25,64 @@ const steps = [
   { num: '3', title: 'Launch Your First Campaign', desc: 'We build and send your first campaign together so you can see results from day one.' },
   { num: '4', title: 'Ongoing Support', desc: 'Monthly strategy calls, performance reviews, and hands-on support whenever you need it.' },
 ];
+
+const STATS = [
+  { target: 600, suffix: 'K+', label: 'Businesses on Platform', numeric: true },
+  { target: 97,  suffix: '%',  label: 'Deliverability Rate',    numeric: true },
+  { target: 10,  suffix: 'B+', label: 'Emails Sent Monthly',    numeric: true },
+  { target: 1,   suffix: '',   label: 'Rated Email Platform',   numeric: false },
+];
+
+function CCStats() {
+  const [counts, setCounts] = useState([0, 0, 0, 0]);
+  const ref = useRef<HTMLDivElement>(null);
+  const animated = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !animated.current) {
+        animated.current = true;
+        STATS.forEach((s, i) => {
+          if (!s.numeric) return;
+          const duration = 1600;
+          const steps = 50;
+          const increment = s.target / steps;
+          let current = 0;
+          const interval = setInterval(() => {
+            current = Math.min(current + increment, s.target);
+            setCounts(prev => {
+              const next = [...prev];
+              next[i] = Math.round(current);
+              return next;
+            });
+            if (current >= s.target) clearInterval(interval);
+          }, duration / steps);
+        });
+      }
+    }, { threshold: 0.3 });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <div className="cc-stats-grid" ref={ref}>
+      {STATS.map((s, i) => (
+        <div key={s.label} style={{textAlign:'center',padding:'20px 16px',borderRight:i<3?'1px solid rgba(255,255,255,0.3)':undefined}}>
+          <div style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(1.8rem,3vw,2.6rem)',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:6}}>
+            {s.numeric ? (
+              <>{counts[i]}<span style={{color:'rgba(255,255,255,0.7)'}}>{s.suffix}</span></>
+            ) : (
+              <>#<span style={{color:'rgba(255,255,255,0.7))'}}>1</span></>
+            )}
+          </div>
+          <div style={{fontSize:'0.85rem',color:'rgba(255,255,255,0.85)'}}>{s.label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
 
 export default function ConstantContactPage() {
   return (
@@ -66,19 +125,7 @@ export default function ConstantContactPage() {
       {/* STATS */}
       <div style={{background:'var(--amber)',padding:'48px 0'}}>
         <div className="container">
-          <div className="cc-stats-grid">
-            {[
-              {n:'600K',s:'+',l:'Businesses on Platform'},
-              {n:'97',s:'%',l:'Deliverability Rate'},
-              {n:'10',s:'B+',l:'Emails Sent Monthly'},
-              {n:'#1',s:'',l:'Rated Email Platform'},
-            ].map((s,i)=>(
-              <div key={s.l} style={{textAlign:'center',padding:'20px 16px',borderRight:i<3?'1px solid rgba(255,255,255,0.3)':undefined}}>
-                <div style={{fontFamily:'Syne,sans-serif',fontSize:'clamp(1.8rem,3vw,2.6rem)',fontWeight:800,color:'var(--white)',lineHeight:1,marginBottom:6}}>{s.n}<span style={{color:'rgba(255,255,255,0.7)'}}>{s.s}</span></div>
-                <div style={{fontSize:'0.85rem',color:'rgba(255,255,255,0.85)'}}>{s.l}</div>
-              </div>
-            ))}
-          </div>
+          <CCStats />
         </div>
       </div>
 
