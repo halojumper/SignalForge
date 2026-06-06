@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import ContactForm from './ContactForm';
 export const metadata: Metadata = { title: 'Contact' };
 
@@ -56,16 +57,57 @@ export default function Contact() {
     <>
       <style>{`
         .contact-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:48px; align-items:start; }
-        @media(max-width:768px) { .contact-grid { grid-template-columns:1fr; gap:32px; } }
+        .contact-hero-img { position:relative; width:100%; height:420px; overflow:hidden; }
+        .contact-hero-img img { object-fit:cover; object-position:center 30%; }
+        .contact-hero-overlay {
+          position:absolute; inset:0;
+          background:linear-gradient(
+            to right,
+            rgba(20,10,5,0.72) 0%,
+            rgba(20,10,5,0.45) 45%,
+            rgba(20,10,5,0.1) 100%
+          );
+        }
+        .contact-hero-text {
+          position:absolute; top:50%; left:0;
+          transform:translateY(-50%);
+          padding:0 48px;
+          max-width:580px;
+        }
+        @media(max-width:768px) {
+          .contact-grid { grid-template-columns:1fr; gap:32px; }
+          .contact-hero-img { height:280px; }
+          .contact-hero-text { padding:0 24px; max-width:100%; }
+          .contact-hero-text h1 { font-size:1.6rem !important; }
+        }
       `}</style>
 
-      <div className="page-hero"><div className="container page-hero-inner">
-        <div className="breadcrumb"><Link href="/">Home</Link><span>›</span><span>Contact</span></div>
-        <span className="section-label">Get In Touch</span>
-        <h1>Let&apos;s Talk About <em>Your Growth</em></h1>
-        <p>Book a free 30-minute strategy session or send us a message. We&apos;ll get back to you within one business day — no obligation, no hard sell.</p>
-      </div></div>
+      {/* PHOTO HERO */}
+      <div className="contact-hero-img">
+        <Image
+          src="/images/business-meeting.jpg"
+          alt="SignalForge team meeting with clients"
+          fill
+          priority
+        />
+        <div className="contact-hero-overlay" />
+        <div className="contact-hero-text">
+          <div className="breadcrumb" style={{marginBottom:12}}>
+            <Link href="/" style={{color:'rgba(255,255,255,0.7)'}}>Home</Link>
+            <span style={{color:'rgba(255,255,255,0.5)'}}>›</span>
+            <span style={{color:'rgba(255,255,255,0.7)'}}>Contact</span>
+          </div>
+          <span className="section-label" style={{color:'var(--amber)'}}>Get In Touch</span>
+          <h1 style={{color:'var(--white)',fontSize:'clamp(1.8rem,3.5vw,2.8rem)',marginTop:8,marginBottom:14}}>
+            Let&apos;s Talk About <em style={{color:'var(--amber)'}}>Your Growth</em>
+          </h1>
+          <p style={{color:'rgba(255,255,255,0.82)',fontSize:'1rem',lineHeight:1.7,maxWidth:440}}>
+            Book a free 30-minute strategy session or send us a message. We&apos;ll get back to you within one business day — no obligation, no hard sell.
+          </p>
+        </div>
+      </div>
 
+      {/* CONTACT GRID */}
       <section style={{padding:'56px 0 64px',background:'var(--cream)'}}>
         <div className="container">
           <div className="contact-grid">
