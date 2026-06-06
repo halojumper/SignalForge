@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import ContactModal from '@/components/ContactModal';
 
 interface Message {
   role: 'user' | 'assistant';
@@ -24,6 +25,7 @@ const CANNED: Record<string, string> = {
 
 export default function ChatWidget() {
   const [isVisible, setIsVisible] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [isClosed, setIsClosed] = useState(() => 
     typeof window !== 'undefined' && !!sessionStorage.getItem('sfChatDismissed')
   );
@@ -95,12 +97,12 @@ export default function ChatWidget() {
       {!isVisible && (
         <div className="sf-dock">
           {isClosed && (
-            <a href="/contact" className="sf-dock-btn sf-envelope" aria-label="Contact SignalForge" title="Contact us">
+            <button className="sf-dock-btn sf-envelope" onClick={() => setShowModal(true)} aria-label="Contact SignalForge" title="Get in touch">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
                 <polyline points="22,6 12,13 2,6"/>
               </svg>
-            </a>
+            </button>
           )}
           <button className="sf-dock-btn sf-bubble" onClick={reopenCard} aria-label="Open Aria chat assistant">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -455,6 +457,7 @@ export default function ChatWidget() {
           }
         }
       `}</style>
+      {showModal && <ContactModal onClose={() => setShowModal(false)} />}
     </>
   );
 }
