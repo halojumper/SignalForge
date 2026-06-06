@@ -298,8 +298,10 @@ export default function ContactModal({ onClose }: Props) {
           gap: 12px;
           flex: 1;
         }
-        .cm-form::-webkit-scrollbar { width: 4px; }
-        .cm-form::-webkit-scrollbar-thumb { background: #ddd; border-radius: 4px; }
+        .cm-form::-webkit-scrollbar { width: 8px; }
+        .cm-form::-webkit-scrollbar-track { background: #f0f0f0; border-radius: 4px; }
+        .cm-form::-webkit-scrollbar-thumb { background: #e8521a; border-radius: 4px; }
+        .cm-form::-webkit-scrollbar-thumb:hover { background: #c94415; }
 
         /* Side-by-side row */
         .cm-row {
