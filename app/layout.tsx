@@ -4,6 +4,7 @@ import Topbar from '@/components/Topbar';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
+import Script from 'next/script';
 import ChatWidget from '@/components/ChatWidget';
 
 export const metadata: Metadata = {
@@ -16,6 +17,18 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body>
         <Topbar />
+        <Script
+  src="https://www.googletagmanager.com/gtag/js?id=G-HV010K0XKE"
+  strategy="afterInteractive"
+/>
+<Script id="google-analytics" strategy="afterInteractive">
+  {`
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HV010K0XKE');
+  `}
+</Script>
         <Nav />
         <main>{children}</main>
         <Footer />
