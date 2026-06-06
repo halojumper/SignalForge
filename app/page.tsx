@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import CtaBand from '@/components/CtaBand';
 import MetricCards from '@/components/MetricCards';
 
@@ -97,6 +98,15 @@ const teasers = [
   },
 ];
 
+const industries = [
+  { icon: 'briefcase', title: 'Professional Services', desc: 'Law firms, consultants, agencies — nurture client relationships at scale.' },
+  { icon: 'heart', title: 'Nonprofits', desc: 'Engage donors, drive campaigns, and grow your community with purpose.' },
+  { icon: 'building', title: 'Real Estate', desc: 'Stay top of mind with buyers, sellers, and investors through smart automation.' },
+  { icon: 'shopping-bag', title: 'Retail & eCommerce', desc: 'Drive repeat purchases, recover carts, and build loyal customer bases.' },
+  { icon: 'tools-kitchen-2', title: 'Restaurants & Hospitality', desc: 'Fill tables, promote events, and keep guests coming back for more.' },
+  { icon: 'rocket', title: 'Small Business', desc: 'Enterprise-grade marketing tools, without the enterprise price tag.' },
+];
+
 export default function Home() {
   const router = useRouter();
   const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
@@ -123,17 +133,33 @@ export default function Home() {
         .flip-card-label { padding:14px 16px; text-align:center; }
         .flip-card-back { background:var(--coral); transform:rotateY(180deg); display:flex; flex-direction:column; align-items:center; justify-content:center; padding:24px; text-align:center; gap:12px; }
         .flip-cta { background:white; color:#1a1208; font-family:Syne,sans-serif; font-size:0.82rem; font-weight:700; padding:8px 20px; border-radius:8px; display:inline-block; margin-top:4px; }
-        @media(max-width:900px) { .teasers-grid { grid-template-columns:repeat(2,1fr); } }
-        @media(max-width:560px) { .teasers-grid { grid-template-columns:1fr; } .hero-btns { flex-direction:column; align-items:stretch; } .hero-btns .btn { text-align:center; } }
+
+        /* Who We Serve */
+        .wws-grid { display:grid; grid-template-columns:1fr 1fr; min-height:520px; }
+        .wws-industry { display:flex; align-items:flex-start; gap:14px; padding:14px 0; border-bottom:1px solid rgba(0,0,0,0.07); }
+        .wws-industry:last-child { border-bottom:none; }
+        .wws-icon { width:38px; height:38px; flex-shrink:0; background:rgba(232,85,42,0.1); border-radius:9px; display:flex; align-items:center; justify-content:center; color:#e8521a; font-size:18px; }
+
+        @media(max-width:900px) {
+          .teasers-grid { grid-template-columns:repeat(2,1fr); }
+          .wws-grid { grid-template-columns:1fr; }
+          .wws-img-col { min-height:320px; }
+        }
+        @media(max-width:560px) {
+          .teasers-grid { grid-template-columns:1fr; }
+          .hero-btns { flex-direction:column; align-items:stretch; }
+          .hero-btns .btn { text-align:center; }
+        }
       `}</style>
 
+      {/* HERO */}
       <section style={{background:'var(--sand)',position:'relative',overflow:'hidden',padding:'80px 0 40px'}}>
         <div style={{position:'absolute',inset:0,background:'radial-gradient(ellipse 70% 60% at 85% 40%, rgba(245,166,35,0.18) 0%, transparent 65%), radial-gradient(ellipse 50% 50% at 5% 90%, rgba(232,85,42,0.1) 0%, transparent 60%)',pointerEvents:'none'}} />
         <div className="container" style={{position:'relative',zIndex:2,width:'100%'}}>
           <div style={{display:'inline-flex',alignItems:'center',gap:8,background:'rgba(232,85,42,0.08)',border:'1px solid rgba(232,85,42,0.3)',borderRadius:50,padding:'8px 20px',fontSize:'0.85rem',color:'var(--coral)',fontWeight:700,marginBottom:28,letterSpacing:'0.02em'}}>
-  <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--coral)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-  Marketing Automation + Digital Growth
-</div>
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="var(--coral)"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            Marketing Automation + Digital Growth
+          </div>
           <h1 style={{fontSize:'clamp(2rem,4.5vw,3.6rem)',fontWeight:800,color:'var(--text)',marginBottom:22,lineHeight:1.1}}>
             Reach More Customers.{' '}
             <em style={{fontStyle:'normal',color:'var(--coral)'}}>Automate Smarter.</em>{' '}
@@ -152,14 +178,16 @@ export default function Home() {
         </div>
       </section>
 
+      {/* METRIC CARDS */}
       <div style={{background:'var(--sand)',paddingTop:20,paddingBottom:40,position:'relative',minHeight:200}}>
-  <div style={{position:'absolute',left:0,top:0,bottom:0,width:200,background:'linear-gradient(to right, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
-  <div style={{position:'absolute',right:0,top:0,bottom:0,width:200,background:'linear-gradient(to left, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
-  <div style={{display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
-    <MetricCards />
-  </div>
-</div>
+        <div style={{position:'absolute',left:0,top:0,bottom:0,width:200,background:'linear-gradient(to right, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
+        <div style={{position:'absolute',right:0,top:0,bottom:0,width:200,background:'linear-gradient(to left, var(--sand), transparent)',zIndex:10,pointerEvents:'none'}}/>
+        <div style={{display:'flex',justifyContent:'center',alignItems:'center',overflow:'hidden'}}>
+          <MetricCards />
+        </div>
+      </div>
 
+      {/* PLATFORMS */}
       <div style={{background:'var(--white)',padding:'36px 0',borderBottom:'1px solid rgba(0,0,0,0.06)'}}>
         <div className="container">
           <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap',justifyContent:'center'}}>
@@ -174,6 +202,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* TEASERS */}
       <div style={{padding:'72px 0',background:'var(--cream)'}}>
         <div className="container">
           <div style={{textAlign:'center',marginBottom:48}}>
@@ -208,6 +237,56 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* WHO WE SERVE */}
+      <section style={{background:'var(--sand)',overflow:'hidden'}}>
+        <div className="container" style={{padding:0}}>
+          <div className="wws-grid">
+
+            {/* Left — industry list */}
+            <div style={{padding:'56px 48px 56px 0',display:'flex',flexDirection:'column',justifyContent:'center'}}>
+              <span className="section-label">Who We Serve</span>
+              <h2 className="section-title" style={{marginBottom:8}}>Built for Businesses Like Yours</h2>
+              <p style={{fontSize:'0.95rem',color:'var(--warm-gray)',lineHeight:1.7,marginBottom:32,maxWidth:420}}>
+                Whether you're a solo operator or a growing team, SignalForge brings the tools and expertise to help you grow.
+              </p>
+              <div>
+                {industries.map(ind => (
+                  <div key={ind.title} className="wws-industry">
+                    <div className="wws-icon">
+                      <i className={`ti ti-${ind.icon}`} aria-hidden="true" />
+                    </div>
+                    <div>
+                      <div style={{fontFamily:'Syne,sans-serif',fontSize:'0.95rem',fontWeight:700,color:'var(--text)',marginBottom:2}}>{ind.title}</div>
+                      <div style={{fontSize:'0.85rem',color:'var(--warm-gray)',lineHeight:1.5}}>{ind.desc}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <Link href="/contact" className="btn btn-primary" style={{marginTop:32,alignSelf:'flex-start'}}>Book a Free Call →</Link>
+            </div>
+
+            {/* Right — photo */}
+            <div className="wws-img-col" style={{position:'relative',minHeight:520,overflow:'hidden'}}>
+              <Image
+                src="/images/woman-smiling-mobile.webp"
+                alt="Small business owner on mobile phone"
+                fill
+                style={{objectFit:'cover',objectPosition:'right center'}}
+              />
+              {/* Soft left fade to blend into sand background */}
+              <div style={{position:'absolute',inset:0,background:'linear-gradient(to right, var(--sand) 0%, transparent 25%)',pointerEvents:'none'}} />
+              {/* Floating CTA card */}
+              <div style={{position:'absolute',bottom:36,right:32,left:32,background:'rgba(255,255,255,0.95)',borderRadius:14,padding:'18px 20px',boxShadow:'0 4px 24px rgba(0,0,0,0.1)'}}>
+                <div style={{fontSize:'0.7rem',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.1em',color:'var(--coral)',marginBottom:4}}>Free Strategy Call</div>
+                <div style={{fontSize:'0.92rem',fontWeight:600,color:'var(--text)',marginBottom:10,lineHeight:1.4}}>Not sure where to start? Let's figure out what's right for your business.</div>
+                <Link href="/contact" style={{background:'var(--coral)',color:'white',borderRadius:50,padding:'8px 18px',fontSize:'0.82rem',fontWeight:700,display:'inline-block',textDecoration:'none'}}>Get in Touch →</Link>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
 
       <CtaBand
         heading="Let's Start a Conversation"
