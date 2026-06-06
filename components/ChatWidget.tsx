@@ -24,7 +24,9 @@ const CANNED: Record<string, string> = {
 
 export default function ChatWidget() {
   const [isVisible, setIsVisible] = useState(false);
-  const [isClosed, setIsClosed] = useState(false); // card closed but bubble stays
+  const [isClosed, setIsClosed] = useState(() => 
+    typeof window !== 'undefined' && !!sessionStorage.getItem('sfChatDismissed')
+  );
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -89,13 +91,23 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* ── Persistent chat bubble (always visible, reopens card) ── */}
+      {/* Dock: bubble always + envelope after Aria closed */}
       {!isVisible && (
-        <button className="sf-bubble" onClick={reopenCard} aria-label="Open Aria chat assistant">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
-        </button>
+        <div className="sf-dock">
+          {isClosed && (
+            <a href="/contact" className="sf-dock-btn sf-envelope" aria-label="Contact SignalForge" title="Contact us">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </a>
+          )}
+          <button className="sf-dock-btn sf-bubble" onClick={reopenCard} aria-label="Open Aria chat assistant">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </button>
+        </div>
       )}
 
       {/* ── Aria card ── */}
@@ -189,27 +201,34 @@ export default function ChatWidget() {
       )}
 
       <style jsx>{`
-        /* ── Persistent bubble ── */
-        .sf-bubble {
+        /* ── Bottom-right dock ── */
+        .sf-dock {
           position: fixed;
           bottom: 28px;
           right: 28px;
-          width: 52px;
-          height: 52px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          z-index: 9999;
+          animation: sfSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .sf-dock-btn {
+          width: 50px;
+          height: 50px;
           border-radius: 50%;
-          background: linear-gradient(135deg, #e8521a, #f07a5a);
+          background: linear-gradient(135deg, #1a1a1a 0%, #7a2e0a 50%, #e8521a 100%);
           border: none;
           cursor: pointer;
           display: flex;
           align-items: center;
           justify-content: center;
           color: #fff;
-          z-index: 9999;
-          box-shadow: 0 4px 18px rgba(232,82,26,0.45);
+          box-shadow: 0 4px 18px rgba(232,82,26,0.4);
           transition: transform 0.15s, box-shadow 0.15s;
-          animation: sfSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+          text-decoration: none;
+          flex-shrink: 0;
         }
-        .sf-bubble:hover {
+        .sf-dock-btn:hover {
           transform: scale(1.08);
           box-shadow: 0 6px 24px rgba(232,82,26,0.55);
         }
@@ -430,8 +449,8 @@ export default function ChatWidget() {
             width: 100vw;
             border-radius: 16px 16px 0 0;
           }
-          .sf-bubble {
-            bottom: 20px;
+          .sf-dock {
+            bottom: 16px;
             right: 16px;
           }
         }
