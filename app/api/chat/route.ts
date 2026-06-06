@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
     });
 
     const text = response.content[0].type === 'text' ? response.content[0].text : '';
-    return NextResponse.json({ message: text });
+    return NextResponse.json({ reply: text });
   } catch (error) {
     console.error('Chat error:', error);
     return NextResponse.json({ message: 'Sorry, something went wrong. Please try again.' }, { status: 500 });

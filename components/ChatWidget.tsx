@@ -23,19 +23,16 @@ const CANNED: Record<string, string> = {
 };
 
 export default function ChatWidget() {
-  const [isVisible, setIsVisible] = useState(false);   // card shown
-  const [isDismissed, setIsDismissed] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isClosed, setIsClosed] = useState(false); // card closed but bubble stays
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Auto-open after 5 s, respect session dismiss
+  // Auto-open after 5s, respect session dismissal
   useEffect(() => {
-    if (sessionStorage.getItem('sfChatDismissed')) {
-      setIsDismissed(true);
-      return;
-    }
+    if (sessionStorage.getItem('sfChatDismissed')) return;
     const t = setTimeout(() => setIsVisible(true), 5000);
     return () => clearTimeout(t);
   }, []);
@@ -44,10 +41,16 @@ export default function ChatWidget() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const dismiss = () => {
+  const closeCard = () => {
     setIsVisible(false);
-    setIsDismissed(true);
+    setIsClosed(true);
     sessionStorage.setItem('sfChatDismissed', 'true');
+  };
+
+  const reopenCard = () => {
+    setIsVisible(true);
+    setIsClosed(false);
+    sessionStorage.removeItem('sfChatDismissed');
   };
 
   const sendMessage = async (text: string) => {
@@ -57,7 +60,7 @@ export default function ChatWidget() {
     setMessages(next);
     setInput('');
 
-    // Serve canned response for quick-reply pills
+    // Canned responses for pills
     if (CANNED[trimmed]) {
       setMessages([...next, { role: 'assistant', content: CANNED[trimmed] }]);
       return;
@@ -82,100 +85,136 @@ export default function ChatWidget() {
     }
   };
 
-  if (isDismissed || !isVisible) return null;
-
   const hasMessages = messages.length > 0;
 
   return (
     <>
-      <div className="sf-chat-card" role="dialog" aria-label="SignalForge AI Assistant">
-
-        {/* ── Dismiss X ── */}
-        <button className="sf-dismiss" onClick={dismiss} aria-label="Close chat">
-          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
-            <line x1="1" y1="1" x2="13" y2="13" />
-            <line x1="13" y1="1" x2="1" y2="13" />
+      {/* ── Persistent chat bubble (always visible, reopens card) ── */}
+      {!isVisible && (
+        <button className="sf-bubble" onClick={reopenCard} aria-label="Open Aria chat assistant">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
           </svg>
         </button>
+      )}
 
-        {/* ── Header: avatar + name ── */}
-        <div className="sf-header">
-          <div className="sf-avatar">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-            </svg>
-          </div>
-          <div>
-            <div className="sf-name">Aria</div>
-            <div className="sf-label">AI-Powered Assistant</div>
-          </div>
-        </div>
+      {/* ── Aria card ── */}
+      {isVisible && (
+        <div className="sf-chat-card" role="dialog" aria-label="Aria — SignalForge AI Assistant">
 
-        {/* ── Messages ── */}
-        <div className="sf-messages">
-          {/* Static greeting (always shown) */}
-          <div className="sf-msg sf-msg--bot">
-            <p>Hi there! I'm Aria, SignalForge's AI-Powered Assistant. Do you have any questions about our marketing automation services?</p>
-            <p>I'm here to help — whether you want to learn about what we do, explore solutions for your business, or get in touch with our team.</p>
-          </div>
-
-          {/* Dynamic messages */}
-          {messages.map((m, i) => (
-            <div key={i} className={`sf-msg sf-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
-              <p>{m.content}</p>
-            </div>
-          ))}
-
-          {isLoading && (
-            <div className="sf-msg sf-msg--bot">
-              <span className="sf-typing"><span/><span/><span/></span>
-            </div>
-          )}
-          <div ref={messagesEndRef} />
-        </div>
-
-        {/* ── Quick-reply pills (hide once conversation starts) ── */}
-        {!hasMessages && (
-          <div className="sf-pills">
-            {QUICK_REPLIES.map(q => (
-              <button key={q} className="sf-pill" onClick={() => sendMessage(q)}>
-                {q}
-              </button>
-            ))}
-          </div>
-        )}
-
-        {/* ── Input ── */}
-        <div className="sf-input-row">
-          <input
-            className="sf-input"
-            type="text"
-            placeholder="Ask a question"
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
-            disabled={isLoading}
-          />
-          <button
-            className="sf-send"
-            onClick={() => sendMessage(input)}
-            disabled={isLoading || !input.trim()}
-            aria-label="Send"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+          {/* Dismiss X — visible on hover */}
+          <button className="sf-dismiss" onClick={closeCard} aria-label="Close chat">
+            <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+              <line x1="1" y1="1" x2="13" y2="13" />
+              <line x1="13" y1="1" x2="1" y2="13" />
             </svg>
           </button>
-        </div>
 
-        {/* ── Disclaimer ── */}
-        <div className="sf-disclaimer">
-          By chatting with the AI-powered Assistant, you consent to the chat being transcribed and stored by SignalForge to improve our service.
+          {/* Header with coral-pink gradient */}
+          <div className="sf-header">
+            <div className="sf-avatar">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
+            <div>
+              <div className="sf-name">Aria</div>
+              <div className="sf-label">AI-Powered Assistant</div>
+            </div>
+          </div>
+
+          {/* Messages — scrollable */}
+          <div className="sf-messages">
+            <div className="sf-msg sf-msg--bot">
+              <p>Hi there! I'm Aria, SignalForge's AI-Powered Assistant. Do you have any questions about our marketing automation services?</p>
+              <p>I'm here to help — whether you want to learn about what we do, explore solutions for your business, or get in touch with our team.</p>
+            </div>
+
+            {messages.map((m, i) => (
+              <div key={i} className={`sf-msg sf-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
+                {m.content.split('\n').map((line, j) => (
+                  <p key={j}>{line}</p>
+                ))}
+              </div>
+            ))}
+
+            {isLoading && (
+              <div className="sf-msg sf-msg--bot">
+                <span className="sf-typing"><span/><span/><span/></span>
+              </div>
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Quick-reply pills — hide once conversation starts */}
+          {!hasMessages && (
+            <div className="sf-pills">
+              {QUICK_REPLIES.map(q => (
+                <button key={q} className="sf-pill" onClick={() => sendMessage(q)}>
+                  {q}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Input */}
+          <div className="sf-input-row">
+            <input
+              className="sf-input"
+              type="text"
+              placeholder="Ask a question"
+              value={input}
+              onChange={e => setInput(e.target.value)}
+              onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
+              disabled={isLoading}
+            />
+            <button
+              className="sf-send"
+              onClick={() => sendMessage(input)}
+              disabled={isLoading || !input.trim()}
+              aria-label="Send"
+            >
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="sf-disclaimer">
+            By chatting with the AI-powered Assistant, you consent to the chat being transcribed and stored by SignalForge to improve our service.
+          </div>
         </div>
-      </div>
+      )}
 
       <style jsx>{`
+        /* ── Persistent bubble ── */
+        .sf-bubble {
+          position: fixed;
+          bottom: 28px;
+          right: 28px;
+          width: 52px;
+          height: 52px;
+          border-radius: 50%;
+          background: linear-gradient(135deg, #e8521a, #f07a5a);
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          z-index: 9999;
+          box-shadow: 0 4px 18px rgba(232,82,26,0.45);
+          transition: transform 0.15s, box-shadow 0.15s;
+          animation: sfSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .sf-bubble:hover {
+          transform: scale(1.08);
+          box-shadow: 0 6px 24px rgba(232,82,26,0.55);
+        }
+
+        /* ── Card ── */
         .sf-chat-card {
           position: fixed;
           bottom: 28px;
@@ -196,7 +235,7 @@ export default function ChatWidget() {
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Dismiss — hidden until card is hovered */
+        /* Dismiss — hidden until card hovered */
         .sf-dismiss {
           position: absolute;
           top: 10px;
@@ -204,7 +243,7 @@ export default function ChatWidget() {
           width: 22px;
           height: 22px;
           border-radius: 50%;
-          background: #e8521a;
+          background: rgba(0,0,0,0.25);
           border: none;
           cursor: pointer;
           display: flex;
@@ -221,23 +260,24 @@ export default function ChatWidget() {
           pointer-events: auto;
         }
         .sf-dismiss:hover {
-          background: #c94415;
+          background: rgba(0,0,0,0.45);
           transform: scale(1.1);
         }
 
-        /* Header */
+        /* Header — charcoal to orange gradient */
         .sf-header {
           display: flex;
           align-items: center;
           gap: 12px;
-          padding: 16px 16px 12px 40px;
-          border-bottom: 1px solid #f0f0f0;
+          padding: 16px 16px 14px 40px;
+          background: linear-gradient(135deg, #1a1a1a 0%, #7a2e0a 50%, #e8521a 100%);
+          border-bottom: none;
         }
         .sf-avatar {
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background: #e8521a;
+          background: rgba(255,255,255,0.25);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -247,35 +287,39 @@ export default function ChatWidget() {
         .sf-name {
           font-weight: 700;
           font-size: 15px;
-          color: #111;
+          color: #fff;
           line-height: 1.2;
         }
         .sf-label {
           font-size: 12px;
-          color: #888;
+          color: rgba(255,255,255,0.82);
           margin-top: 1px;
         }
 
-        /* Messages */
+        /* Messages — scrollable */
         .sf-messages {
           padding: 14px 16px 8px;
           display: flex;
           flex-direction: column;
           gap: 10px;
-          max-height: 220px;
+          max-height: 240px;
           overflow-y: auto;
+          scroll-behavior: smooth;
         }
+        .sf-messages::-webkit-scrollbar { width: 4px; }
+        .sf-messages::-webkit-scrollbar-track { background: transparent; }
+        .sf-messages::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
         .sf-msg p {
-          margin: 0 0 6px;
+          margin: 0 0 4px;
           font-size: 14px;
           line-height: 1.55;
           color: #222;
         }
+        .sf-msg p:empty { display: none; }
         .sf-msg p:last-child { margin-bottom: 0; }
         .sf-msg--user {
           align-self: flex-end;
           background: #e8521a;
-          color: #fff !important;
           padding: 9px 13px;
           border-radius: 12px 12px 3px 12px;
           max-width: 85%;
@@ -306,7 +350,7 @@ export default function ChatWidget() {
           30%          { transform: translateY(-5px); }
         }
 
-        /* Quick-reply pills */
+        /* Pills */
         .sf-pills {
           display: flex;
           flex-wrap: wrap;
@@ -385,6 +429,10 @@ export default function ChatWidget() {
             right: 0;
             width: 100vw;
             border-radius: 16px 16px 0 0;
+          }
+          .sf-bubble {
+            bottom: 20px;
+            right: 16px;
           }
         }
       `}</style>
