@@ -1,156 +1,391 @@
 'use client';
-import { useState, useRef, useEffect } from 'react';
+
+import { useState, useEffect, useRef } from 'react';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
 }
 
-const initialMessage: Message = {
-  role: 'assistant',
-  content: 'Hi! I am the SignalForge assistant. Ask me anything about our services, how we work, or how we can help your business grow.',
+const QUICK_REPLIES = [
+  'What services do you offer?',
+  'How It Works',
+  'Pricing info',
+];
+
+const CANNED: Record<string, string> = {
+  'What services do you offer?':
+    "Great question! SignalForge offers six core services:\n\n• Marketing Automation — intelligent workflows that nurture leads and drive conversions on autopilot\n• SMS Marketing — direct, high-open-rate messaging to reach your audience instantly\n• Social Media Campaigns — strategy and execution across the platforms that matter most to your business\n• Ad Creative Design — scroll-stopping creative built for paid social and digital advertising\n• Website Design & Build — fast, modern websites designed to convert visitors into customers\n• Event Marketing — end-to-end support for virtual and in-person events that generate real pipeline\n\nWant to dive deeper into any of these?",
+  'How It Works':
+    "Here's how we typically work with clients:\n\n1. Discovery — we start with a conversation to understand your goals, audience, and current marketing stack\n2. Strategy — we map out a tailored plan across the channels and services that fit your business\n3. Execution — our team builds, launches, and manages your campaigns and automation workflows\n4. Optimize — we track results, report on performance, and continuously refine to improve ROI\n\nIt's a hands-on, collaborative process from day one. Ready to get started?",
+  'Pricing info':
+    "Depending on the scope of the engagement, our pricing is structured to fit businesses at different stages of growth — whether you're looking for a focused one-time project or an ongoing retainer partnership. We don't believe in one-size-fits-all packages, so we take the time to understand your needs before recommending the right investment level.\n\nWould you like to schedule a quick call with our team to talk through options?",
 };
 
 export default function ChatWidget() {
-  const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState<Message[]>([initialMessage]);
+  const [isVisible, setIsVisible] = useState(false);   // card shown
+  const [isDismissed, setIsDismissed] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
-  const [loading, setLoading] = useState(false);
-  const bottomRef = useRef<HTMLDivElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Auto-open after 5 s, respect session dismiss
+  useEffect(() => {
+    if (sessionStorage.getItem('sfChatDismissed')) {
+      setIsDismissed(true);
+      return;
+    }
+    const t = setTimeout(() => setIsVisible(true), 5000);
+    return () => clearTimeout(t);
+  }, []);
 
   useEffect(() => {
-    if (open) {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }
-  }, [messages, open]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-  async function sendMessage() {
-    if (!input.trim() || loading) return;
-    const userMessage: Message = { role: 'user', content: input.trim() };
-    const updatedMessages = [...messages, userMessage];
-    setMessages(updatedMessages);
+  const dismiss = () => {
+    setIsVisible(false);
+    setIsDismissed(true);
+    sessionStorage.setItem('sfChatDismissed', 'true');
+  };
+
+  const sendMessage = async (text: string) => {
+    const trimmed = text.trim();
+    if (!trimmed || isLoading) return;
+    const next: Message[] = [...messages, { role: 'user', content: trimmed }];
+    setMessages(next);
     setInput('');
-    setLoading(true);
 
+    // Serve canned response for quick-reply pills
+    if (CANNED[trimmed]) {
+      setMessages([...next, { role: 'assistant', content: CANNED[trimmed] }]);
+      return;
+    }
+
+    setIsLoading(true);
     try {
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: updatedMessages.map(m => ({ role: m.role, content: m.content })),
-        }),
+        body: JSON.stringify({ messages: next }),
       });
       const data = await res.json();
-      setMessages(prev => [...prev, { role: 'assistant', content: data.message }]);
+      setMessages([...next, { role: 'assistant', content: data.reply }]);
     } catch {
-      setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
+      setMessages([...next, {
+        role: 'assistant',
+        content: "I'm having trouble connecting right now. Please try again or reach out directly.",
+      }]);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
-  }
+  };
 
-  function handleKey(e: React.KeyboardEvent) {
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault();
-      sendMessage();
-    }
-  }
+  if (isDismissed || !isVisible) return null;
+
+  const hasMessages = messages.length > 0;
 
   return (
     <>
-      {/* Chat window */}
-      {open && (
-        <div style={{position:'fixed',bottom:88,right:24,width:340,maxHeight:480,background:'var(--white)',borderRadius:20,boxShadow:'0 8px 40px rgba(0,0,0,0.18)',display:'flex',flexDirection:'column',zIndex:999,overflow:'hidden',border:'1px solid rgba(0,0,0,0.08)'}}>
-          {/* Header */}
-          <div style={{background:'linear-gradient(135deg,var(--coral),#d44420)',padding:'16px 18px',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
-            <div style={{display:'flex',alignItems:'center',gap:10}}>
-              <div style={{width:36,height:36,background:'rgba(255,255,255,0.2)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>
-                </svg>
-              </div>
-              <div>
-                <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,fontSize:'0.9rem',color:'white'}}>SignalForge Assistant</div>
-                <div style={{fontSize:'0.72rem',color:'rgba(255,255,255,0.75)'}}>Typically replies instantly</div>
-              </div>
-            </div>
-            <button onClick={() => setOpen(false)} style={{background:'none',border:'none',cursor:'pointer',color:'white',fontSize:'1.2rem',lineHeight:1,padding:4}}>✕</button>
-          </div>
+      <div className="sf-chat-card" role="dialog" aria-label="SignalForge AI Assistant">
 
-          {/* Messages */}
-          <div style={{flex:1,overflowY:'auto',padding:'16px',display:'flex',flexDirection:'column',gap:12}}>
-            {messages.map((m, i) => (
-              <div key={i} style={{display:'flex',justifyContent:m.role === 'user' ? 'flex-end' : 'flex-start'}}>
-                <div style={{
-                  maxWidth:'82%',
-                  padding:'10px 14px',
-                  borderRadius: m.role === 'user' ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-                  background: m.role === 'user' ? 'var(--coral)' : 'var(--sand)',
-                  color: m.role === 'user' ? 'white' : 'var(--text)',
-                  fontSize:'0.88rem',
-                  lineHeight:1.6,
-                }}>
-                  {m.content}
-                </div>
-              </div>
-            ))}
-            {loading && (
-              <div style={{display:'flex',justifyContent:'flex-start'}}>
-                <div style={{background:'var(--sand)',borderRadius:'16px 16px 16px 4px',padding:'10px 16px',display:'flex',gap:4,alignItems:'center'}}>
-                  <span style={{width:6,height:6,background:'var(--coral)',borderRadius:'50%',animation:'bounce 1s infinite'}}/>
-                  <span style={{width:6,height:6,background:'var(--coral)',borderRadius:'50%',animation:'bounce 1s infinite 0.2s'}}/>
-                  <span style={{width:6,height:6,background:'var(--coral)',borderRadius:'50%',animation:'bounce 1s infinite 0.4s'}}/>
-                </div>
-              </div>
-            )}
-            <div ref={bottomRef}/>
-          </div>
+        {/* ── Dismiss X ── */}
+        <button className="sf-dismiss" onClick={dismiss} aria-label="Close chat">
+          <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
+            <line x1="1" y1="1" x2="13" y2="13" />
+            <line x1="13" y1="1" x2="1" y2="13" />
+          </svg>
+        </button>
 
-          {/* Input */}
-          <div style={{padding:'12px 16px',borderTop:'1px solid rgba(0,0,0,0.06)',display:'flex',gap:8,alignItems:'center'}}>
-            <input
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={handleKey}
-              placeholder="Ask me anything..."
-              style={{flex:1,padding:'9px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.88rem',fontFamily:'inherit',outline:'none'}}
-            />
-            <button
-              onClick={sendMessage}
-              disabled={!input.trim() || loading}
-              style={{width:36,height:36,background:'var(--coral)',border:'none',borderRadius:10,cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',opacity:!input.trim() || loading ? 0.5 : 1,flexShrink:0}}
-            >
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-            </button>
+        {/* ── Header: avatar + name ── */}
+        <div className="sf-header">
+          <div className="sf-avatar">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </div>
+          <div>
+            <div className="sf-name">Aria</div>
+            <div className="sf-label">AI-Powered Assistant</div>
           </div>
         </div>
-      )}
 
-      {/* Floating button */}
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{position:'fixed',bottom:24,right:24,width:56,height:56,background:'linear-gradient(135deg,var(--coral),#d44420)',border:'none',borderRadius:'50%',cursor:'pointer',display:'flex',alignItems:'center',justifyContent:'center',boxShadow:'0 4px 20px rgba(232,85,42,0.4)',zIndex:999,transition:'transform 0.2s'}}
-        aria-label="Open chat"
-      >
-        {open ? (
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"/>
-            <line x1="6" y1="6" x2="18" y2="18"/>
-          </svg>
-        ) : (
-          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-          </svg>
+        {/* ── Messages ── */}
+        <div className="sf-messages">
+          {/* Static greeting (always shown) */}
+          <div className="sf-msg sf-msg--bot">
+            <p>Hi there! I'm Aria, SignalForge's AI-Powered Assistant. Do you have any questions about our marketing automation services?</p>
+            <p>I'm here to help — whether you want to learn about what we do, explore solutions for your business, or get in touch with our team.</p>
+          </div>
+
+          {/* Dynamic messages */}
+          {messages.map((m, i) => (
+            <div key={i} className={`sf-msg sf-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
+              <p>{m.content}</p>
+            </div>
+          ))}
+
+          {isLoading && (
+            <div className="sf-msg sf-msg--bot">
+              <span className="sf-typing"><span/><span/><span/></span>
+            </div>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* ── Quick-reply pills (hide once conversation starts) ── */}
+        {!hasMessages && (
+          <div className="sf-pills">
+            {QUICK_REPLIES.map(q => (
+              <button key={q} className="sf-pill" onClick={() => sendMessage(q)}>
+                {q}
+              </button>
+            ))}
+          </div>
         )}
-      </button>
 
-      <style>{`
-        @keyframes bounce {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-4px); }
+        {/* ── Input ── */}
+        <div className="sf-input-row">
+          <input
+            className="sf-input"
+            type="text"
+            placeholder="Ask a question"
+            value={input}
+            onChange={e => setInput(e.target.value)}
+            onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
+            disabled={isLoading}
+          />
+          <button
+            className="sf-send"
+            onClick={() => sendMessage(input)}
+            disabled={isLoading || !input.trim()}
+            aria-label="Send"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="22" y1="2" x2="11" y2="13"/>
+              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+            </svg>
+          </button>
+        </div>
+
+        {/* ── Disclaimer ── */}
+        <div className="sf-disclaimer">
+          By chatting with the AI-powered Assistant, you consent to the chat being transcribed and stored by SignalForge to improve our service.
+        </div>
+      </div>
+
+      <style jsx>{`
+        .sf-chat-card {
+          position: fixed;
+          bottom: 28px;
+          right: 28px;
+          width: 340px;
+          background: #ffffff;
+          border-radius: 14px;
+          box-shadow: 0 8px 40px rgba(0,0,0,0.16), 0 2px 8px rgba(0,0,0,0.08);
+          display: flex;
+          flex-direction: column;
+          z-index: 9999;
+          overflow: hidden;
+          animation: sfSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+          font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+        @keyframes sfSlideUp {
+          from { opacity: 0; transform: translateY(20px) scale(0.97); }
+          to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* Dismiss — hidden until card is hovered */
+        .sf-dismiss {
+          position: absolute;
+          top: 10px;
+          left: 10px;
+          width: 22px;
+          height: 22px;
+          border-radius: 50%;
+          background: #e8521a;
+          border: none;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          z-index: 10;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.2s, background 0.15s, transform 0.15s;
+        }
+        .sf-chat-card:hover .sf-dismiss {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .sf-dismiss:hover {
+          background: #c94415;
+          transform: scale(1.1);
+        }
+
+        /* Header */
+        .sf-header {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 16px 12px 40px;
+          border-bottom: 1px solid #f0f0f0;
+        }
+        .sf-avatar {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background: #e8521a;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          flex-shrink: 0;
+        }
+        .sf-name {
+          font-weight: 700;
+          font-size: 15px;
+          color: #111;
+          line-height: 1.2;
+        }
+        .sf-label {
+          font-size: 12px;
+          color: #888;
+          margin-top: 1px;
+        }
+
+        /* Messages */
+        .sf-messages {
+          padding: 14px 16px 8px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          max-height: 220px;
+          overflow-y: auto;
+        }
+        .sf-msg p {
+          margin: 0 0 6px;
+          font-size: 14px;
+          line-height: 1.55;
+          color: #222;
+        }
+        .sf-msg p:last-child { margin-bottom: 0; }
+        .sf-msg--user {
+          align-self: flex-end;
+          background: #e8521a;
+          color: #fff !important;
+          padding: 9px 13px;
+          border-radius: 12px 12px 3px 12px;
+          max-width: 85%;
+        }
+        .sf-msg--user p { color: #fff; }
+        .sf-msg--bot {
+          align-self: flex-start;
+          max-width: 100%;
+        }
+
+        /* Typing dots */
+        .sf-typing {
+          display: inline-flex;
+          gap: 4px;
+          align-items: center;
+          padding: 4px 0;
+        }
+        .sf-typing span {
+          width: 6px; height: 6px;
+          background: #bbb;
+          border-radius: 50%;
+          animation: sfBounce 1.2s infinite;
+        }
+        .sf-typing span:nth-child(2) { animation-delay: 0.2s; }
+        .sf-typing span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes sfBounce {
+          0%,60%,100% { transform: translateY(0); }
+          30%          { transform: translateY(-5px); }
+        }
+
+        /* Quick-reply pills */
+        .sf-pills {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 7px;
+          padding: 4px 16px 12px;
+        }
+        .sf-pill {
+          background: #e8521a;
+          color: #fff;
+          border: none;
+          border-radius: 50px;
+          padding: 6px 13px;
+          font-size: 12.5px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.15s, transform 0.1s;
+          white-space: nowrap;
+        }
+        .sf-pill:hover {
+          background: #c94415;
+          transform: translateY(-1px);
+        }
+
+        /* Input */
+        .sf-input-row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 14px;
+          border-top: 1px solid #f0f0f0;
+        }
+        .sf-input {
+          flex: 1;
+          border: 1.5px solid #e0e0e0;
+          border-radius: 8px;
+          padding: 8px 11px;
+          font-size: 13.5px;
+          outline: none;
+          background: #fafafa;
+          transition: border-color 0.15s;
+        }
+        .sf-input:focus {
+          border-color: #e8521a;
+          background: #fff;
+        }
+        .sf-input::placeholder { color: #aaa; }
+        .sf-send {
+          background: #e8521a;
+          border: none;
+          border-radius: 8px;
+          width: 34px;
+          height: 34px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #fff;
+          cursor: pointer;
+          flex-shrink: 0;
+          transition: background 0.15s;
+        }
+        .sf-send:hover:not(:disabled) { background: #c94415; }
+        .sf-send:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Disclaimer */
+        .sf-disclaimer {
+          padding: 8px 14px 12px;
+          font-size: 10.5px;
+          color: #999;
+          line-height: 1.5;
+        }
+
+        /* Mobile */
+        @media (max-width: 480px) {
+          .sf-chat-card {
+            bottom: 0;
+            right: 0;
+            width: 100vw;
+            border-radius: 16px 16px 0 0;
+          }
         }
       `}</style>
     </>
