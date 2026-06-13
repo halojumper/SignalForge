@@ -82,8 +82,8 @@ export default function Footer() {
               <li><Link href="/contact">Request a Quote</Link></li>
               <li><Link href="/insights">Free Resources</Link></li>
             </ul>
-          </div>
-
+         </div>
+        </div>
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} SignalForge. All rights reserved.</p>
           <div className="footer-badges">
