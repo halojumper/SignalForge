@@ -14,7 +14,7 @@ export default function CtaBand({
   label = 'Ready to Grow?',
   heading,
   sub,
-  primaryHref = '/contact',
+  primaryHref = 'https://calendly.com/signalforge-marketing',
   primaryLabel = 'Schedule a Free Call',
   secondaryHref = '/services',
   secondaryLabel = 'Explore Services',
@@ -27,7 +27,7 @@ export default function CtaBand({
           <h2>{heading}</h2>
           <p>{sub}</p>
           <div className="cta-buttons">
-            <Link href={primaryHref} className="btn btn-amber">{primaryLabel}</Link>
+            <a href={primaryHref} target="_blank" rel="noopener noreferrer" className="btn btn-amber">{primaryLabel}</a>
             <Link href={secondaryHref} className="btn btn-outline-white">{secondaryLabel}</Link>
           </div>
         </div>
