@@ -75,16 +75,14 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div className="footer-col">
+         <div className="footer-col">
             <h5>Get Started</h5>
             <ul>
-              <li><Link href="/contact">Book a Free Call</Link></li>
+              <li><a href="https://calendly.com/signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
               <li><Link href="/contact">Request a Quote</Link></li>
-              <li><Link href="/constant-contact">Become a Partner</Link></li>
               <li><Link href="/insights">Free Resources</Link></li>
             </ul>
           </div>
-        </div>
 
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} SignalForge. All rights reserved.</p>
