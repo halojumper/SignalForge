@@ -32,24 +32,24 @@ export default function Referral() {
   return (
     <>
       <style>{`
-        .referral-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-        .ideal-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
-        .qual-list { list-style: none; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
-        .referral-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
-        .earning-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
-        .qualify-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
-        @media(max-width:900px) {
-          .referral-steps { grid-template-columns: 1fr; }
-          .ideal-grid { grid-template-columns: repeat(2,1fr); }
-          .qual-list { grid-template-columns: 1fr; }
-          .referral-layout { grid-template-columns: 1fr; }
-          .earning-grid { grid-template-columns: 1fr; }
-          .qualify-cols { grid-template-columns: 1fr; }
-        }
-        @media(max-width:600px) {
-          .ideal-grid { grid-template-columns: 1fr; }
-        }
-      `}</style>
+  	.referral-steps { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  	.ideal-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+  	.qual-list { list-style: none; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+  	.referral-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
+  	.earning-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+  	.qualify-cols { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: start; }
+  	@media(max-width:900px) {
+    	.referral-steps { grid-template-columns: 1fr; }
+    	.ideal-grid { grid-template-columns: repeat(2,1fr); }
+    	.qual-list { grid-template-columns: 1fr; }
+    	.referral-layout { grid-template-columns: 1fr; }
+    	.earning-grid { grid-template-columns: 1fr; }
+    	.qualify-cols { grid-template-columns: 1fr; }
+  	}
+  	@media(max-width:600px) {
+    	.ideal-grid { grid-template-columns: 1fr; }
+  	}
+`}</style>
 
       <div className="page-hero">
         <div className="container page-hero-inner">
