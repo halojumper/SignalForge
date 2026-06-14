@@ -1,93 +1,117 @@
 'use client';
-import { useState, useRef } from 'react';
+import { useState } from 'react';
 import emailjs from '@emailjs/browser';
 
 export default function ContactForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const [status, setStatus] = useState<'idle'|'sending'|'success'|'error'>('idle');
+  const [fields, setFields] = useState({firstName:'',lastName:'',email:'',phone:'',company:'',service:'',message:'',consent:false});
+  const [errors, setErrors] = useState<Record<string,string>>({});
+  const [status, setStatus] = useState<'idle'|'sending'|'done'|'error'>('idle');
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  function set(k: string, v: string | boolean) { setFields(f=>({...f,[k]:v})); }
+
+  function validate() {
+    const e: Record<string,string> = {};
+    if (!fields.firstName.trim()) e.firstName = 'Please enter your first name.';
+    if (!fields.lastName.trim())  e.lastName  = 'Please enter your last name.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) e.email = 'Please enter a valid email address.';
+    if (!fields.service) e.service = 'Please select a service.';
+    if (fields.message.trim().length < 6) e.message = 'Please enter a message.';
+    if (!fields.consent) e.consent = 'You must agree to be contacted.';
+    return e;
+  }
+
+  async function submit() {
+    const e = validate();
+    setErrors(e);
+    if (Object.keys(e).length > 0) return;
     setStatus('sending');
+
     try {
-      await emailjs.sendForm(
+      await emailjs.send(
         'service_gky9cvq',
         'template_yvq59vr',
-        formRef.current!,
+        {
+          subject: 'Contact Form Submission',
+          from_name: `${fields.firstName} ${fields.lastName}`,
+          from_email: fields.email,
+          phone: fields.phone || 'Not provided',
+          company: fields.company || 'Not provided',
+          message: `SERVICE INTEREST: ${fields.service}\n\nMESSAGE:\n${fields.message}`,
+        },
         '7p4O9_DB_4qMMLH1A'
       );
-      setStatus('success');
-      formRef.current?.reset();
-    } catch {
+      setStatus('done');
+    } catch (err) {
+      console.error('EmailJS error:', err);
       setStatus('error');
     }
   }
 
+  function reset() {
+    setFields({firstName:'',lastName:'',email:'',phone:'',company:'',service:'',message:'',consent:false});
+    setErrors({});
+    setStatus('idle');
+  }
+
+  const inp: React.CSSProperties = {padding:'11px 14px',border:'1.5px solid rgba(0,0,0,0.12)',borderRadius:10,fontFamily:'DM Sans,sans-serif',fontSize:'0.92rem',color:'var(--text)',background:'var(--cream)',outline:'none',width:'100%'};
+  const lbl: React.CSSProperties = {fontSize:'0.82rem',fontWeight:600,color:'var(--text-light)',fontFamily:'Syne,sans-serif',display:'block',marginBottom:6};
+  const err: React.CSSProperties = {fontSize:'0.78rem',color:'#e53e3e',marginTop:4,display:'block'};
+
+  if (status === 'done') return (
+    <div style={{background:'var(--white)',borderRadius:24,padding:'40px 36px',boxShadow:'0 8px 40px rgba(180,80,30,0.08)',border:'1px solid rgba(0,0,0,0.06)',textAlign:'center'}}>
+      <div style={{fontSize:'3rem',marginBottom:16}}>🎉</div>
+      <h3 style={{fontFamily:'Syne,sans-serif',fontSize:'1.4rem',color:'var(--text)',marginBottom:10}}>Message Received!</h3>
+      <p style={{color:'var(--warm-gray)',lineHeight:1.7,marginBottom:24}}>Thanks for reaching out. We'll be in touch within one business day.</p>
+      <button className="btn btn-primary" onClick={reset}>Send Another Message</button>
+    </div>
+  );
+
+  if (status === 'error') return (
+    <div style={{background:'var(--white)',borderRadius:24,padding:'40px 36px',boxShadow:'0 8px 40px rgba(180,80,30,0.08)',border:'1px solid rgba(0,0,0,0.06)',textAlign:'center'}}>
+      <div style={{fontSize:'3rem',marginBottom:16}}>😔</div>
+      <h3 style={{fontFamily:'Syne,sans-serif',fontSize:'1.4rem',color:'var(--text)',marginBottom:10}}>Something Went Wrong</h3>
+      <p style={{color:'var(--warm-gray)',lineHeight:1.7,marginBottom:24}}>Please try again or email us directly at <a href="mailto:hello@signalforge.marketing" style={{color:'var(--coral)'}}>hello@signalforge.marketing</a></p>
+      <button className="btn btn-primary" onClick={reset}>Try Again</button>
+    </div>
+  );
+
   return (
-    <div style={{background:'var(--white)',borderRadius:24,padding:'36px 32px',border:'1px solid rgba(0,0,0,0.07)'}}>
-      <div style={{fontFamily:'Syne,sans-serif',fontSize:'1.3rem',fontWeight:800,color:'var(--text)',marginBottom:6}}>Send Us a Message</div>
-      <p style={{fontSize:'0.9rem',color:'var(--warm-gray)',marginBottom:28}}>Fill out the form below and we will get back to you within one business day.</p>
-
-      {status === 'success' && (
-        <div style={{background:'rgba(34,197,94,0.08)',border:'1px solid rgba(34,197,94,0.2)',borderRadius:12,padding:'16px 20px',marginBottom:24,display:'flex',gap:12,alignItems:'center'}}>
-          <span style={{fontSize:'1.2rem'}}>&#10003;</span>
-          <div>
-            <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,color:'#16a34a',marginBottom:2}}>Message Sent!</div>
-            <div style={{fontSize:'0.88rem',color:'#16a34a'}}>We will be in touch within one business day.</div>
-          </div>
-        </div>
-      )}
-
-      {status === 'error' && (
-        <div style={{background:'rgba(239,68,68,0.08)',border:'1px solid rgba(239,68,68,0.2)',borderRadius:12,padding:'16px 20px',marginBottom:24}}>
-          <div style={{fontFamily:'Syne,sans-serif',fontWeight:700,color:'#dc2626',marginBottom:2}}>Something went wrong</div>
-          <div style={{fontSize:'0.88rem',color:'#dc2626'}}>Please try again or email us directly at hello@signalforge.marketing</div>
-        </div>
-      )}
-
-      <form ref={formRef} onSubmit={handleSubmit}>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}}>
-          <div>
-            <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>Full Name *</label>
-            <input name="from_name" required placeholder="Jane Smith" style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',boxSizing:'border-box'}} />
-          </div>
-          <div>
-            <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>Email Address *</label>
-            <input name="from_email" type="email" required placeholder="jane@company.com" style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',boxSizing:'border-box'}} />
-          </div>
-        </div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:16}}>
-          <div>
-            <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>Company</label>
-            <input name="company" placeholder="Acme Inc." style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',boxSizing:'border-box'}} />
-          </div>
-          <div>
-            <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>Phone</label>
-            <input name="phone" type="tel" placeholder="(617) 555-0100" style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',boxSizing:'border-box'}} />
-          </div>
-        </div>
-        <div style={{marginBottom:16}}>
-          <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>What can we help you with? *</label>
-          <select name="service" required style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',background:'var(--white)',boxSizing:'border-box'}}>
-            <option value="">Select a service...</option>
-            <option>Marketing Automation</option>
-            <option>SMS Marketing</option>
-            <option>Social Media Campaigns</option>
-            <option>Ad Creative Design</option>
-            <option>Website Design & Build</option>
-            <option>Event Marketing</option>
-            <option>Constant Contact Setup</option>
-            <option>General Inquiry</option>
+    <div style={{background:'var(--white)',borderRadius:24,padding:'40px 36px',boxShadow:'0 8px 40px rgba(180,80,30,0.08)',border:'1px solid rgba(0,0,0,0.06)'}}>
+      <div style={{marginBottom:28}}>
+        <h3 style={{fontFamily:'Syne,sans-serif',fontSize:'1.35rem',fontWeight:800,color:'var(--text)',marginBottom:6}}>Send Us a Message</h3>
+        <p style={{fontSize:'0.9rem',color:'var(--warm-gray)'}}>Fill out the form and we'll be in touch within one business day.</p>
+      </div>
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16,marginBottom:18}}>
+        <div><label style={lbl}>First Name <span style={{color:'var(--coral)'}}>*</span></label><input style={{...inp,borderColor:errors.firstName?'#e53e3e':undefined}} value={fields.firstName} onChange={e=>set('firstName',e.target.value)} placeholder="Jane"/>{errors.firstName&&<span style={err}>{errors.firstName}</span>}</div>
+        <div><label style={lbl}>Last Name <span style={{color:'var(--coral)'}}>*</span></label><input style={{...inp,borderColor:errors.lastName?'#e53e3e':undefined}} value={fields.lastName} onChange={e=>set('lastName',e.target.value)} placeholder="Smith"/>{errors.lastName&&<span style={err}>{errors.lastName}</span>}</div>
+      </div>
+      <div style={{marginBottom:18}}><label style={lbl}>Email Address <span style={{color:'var(--coral)'}}>*</span></label><input type="email" style={{...inp,borderColor:errors.email?'#e53e3e':undefined}} value={fields.email} onChange={e=>set('email',e.target.value)} placeholder="jane@yourcompany.com"/>{errors.email&&<span style={err}>{errors.email}</span>}</div>
+      <div style={{marginBottom:18}}><label style={lbl}>Phone Number</label><input type="tel" style={inp} value={fields.phone} onChange={e=>set('phone',e.target.value)} placeholder="(617) 555-0100"/></div>
+      <div style={{marginBottom:18}}><label style={lbl}>Company / Business Name</label><input style={inp} value={fields.company} onChange={e=>set('company',e.target.value)} placeholder="Acme Corp"/></div>
+      <div style={{marginBottom:18}}>
+        <label style={lbl}>Service Interest <span style={{color:'var(--coral)'}}>*</span></label>
+        <div style={{position:'relative'}}>
+          <select style={{...inp,appearance:'none',paddingRight:36,cursor:'pointer',borderColor:errors.service?'#e53e3e':undefined}} value={fields.service} onChange={e=>set('service',e.target.value)}>
+            <option value="">— Select a service —</option>
+            {['Marketing Automation','SMS Marketing','Social Media Campaigns','Ad Creative Design','Website Design & Build','Event Marketing','Multiple / Not Sure Yet'].map(o=><option key={o}>{o}</option>)}
           </select>
+          <span style={{position:'absolute',right:14,top:'50%',transform:'translateY(-50%)',fontSize:'0.75rem',color:'var(--warm-gray)',pointerEvents:'none'}}>▾</span>
         </div>
-        <div style={{marginBottom:24}}>
-          <label style={{display:'block',fontSize:'0.8rem',fontFamily:'Syne,sans-serif',fontWeight:700,color:'var(--text)',marginBottom:6}}>Message *</label>
-          <textarea name="message" required rows={5} placeholder="Tell us about your business and what you are looking to achieve..." style={{width:'100%',padding:'10px 14px',borderRadius:10,border:'1px solid rgba(0,0,0,0.12)',fontSize:'0.92rem',fontFamily:'inherit',outline:'none',resize:'vertical',boxSizing:'border-box'}} />
-        </div>
-        <button type="submit" disabled={status==='sending'} className="btn btn-primary" style={{width:'100%',justifyContent:'center',opacity:status==='sending'?0.7:1}}>
-          {status === 'sending' ? 'Sending...' : 'Send Message'}
-        </button>
-      </form>
+        {errors.service&&<span style={err}>{errors.service}</span>}
+      </div>
+      <div style={{marginBottom:18}}><label style={lbl}>Message <span style={{color:'var(--coral)'}}>*</span></label><textarea style={{...inp,resize:'vertical',minHeight:110,borderColor:errors.message?'#e53e3e':undefined}} value={fields.message} onChange={e=>set('message',e.target.value)} rows={4} placeholder="Tell us about your business and what you're looking to accomplish..."/>{errors.message&&<span style={err}>{errors.message}</span>}</div>
+      <div style={{marginBottom:22}}>
+        <label style={{display:'flex',alignItems:'flex-start',gap:10,cursor:'pointer',fontSize:'0.83rem',color:'var(--warm-gray)',lineHeight:1.5}}>
+          <div style={{width:18,height:18,flexShrink:0,border:`2px solid ${errors.consent?'#e53e3e':'rgba(0,0,0,0.2)'}`,borderRadius:5,background:fields.consent?'var(--coral)':'var(--cream)',display:'flex',alignItems:'center',justifyContent:'center',marginTop:2,cursor:'pointer'}} onClick={()=>set('consent',!fields.consent)}>
+            {fields.consent&&<span style={{fontSize:'0.7rem',color:'white',fontWeight:800}}>✓</span>}
+          </div>
+          <span onClick={()=>set('consent',!fields.consent)}>I agree to be contacted by SignalForge regarding my inquiry. View our <a href="#" style={{color:'var(--coral)'}}>Privacy Policy</a>.</span>
+        </label>
+        {errors.consent&&<span style={err}>{errors.consent}</span>}
+      </div>
+      <button className="btn btn-primary" style={{width:'100%',justifyContent:'center',padding:14,fontSize:'1rem',borderRadius:12,opacity:status==='sending'?0.7:1}} onClick={submit} disabled={status==='sending'}>
+        {status==='sending' ? 'Sending…' : 'Send Message'}
+      </button>
     </div>
   );
 }
