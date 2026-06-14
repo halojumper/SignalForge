@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 export default function ReferralForm() {
   const [fields, setFields] = useState({
@@ -7,7 +8,7 @@ export default function ReferralForm() {
     refName:'', refEmail:'', refPhone:'', refBusiness:'', refService:'', notes:''
   });
   const [errors, setErrors] = useState<Record<string,string>>({});
-  const [status, setStatus] = useState<'idle'|'sending'|'done'>('idle');
+  const [status, setStatus] = useState<'idle'|'sending'|'done'|'error'>('idle');
 
   function set(k: string, v: string) { setFields(f=>({...f,[k]:v})); }
 
@@ -21,12 +22,39 @@ export default function ReferralForm() {
     return e;
   }
 
-  function submit() {
+  async function submit() {
     const e = validate();
     setErrors(e);
     if (Object.keys(e).length > 0) return;
     setStatus('sending');
-    setTimeout(() => setStatus('done'), 1400);
+
+    try {
+      await emailjs.send(
+        'service_gky9cvq',
+        'template_yvq59vr',
+        {
+          subject: 'Referral Form Submission',
+          from_name: fields.yourName,
+          from_email: fields.yourEmail,
+          phone: 'N/A',
+          company: fields.yourCompany || 'Not provided',
+          message: `REFERRAL DETAILS:
+Name: ${fields.refName}
+Email: ${fields.refEmail}
+Phone: ${fields.refPhone || 'Not provided'}
+Business: ${fields.refBusiness}
+Service Needed: ${fields.refService || 'Not specified'}
+
+NOTES:
+${fields.notes || 'None'}`,
+        },
+        '7p4O9_DB_4qMMLH1A'
+      );
+      setStatus('done');
+    } catch (err) {
+      console.error('EmailJS error:', err);
+      setStatus('error');
+    }
   }
 
   function reset() {
@@ -46,6 +74,15 @@ export default function ReferralForm() {
       <h3 style={{fontFamily:'Syne,sans-serif',fontSize:'1.4rem',color:'var(--text)',marginBottom:10}}>Referral Submitted!</h3>
       <p style={{color:'var(--warm-gray)',lineHeight:1.7,marginBottom:24}}>Thanks for the introduction. We'll reach out to your referral within one business day and keep you updated on progress.</p>
       <button className="btn btn-primary" onClick={reset}>Submit Another Referral</button>
+    </div>
+  );
+
+  if (status === 'error') return (
+    <div style={{background:'var(--white)',borderRadius:24,padding:'40px 36px',boxShadow:'0 8px 40px rgba(180,80,30,0.08)',border:'1px solid rgba(0,0,0,0.06)',textAlign:'center'}}>
+      <div style={{fontSize:'3rem',marginBottom:16}}>😔</div>
+      <h3 style={{fontFamily:'Syne,sans-serif',fontSize:'1.4rem',color:'var(--text)',marginBottom:10}}>Something Went Wrong</h3>
+      <p style={{color:'var(--warm-gray)',lineHeight:1.7,marginBottom:24}}>Please try again or email us directly at <a href="mailto:hello@signalforge.marketing" style={{color:'var(--coral)'}}>hello@signalforge.marketing</a></p>
+      <button className="btn btn-primary" onClick={reset}>Try Again</button>
     </div>
   );
 
