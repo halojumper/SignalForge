@@ -36,11 +36,15 @@ export default function Referral() {
         .ideal-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 20px; }
         .qual-list { list-style: none; display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
         .referral-layout { display: grid; grid-template-columns: 1fr 1.4fr; gap: 56px; align-items: start; }
+        .earning-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; }
+        .qualify-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: start; }
         @media(max-width:900px) {
           .referral-steps { grid-template-columns: 1fr; }
           .ideal-grid { grid-template-columns: repeat(2,1fr); }
           .qual-list { grid-template-columns: 1fr; }
           .referral-layout { grid-template-columns: 1fr; }
+          .earning-grid { grid-template-columns: 1fr; }
+          .qualify-cols { grid-template-columns: 1fr; }
         }
         @media(max-width:600px) {
           .ideal-grid { grid-template-columns: 1fr; }
@@ -88,7 +92,7 @@ export default function Referral() {
             <span className="section-label" style={{background:'rgba(255,255,255,0.2)',color:'var(--amber-lt)'}}>Earning Potential</span>
             <h2 className="section-title" style={{color:'var(--white)'}}>What 10% Looks Like in Practice</h2>
           </div>
-          <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:24}}>
+          <div className="earning-grid">
             {[
               {label:'Website + Email Setup',value:'$750',earn:'$75',desc:'A small business website with email automation setup'},
               {label:'Full Marketing Package',value:'$2,500',earn:'$250',desc:'Email, SMS, social media, and automation setup'},
@@ -108,7 +112,7 @@ export default function Referral() {
 
       <section style={{padding:'72px 0',background:'var(--sand)'}}>
         <div className="container">
-          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:56,alignItems:'start'}}>
+          <div className="qualify-cols">
             <div>
               <span className="section-label">Ideal Referrals</span>
               <h2 className="section-title">Who We Work Best With</h2>

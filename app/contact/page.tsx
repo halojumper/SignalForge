@@ -119,13 +119,15 @@ export default function Contact() {
                   {contactItems.map(i=>(
                     <div key={i.label} style={{display:'flex',alignItems:'center',gap:12}}>
                       <div style={{width:40,height:40,flexShrink:0,background:'rgba(255,255,255,0.15)',borderRadius:10,display:'flex',alignItems:'center',justifyContent:'center'}}>
-                        {i.icon}
+                      {i.icon}
                       </div>
                       <div>
                         <div style={{fontSize:'0.7rem',fontWeight:700,textTransform:'uppercase',letterSpacing:'0.08em',color:'rgba(255,255,255,0.55)',marginBottom:2}}>{i.label}</div>
                         {i.link
                           ? <a href={i.link} target="_blank" rel="noopener noreferrer" style={{fontSize:'0.92rem',color:'var(--white)',fontWeight:500,textDecoration:'underline'}}>{i.val}</a>
-                          : <div style={{fontSize:'0.92rem',color:'var(--white)',fontWeight:500}}>{i.val}</div>
+                          : i.label === 'Email Us'
+                            ? <a href={`mailto:${i.val}`} style={{fontSize:'0.95rem',color:'var(--white)',fontWeight:500,textDecoration:'underline'}}>{i.val}</a>
+                            : <div style={{fontSize:'0.95rem',color:'var(--white)',fontWeight:500}}>{i.val}</div>
                         }
                       </div>
                     </div>
