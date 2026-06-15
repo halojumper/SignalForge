@@ -1,7 +1,15 @@
 import type { NextConfig } from 'next';
-
 const nextConfig: NextConfig = {
   trailingSlash: false,
+  async redirects() {
+    return [
+      {
+        source: '/constant-contact',
+        destination: '/',
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [{
       source: '/(.*)',
@@ -14,5 +22,4 @@ const nextConfig: NextConfig = {
     }];
   },
 };
-
 export default nextConfig;
