@@ -23,10 +23,6 @@ const US_STATES = [
   'Wisconsin','Wyoming','Washington D.C.',
 ];
 
-const COUNTRIES = [
-  'United States','Canada','United Kingdom','Australia','Other',
-];
-
 interface Props {
   onClose: () => void;
 }
@@ -38,18 +34,13 @@ interface FormData {
   phone: string;
   email: string;
   company: string;
-  street: string;
-  city: string;
   state: string;
-  postal: string;
-  country: string;
   services: string[];
 }
 
 const EMPTY: FormData = {
   firstName: '', lastName: '', title: '', phone: '', email: '',
-  company: '', street: '', city: '', state: '', postal: '',
-  country: 'United States', services: [],
+  company: '', state: '', services: [],
 };
 
 export default function ContactModal({ onClose }: Props) {
@@ -67,7 +58,7 @@ export default function ContactModal({ onClose }: Props) {
         : [...prev.services, s],
     }));
 
-  const required = ['firstName','lastName','phone','email','company','street','postal'];
+  const required = ['firstName','lastName','phone','email','company','state'];
   const isValid = required.every(f => (form[f as keyof FormData] as string).trim() !== '');
 
   const handleSubmit = async () => {
@@ -84,11 +75,7 @@ export default function ContactModal({ onClose }: Props) {
           phone: form.phone,
           message: [
             form.title ? `Title: ${form.title}` : null,
-            `Street: ${form.street}`,
-            form.city ? `City: ${form.city}` : null,
-            form.state ? `State: ${form.state}` : null,
-            `Postal Code: ${form.postal}`,
-            `Country: ${form.country}`,
+            `State: ${form.state}`,
             `Services: ${form.services.length > 0 ? form.services.join(', ') : 'Not specified'}`,
           ].filter(Boolean).join('\n'),
         },
@@ -156,7 +143,6 @@ export default function ContactModal({ onClose }: Props) {
               <input className="cm-input" placeholder="Phone *" type="tel" value={form.phone} onChange={e => set('phone', e.target.value)} />
               <input className="cm-input" placeholder="Email *" type="email" value={form.email} onChange={e => set('email', e.target.value)} />
               <input className="cm-input" placeholder="Company Name *" value={form.company} onChange={e => set('company', e.target.value)} />
-              <input className="cm-input" placeholder="Street Address *" value={form.street} onChange={e => set('street', e.target.value)} />
               <input className="cm-input" placeholder="City" value={form.city} onChange={e => set('city', e.target.value)} />
 
               {/* State */}
@@ -168,15 +154,6 @@ export default function ContactModal({ onClose }: Props) {
                 <svg className="cm-select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
               </div>
 
-              <input className="cm-input" placeholder="Postal Code *" value={form.postal} onChange={e => set('postal', e.target.value)} />
-
-              {/* Country */}
-              <div className="cm-select-wrap">
-                <select className="cm-select" value={form.country} onChange={e => set('country', e.target.value)}>
-                  {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
-                </select>
-                <svg className="cm-select-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"><polyline points="6 9 12 15 18 9"/></svg>
-              </div>
 
               {/* Services checkboxes */}
               <div className="cm-services-label">How can we help you?</div>
