@@ -30,7 +30,7 @@ export default function AboutPage() {
   return (
     <>
       <style>{`
-        .about-hero { background: var(--white); padding: 72px 0 60px; border-bottom: 1px solid rgba(0,0,0,0.07); }
+        .about-hero { background: var(--white); padding: 72px 0 60px; } 
         .about-hero-inner { display: grid; grid-template-columns: 1fr 300px; gap: 56px; align-items: center; }
         .about-eyebrow { display: inline-block; font-family: var(--font-head); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral); margin-bottom: 1rem; }
         .about-h1 { font-family: var(--font-head); font-size: clamp(2rem,4.5vw,3.2rem); font-weight: 800; color: var(--text); line-height: 1.1; margin-bottom: 1.25rem; }
@@ -43,12 +43,11 @@ export default function AboutPage() {
         .about-badge-name { font-family: var(--font-head); font-size: 0.9rem; font-weight: 700; color: var(--text); }
         .about-badge-title { font-size: 0.75rem; color: var(--warm-gray); margin-top: 1px; }
 
-        .about-stats { background: var(--sand); padding: 48px 0; border-bottom: 1px solid rgba(0,0,0,0.07); }
-        .about-stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; background: rgba(0,0,0,0.07); border: 1px solid rgba(0,0,0,0.07); border-radius: 14px; overflow: hidden; }
-        .about-stat-cell { background: var(--sand); padding: 1.5rem; text-align: center; }
+        .about-stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
+        .about-stat-cell { background: transparent; padding: 1.5rem 0; text-align: center; }
         .about-stat-number { font-family: var(--font-head); font-size: 2.4rem; font-weight: 800; color: var(--text); display: block; }
-        .about-stat-number span { color: var(--coral); }
-        .about-stat-label { font-size: 0.8rem; color: var(--warm-gray); margin-top: 4px; display: block; }
+        .about-stat-number span { color: var(--text); }
+        .about-stat-label { font-size: 0.9rem; color: var(--warm-gray); margin-top: 6px; display: block; }
 
         .about-story { background: var(--cream); padding: 80px 0; border-bottom: 1px solid rgba(0,0,0,0.07); }
         .about-story-inner { display: grid; grid-template-columns: 220px 1fr; gap: 60px; align-items: start; }
@@ -123,7 +122,7 @@ export default function AboutPage() {
           <div className="about-hero-inner">
             <div>
               <span className="about-eyebrow">About SignalForge</span>
-              <h1 className="about-h1">Marketing that <em>converts</em>,<br />powered by strategy</h1>
+              <h1 className="about-h1">Marketing that <em>converts</em><br />powered by strategy</h1>
               <p className="about-lead">
                 SignalForge is a marketing automation consultancy and Constant Contact Authorized Reseller
                 founded by Jakub Malobecki — an enterprise marketing and revenue technology veteran with many
