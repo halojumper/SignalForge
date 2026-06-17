@@ -45,8 +45,8 @@ export default function AboutPage() {
 
         .about-stats-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 2rem; }
         .about-stat-cell { background: transparent; padding: 1.5rem 0; text-align: center; }
-        .about-stat-number { font-family: var(--font-head); font-size: 2.4rem; font-weight: 800; color: var(--text); display: block; }
-        .about-stat-number span { color: var(--text); }
+        .about-stat-number { font-family: var(--font-head); font-size: 2.4rem; font-weight: 800; color: var(--coral); display: block; }
+        .about-stat-number span { color: var(--coral); }
         .about-stat-label { font-size: 0.9rem; color: var(--warm-gray); margin-top: 6px; display: block; }
 
         .about-story { background: var(--cream); padding: 80px 0; border-bottom: 1px solid rgba(0,0,0,0.07); }
