@@ -374,7 +374,7 @@ export default function ContactModal({ onClose }: Props) {
           font-size: 15px;
           font-weight: 600;
           cursor: pointer;
-          align-self: flex-start;
+          align-self: center;
           transition: background 0.15s, transform 0.1s;
           margin-top: 4px;
         }
