@@ -33,7 +33,7 @@ export default function Insights() {
       <div className="page-hero"><div className="container page-hero-inner">
         <div className="breadcrumb"><Link href="/">Home</Link><span>›</span><span>Insights</span></div>
         <span className="section-label">Insights &amp; Tips</span>
-        <h1>Marketing Intelligence, <em>Delivered Free</em></h1>
+        <h1>Marketing Intelligence <em>Delivered Free</em></h1>
         <p>Practical guides, data-backed tips, and honest takes on email marketing, SMS, ad creative, and automation - straight from our team.</p>
       </div></div>
 
