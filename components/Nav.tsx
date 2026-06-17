@@ -36,7 +36,7 @@ export default function Nav() {
               </li>
             ))}
             <li className="nav-mobile-cta-item">
-              <Link href="/services" className="btn btn-primary btn-sm" style={{display:'block',textAlign:'center'}} onClick={() => setOpen(false)}>Get Started</Link>
+              <Link href="/contact" className="btn btn-primary btn-sm" style={{display:'block',textAlign:'center'}} onClick={() => setOpen(false)}>Get Started</Link>
             </li>
           </ul>
           <div className="nav-cta">
