@@ -57,7 +57,7 @@ nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-b
 .logo-icon { width: 36px; height: 36px; background: var(--coral); border-radius: 8px; display: flex; align-items: center; justify-content: center; }
 .logo-icon svg { width: 20px; height: 20px; fill: var(--white); }
 .nav-links { display: flex; list-style: none; gap: 28px; align-items: center; }
-.nav-links a { font-size: 0.82rem; font-weight: 600; color: #222; transition: all 0.2s; padding: 8px 14px; border-radius: 50px; }
+.nav-links a { font-size: 0.88rem; font-weight: 600; color: #222; transition: all 0.2s; padding: 8px 14px; border-radius: 50px; }
 .nav-links a:hover { color: var(--coral); background: rgba(232,85,42,0.1); }
 .nav-links a.active { color: var(--coral); font-weight: 700; background: rgba(232,85,42,0.12); border: 1px solid rgba(232,85,42,0.2); }
 .nav-cta { display: flex; gap: 10px; align-items: center; }
