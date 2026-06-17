@@ -10,6 +10,7 @@ export default function AboutPage() {
     { years: 'Earlier',   role: 'Account Executive',    company: 'HP/Autonomy' },
   ];
 
+  
   const toolkit = [
     { icon: 'ti-mail',        title: 'Email marketing & automation',   desc: 'Constant Contact setup and strategy, drip sequences, welcome journeys, re-engagement campaigns, deliverability, and list hygiene.' },
     { icon: 'ti-chart-bar',   title: 'Marketing strategy & GTM',       desc: 'ICP & TAM definition, campaign planning, value proposition messaging, ROI modeling, and go-to-market frameworks drawn from enterprise sales methodology.' },
