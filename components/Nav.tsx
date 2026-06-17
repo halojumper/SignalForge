@@ -40,7 +40,7 @@ export default function Nav() {
             </li>
           </ul>
           <div className="nav-cta">
-            <Link href="/contact" className="btn btn-primary btn-sm">Get Started</Link>
+            <Link href="/services" className="btn btn-primary" style={{padding: '10px 24px', whiteSpace: 'nowrap'}}>Get Started</Link>
           </div>
           <button className="nav-toggle" aria-label="Menu" onClick={() => setOpen(!open)}>
             <span/><span/><span/>
