@@ -34,13 +34,14 @@ interface FormData {
   phone: string;
   email: string;
   company: string;
+  city: string;
   state: string;
   services: string[];
 }
 
 const EMPTY: FormData = {
   firstName: '', lastName: '', title: '', phone: '', email: '',
-  company: '', state: '', services: [],
+  company: '', city: '', state: '', services: [],
 };
 
 export default function ContactModal({ onClose }: Props) {
