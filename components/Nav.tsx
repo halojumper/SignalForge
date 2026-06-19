@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const links = [
   { href: '/',                label: 'Home' },
@@ -16,6 +16,10 @@ const links = [
 export default function Nav() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+
+useEffect(() => {
+  setOpen(false);
+}, [pathname]);
 
   return (
     <nav>
