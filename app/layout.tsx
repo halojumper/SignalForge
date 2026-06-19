@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import Topbar from '@/components/Topbar';
+import ScrollToTop from '../components/ScrollToTop';
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import CookieBanner from '@/components/CookieBanner';
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   `}
 </Script>
         <Nav />
+        <ScrollToTop />
         <main>{children}</main>
         <Footer />
         <CookieBanner /><ChatWidget />
