@@ -102,7 +102,7 @@ export default function AboutPage() {
 
         @media (max-width: 860px) {
           .about-hero-inner { grid-template-columns: 1fr; }
-          .about-headshot-wrap { max-width: 280px; }
+          .about-headshot-wrap { max-width: 280px; margin: 0 auto; }
           .about-stats-grid { grid-template-columns: repeat(2,1fr); }
           .about-story-inner { grid-template-columns: 1fr; gap: 2rem; }
           .about-story-sidebar { position: static; }
