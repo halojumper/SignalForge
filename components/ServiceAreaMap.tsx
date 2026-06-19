@@ -94,7 +94,7 @@ export default function ServiceAreaMap() {
           <div className="map-frame-wrap">
             <iframe
   title="SignalForge Service Area Map - Greater Boston"
-  src="https://www.google.com/maps?q=42.42,-71.10&z=9&output=embed"
+  src="https://www.google.com/maps?q=42.42,-71.10&z=10&output=embed"
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"
 />
