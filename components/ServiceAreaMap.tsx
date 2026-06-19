@@ -94,7 +94,7 @@ export default function ServiceAreaMap() {
           <div className="map-frame-wrap">
             <iframe
   title="SignalForge Service Area Map - Greater Boston"
-  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d188480.8767025413!2d-71.2144825719206!3d42.42744330694841!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e3652d0d3d311b%3A0x787cbf240162e8a0!2sBoston%2C%20MA!5e0!3m2!1sen!2sus!4v1781850273902!5m2!1sen!2sus"
+  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d188463.82886622404!2d-71.14991974411653!3d42.435900169120096!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89e3652d0d3d311b%3A0x787cbf240162e8a0!2sBoston%2C%20MA!5e0!3m2!1sen!2sus!4v1781850549202!5m2!1sen!2sus"
   loading="lazy"
   referrerPolicy="no-referrer-when-downgrade"
 />
