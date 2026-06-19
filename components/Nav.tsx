@@ -35,9 +35,7 @@ export default function Nav() {
                 </Link>
               </li>
             ))}
-            <li className="nav-mobile-cta-item">
-              <Link href="/contact" className="btn btn-primary btn-sm" style={{display:'block',textAlign:'center'}} onClick={() => setOpen(false)}>Get Started</Link>
-            </li>
+            
           </ul>
           <div className="nav-cta">
             <Link href="/contact" className="btn btn-primary" style={{padding: '10px 24px', whiteSpace: 'nowrap'}}>Get Started</Link>
