@@ -67,6 +67,7 @@ export default function Footer() {
           <div className="footer-col">
             <h5>Company</h5>
             <ul>
+              <li><Link href="/about">About</Link></li>
               <li><Link href="/how-it-works">How It Works</Link></li>
               <li><Link href="/results">Client Results</Link></li>
               <li><Link href="/insights">Insights & Tips</Link></li>
