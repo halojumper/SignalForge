@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import ContactForm from './ContactForm';
+import ServiceAreaMap from '@/components/ServiceAreaMap';
 export const metadata: Metadata = { title: 'Contact' };
 
 const EmailIcon = () => (
@@ -143,6 +144,8 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      <ServiceAreaMap />
     </>
   );
 }
