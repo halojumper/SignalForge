@@ -405,6 +405,7 @@ export default function ChatWidget() {
         }
         .sf-input {
           flex: 1;
+          min-width: 0;
           border: 1.5px solid #e0e0e0;
           border-radius: 8px;
           padding: 8px 11px;
@@ -445,17 +446,30 @@ export default function ChatWidget() {
 
         /* Mobile */
         @media (max-width: 480px) {
-          .sf-chat-card {
-            bottom: 0;
-            right: 0;
-            width: 100vw;
-            border-radius: 16px 16px 0 0;
-          }
-          .sf-dock {
-            bottom: 16px;
-            right: 16px;
-          }
-        }
+  .sf-chat-card {
+    bottom: 0;
+    right: 0;
+    width: 100vw;
+    border-radius: 16px 16px 0 0;
+  }
+  .sf-dock {
+    bottom: 16px;
+    right: 16px;
+  }
+  /* No hover on touch devices — show the dismiss X by default */
+  .sf-dismiss {
+    opacity: 1;
+    pointer-events: auto;
+    background: rgba(0,0,0,0.35);
+    }
+  .sf-input-row {
+    padding: 10px 12px;
+    gap: 6px;
+  }
+  .sf-send {
+    flex-shrink: 0;
+  }
+}
       `}</style>
       {showModal && <ContactModal onClose={() => setShowModal(false)} />}
     </>
