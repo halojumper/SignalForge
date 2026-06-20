@@ -32,6 +32,7 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Auto-open after 5s, respect session dismissal
@@ -39,6 +40,31 @@ export default function ChatWidget() {
     if (sessionStorage.getItem('sfChatDismissed')) return;
     const t = setTimeout(() => setIsVisible(true), 5000);
     return () => clearTimeout(t);
+  }, []);
+
+  // Android keyboard fix: visualViewport tracks the actually-visible area,
+  // which shrinks when the on-screen keyboard opens. dvh covers most modern
+  // browsers, but older Android WebViews (in-app browsers especially) don't
+  // support it reliably, so this is the JS fallback that pins the card's
+  // max-height to the real visible viewport so the input row can never get
+  // pushed below the fold.
+  useEffect(() => {
+    if (typeof window === 'undefined' || !window.visualViewport) return;
+
+    const vv = window.visualViewport;
+
+    const handleResize = () => {
+      setViewportHeight(vv.height);
+    };
+
+    handleResize();
+    vv.addEventListener('resize', handleResize);
+    vv.addEventListener('scroll', handleResize);
+
+    return () => {
+      vv.removeEventListener('resize', handleResize);
+      vv.removeEventListener('scroll', handleResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -114,9 +140,18 @@ export default function ChatWidget() {
 
       {/* ── Aria card ── */}
       {isVisible && (
-        <div className="sf-chat-card" role="dialog" aria-label="Aria — SignalForge AI Assistant">
+        <div
+          className="sf-chat-card"
+          role="dialog"
+          aria-label="Aria — SignalForge AI Assistant"
+          style={
+            viewportHeight && typeof window !== 'undefined' && window.innerWidth <= 480
+              ? { maxHeight: `${Math.round(viewportHeight * 0.92)}px` }
+              : undefined
+          }
+        >
 
-          {/* Dismiss X — visible on hover */}
+          {/* Dismiss X — visible on hover (desktop) / always visible (mobile, see media query) */}
           <button className="sf-dismiss" onClick={closeCard} aria-label="Close chat">
             <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <line x1="1" y1="1" x2="13" y2="13" />
@@ -180,6 +215,14 @@ export default function ChatWidget() {
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
+              onFocus={e => {
+                // Android: nudge the input into view once the keyboard
+                // finishes animating in, in case visualViewport hasn't
+                // settled yet on slower devices.
+                setTimeout(() => {
+                  e.target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+                }, 300);
+              }}
               disabled={isLoading}
             />
             <button
@@ -256,7 +299,7 @@ export default function ChatWidget() {
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Dismiss — hidden until card hovered */
+        /* Dismiss — hidden until card hovered (desktop); always shown on mobile via media query below */
         .sf-dismiss {
           position: absolute;
           top: 10px;
@@ -446,30 +489,34 @@ export default function ChatWidget() {
 
         /* Mobile */
         @media (max-width: 480px) {
-  .sf-chat-card {
-    bottom: 0;
-    right: 0;
-    width: 100vw;
-    border-radius: 16px 16px 0 0;
-  }
-  .sf-dock {
-    bottom: 16px;
-    right: 16px;
-  }
-  /* No hover on touch devices — show the dismiss X by default */
-  .sf-dismiss {
-    opacity: 1;
-    pointer-events: auto;
-    background: rgba(0,0,0,0.35);
-    }
-  .sf-input-row {
-    padding: 10px 12px;
-    gap: 6px;
-  }
-  .sf-send {
-    flex-shrink: 0;
-  }
-}
+          .sf-chat-card {
+            bottom: 0;
+            right: 0;
+            left: 0;
+            width: auto;
+            max-height: 88dvh;
+            border-radius: 16px 16px 0 0;
+          }
+          .sf-dock {
+            bottom: 16px;
+            right: 16px;
+          }
+          /* Touch devices don't reliably trigger :hover, so force the
+             dismiss X to always be visible, overriding the hover-gated
+             base rule outright. */
+          .sf-chat-card .sf-dismiss {
+            opacity: 1 !important;
+            pointer-events: auto !important;
+            background: rgba(0,0,0,0.35);
+          }
+          .sf-input-row {
+            padding: 10px 12px;
+            gap: 6px;
+          }
+          .sf-send {
+            flex-shrink: 0;
+          }
+        }
       `}</style>
       {showModal && <ContactModal onClose={() => setShowModal(false)} />}
     </>
