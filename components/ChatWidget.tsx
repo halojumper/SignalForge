@@ -452,7 +452,7 @@ export default function ChatWidget() {
           border: 1.5px solid #e0e0e0;
           border-radius: 8px;
           padding: 8px 11px;
-          font-size: 13.5px;
+          font-size: 16px;
           outline: none;
           background: #fafafa;
           transition: border-color 0.15s;
@@ -512,6 +512,10 @@ export default function ChatWidget() {
           .sf-input-row {
             padding: 10px 12px;
             gap: 6px;
+          }
+          .sf-input {
+            font-size: 16px;
+            padding: 7px 10px;
           }
           .sf-send {
             flex-shrink: 0;
