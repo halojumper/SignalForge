@@ -93,8 +93,8 @@ const teasers = [
     ),
     back: 'Enterprise Features at Small Business Pricing',
     desc: 'As an authorized reseller, we give you full onboarding support and ongoing strategy included.',
-    href: '/constant-contact',
-    cta: 'Learn about reselling',
+    href: '/contact',
+    cta: 'Get in Touch',
   },
 ];
 
