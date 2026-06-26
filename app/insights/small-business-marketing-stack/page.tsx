@@ -29,12 +29,12 @@ export default function SmallBusinessMarketingStack() {
       {/* Hero Image */}
       <div style={{ marginBottom: "2.5rem", borderRadius: 16, overflow: "hidden" }}>
         <img
-          src="/images/marketing-stack.png"
+          src="/images/marketing-stack-cover.png"
           alt="The Small Business Marketing Stack"
           style={{ width: "100%", height: "auto", display: "block" }}
         />
       </div>
-      
+
       {/* Body */}
       <div style={{ fontSize: "1.05rem", lineHeight: 1.8 }}>
 
@@ -42,7 +42,7 @@ export default function SmallBusinessMarketingStack() {
         <p style={{ marginBottom: "1.25rem" }}>Either they're doing everything manually — posting when they remember, sending one-off emails, hoping word of mouth carries them — or they've signed up for too many tools, none of which are actually connected, and the whole thing feels like more work than it's worth.</p>
         <p style={{ marginBottom: "1.25rem" }}>Sound familiar? You're not alone.</p>
         <p style={{ marginBottom: "1.25rem" }}>Here's the good news: an effective marketing setup for a small business doesn't need to be complicated or expensive. You don't need 12 platforms. You don't need a full-time marketing person. You need a small stack of tools that work well together — and a basic system for using them consistently.</p>
-        <p style={{ marginBottom: "2rem" }}>This guide breaks down exactly what that looks like, what it costs, and how to get started.</p>
+        <p style={{ marginBottom: "2rem" }}>This guide breaks down exactly what that looks like and how to get started.</p>
 
         {/* Section 1 */}
         <h2 style={{ fontFamily: "var(--font-head, 'Syne', sans-serif)", fontSize: "1.5rem", fontWeight: 700, color: "var(--text)", margin: "2.5rem 0 1rem" }}>
@@ -61,11 +61,11 @@ export default function SmallBusinessMarketingStack() {
           The Core Stack: 5 Tools That Cover Everything
         </h2>
 
-        {/* Tool 1 */}
         {[
           {
             num: "01",
             title: "Email Marketing Platform",
+            color: "var(--coral)",
             content: (
               <>
                 <p style={{ marginBottom: "1rem" }}>If you're only going to invest in one marketing tool, make it this one. Email is still the highest-ROI marketing channel available — research consistently shows $36 to $42 returned for every $1 spent when done well.</p>
@@ -73,64 +73,63 @@ export default function SmallBusinessMarketingStack() {
                 <p style={{ marginBottom: "1rem" }}><strong>What to look for:</strong> Easy drag-and-drop email builder, basic automation (welcome sequences, follow-ups), list management, and reporting on opens and clicks. Bonus if it also handles SMS and social posting so you're managing fewer tools overall.</p>
                 <div style={{ background: "rgba(232,85,42,0.08)", borderLeft: "3px solid var(--coral)", borderRadius: "0 8px 8px 0", padding: "1rem 1.25rem", margin: "1rem 0" }}>
                   <span style={{ fontSize: "0.72rem", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.07em", color: "var(--coral)" }}>What we use at SignalForge</span>
-                  <p style={{ margin: "0.5rem 0 0", fontSize: "0.97rem" }}>Constant Contact. It's what we run our own campaigns on and what we set up for our clients. It handles email, SMS, and social posting from one dashboard, which keeps things simple. Plans start around $12–35/month depending on your list size.</p>
+                  <p style={{ margin: "0.5rem 0 0", fontSize: "0.97rem" }}>Constant Contact. It's what we run our own campaigns on and what we set up for our clients. It handles email, SMS, and social posting from one dashboard, which keeps things simple.</p>
                 </div>
-                <p style={{ marginBottom: "1rem" }}><strong>Other options:</strong> Mailchimp (free up to 500 contacts, good for getting started), Klaviyo (excellent for ecommerce), Brevo (strong automation at a lower price point).</p>
-                <div style={{ marginTop: "1rem", padding: "0.5rem 0.9rem", background: "var(--sand)", borderRadius: 8, display: "inline-block", fontSize: "0.9rem", fontWeight: 600 }}>💰 Budget: $12–45/month</div>
+                <p style={{ marginBottom: "0" }}><strong>Other options:</strong> Mailchimp (free up to 500 contacts, good for getting started), Klaviyo (excellent for ecommerce), Brevo (strong automation at a lower price point).</p>
               </>
             ),
           },
           {
             num: "02",
             title: "Social Media Scheduling Tool",
+            color: "#3B82F6",
             content: (
               <>
                 <p style={{ marginBottom: "1rem" }}>Posting consistently on social media is one of the biggest challenges small businesses face — not because the content is hard, but because life gets in the way. A scheduling tool lets you batch your content in one sitting and have it go out automatically throughout the week.</p>
                 <p style={{ marginBottom: "1rem" }}><strong>What it does:</strong> Lets you write and schedule posts across Facebook, Instagram, LinkedIn, and other platforms from one place, often with a content calendar view so you can see what's going out when.</p>
                 <p style={{ marginBottom: "1rem" }}><strong>Quick note on Constant Contact:</strong> If you're already using it for email, social scheduling for Facebook, Instagram, and LinkedIn is built in. For most small businesses that's all you need — and it keeps your tool count down.</p>
-                <p style={{ marginBottom: "1rem" }}><strong>If you need more:</strong> Buffer is our go-to recommendation for dedicated social scheduling. It's clean, simple, and starts at $6/month per social channel.</p>
-                <div style={{ marginTop: "1rem", padding: "0.5rem 0.9rem", background: "var(--sand)", borderRadius: 8, display: "inline-block", fontSize: "0.9rem", fontWeight: 600 }}>💰 Budget: $0 (included in Constant Contact) to $18/month</div>
+                <p style={{ marginBottom: "0" }}><strong>If you need more:</strong> Buffer is our go-to recommendation for dedicated social scheduling. It's clean, simple, and connects to all the major platforms.</p>
               </>
             ),
           },
           {
             num: "03",
             title: "A Simple CRM",
+            color: "#10B981",
             content: (
               <>
                 <p style={{ marginBottom: "1rem" }}>You don't need Salesforce. You don't need anything that requires a week of training to set up. But you do need somewhere to keep track of your leads, customers, and follow-ups — because if that's all living in your head or scattered across your inbox, you're losing business without knowing it.</p>
                 <p style={{ marginBottom: "1rem" }}><strong>What it does:</strong> Keeps a running record of every contact you're working with, where they are in the buying process, and what your next action is. The simple act of having this written down somewhere you actually check will close more deals.</p>
-                <p style={{ marginBottom: "1rem" }}><strong>Good options at this budget:</strong> HubSpot CRM (genuinely free for the basics, no time limit), Zoho CRM (free up to 3 users), or Pipedrive ($14/month, very clean and sales-focused).</p>
-                <div style={{ marginTop: "1rem", padding: "0.5rem 0.9rem", background: "var(--sand)", borderRadius: 8, display: "inline-block", fontSize: "0.9rem", fontWeight: 600 }}>💰 Budget: $0–20/month</div>
+                <p style={{ marginBottom: "0" }}><strong>Good options to consider:</strong> HubSpot CRM (genuinely free for the basics, no time limit), Zoho CRM (free up to 3 users), or Pipedrive (very clean and sales-focused).</p>
               </>
             ),
           },
           {
             num: "04",
             title: "A Landing Page or Lead Capture Tool",
+            color: "#F59E0B",
             content: (
               <>
                 <p style={{ marginBottom: "1rem" }}>Most small business websites are not set up to convert visitors into contacts — there's no clear offer, no easy way to sign up, no reason to leave an email address. A landing page tool fixes this.</p>
                 <p style={{ marginBottom: "1rem" }}><strong>What it does:</strong> Creates a focused single page with one clear call to action — a free consultation, a discount, an event registration — connected directly to your email list so new signups go straight into your marketing.</p>
-                <p style={{ marginBottom: "1rem" }}><strong>What works well:</strong> Constant Contact includes landing pages. If you need something more flexible, Carrd ($19/year — not a typo) is excellent for simple pages.</p>
-                <div style={{ marginTop: "1rem", padding: "0.5rem 0.9rem", background: "var(--sand)", borderRadius: 8, display: "inline-block", fontSize: "0.9rem", fontWeight: 600 }}>💰 Budget: $0 (included in existing tools) to $19/year</div>
+                <p style={{ marginBottom: "0" }}><strong>What works well:</strong> Constant Contact includes landing pages. If you need something more flexible, Carrd is excellent for simple, clean pages.</p>
               </>
             ),
           },
           {
             num: "05",
             title: "Analytics: Know What's Actually Working",
+            color: "#8B5CF6",
             content: (
               <>
                 <p style={{ marginBottom: "1rem" }}>You don't need to become a data analyst. But you do need to look at your numbers once a week — even for 10 minutes — so you're making decisions based on what's actually working rather than what feels right.</p>
-                <p style={{ marginBottom: "1rem" }}><strong>What to use:</strong> Google Analytics 4 is free and connects to your website in about 10 minutes. Your email platform shows open rates, click rates, and unsubscribes after every send. Your social tool shows engagement by post. Between those three you have everything you need.</p>
-                <div style={{ marginTop: "1rem", padding: "0.5rem 0.9rem", background: "var(--sand)", borderRadius: 8, display: "inline-block", fontSize: "0.9rem", fontWeight: 600 }}>💰 Budget: $0</div>
+                <p style={{ marginBottom: "0" }}><strong>What to use:</strong> Google Analytics 4 is free and connects to your website in about 10 minutes. Your email platform shows open rates, click rates, and unsubscribes after every send. Your social tool shows engagement by post. Between those three you have everything you need.</p>
               </>
             ),
           },
         ].map((tool) => (
           <div key={tool.num} style={{ display: "flex", gap: "1.5rem", background: "var(--cream)", border: "1px solid var(--warm-gray)", borderRadius: 12, padding: "1.75rem", marginBottom: "1.5rem" }}>
-            <div style={{ fontFamily: "var(--font-head, 'Syne', sans-serif)", fontSize: "2rem", fontWeight: 800, color: "var(--coral)", opacity: 0.4, minWidth: "2.5rem", lineHeight: 1, paddingTop: "0.2rem" }}>{tool.num}</div>
+            <div style={{ fontFamily: "var(--font-head, 'Syne', sans-serif)", fontSize: "2rem", fontWeight: 800, color: tool.color, opacity: 0.4, minWidth: "2.5rem", lineHeight: 1, paddingTop: "0.2rem" }}>{tool.num}</div>
             <div style={{ flex: 1 }}>
               <h3 style={{ fontFamily: "var(--font-head, 'Syne', sans-serif)", fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", margin: "0 0 0.75rem" }}>{tool.title}</h3>
               {tool.content}
@@ -142,6 +141,7 @@ export default function SmallBusinessMarketingStack() {
         <h2 style={{ fontFamily: "var(--font-head, 'Syne', sans-serif)", fontSize: "1.5rem", fontWeight: 700, color: "var(--text)", margin: "2.5rem 0 1rem" }}>
           Putting It All Together: What This Actually Costs
         </h2>
+        <p style={{ marginBottom: "1.25rem" }}>These are the vendors' own published prices — what you'd pay going directly to each tool. No markups, no surprises.</p>
         <div style={{ border: "1px solid var(--warm-gray)", borderRadius: 12, overflow: "hidden", margin: "1.5rem 0" }}>
           {[
             ["Constant Contact (email + SMS + social)", "$12–35/month"],
@@ -150,7 +150,7 @@ export default function SmallBusinessMarketingStack() {
             ["Landing pages (Constant Contact or Carrd)", "$0–2/month"],
             ["Google Analytics", "$0/month"],
           ].map(([label, cost], i, arr) => (
-            <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.85rem 1.25rem", fontSize: "0.97rem", borderBottom: i < arr.length - 1 ? "1px solid var(--warm-gray)" : "1px solid var(--warm-gray)", gap: "1rem" }}>
+            <div key={label} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "0.85rem 1.25rem", fontSize: "0.97rem", borderBottom: i < arr.length - 1 ? "1px solid var(--warm-gray)" : "none", gap: "1rem" }}>
               <span>{label}</span>
               <span style={{ fontWeight: 600, whiteSpace: "nowrap" }}>{cost}</span>
             </div>
