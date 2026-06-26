@@ -26,6 +26,15 @@ export default function SmallBusinessMarketingStack() {
         </p>
       </header>
 
+      {/* Hero Image */}
+      <div style={{ marginBottom: "2.5rem", borderRadius: 16, overflow: "hidden" }}>
+        <img
+          src="/images/marketing-stack.png"
+          alt="The Small Business Marketing Stack"
+          style={{ width: "100%", height: "auto", display: "block" }}
+        />
+      </div>
+      
       {/* Body */}
       <div style={{ fontSize: "1.05rem", lineHeight: 1.8 }}>
 
