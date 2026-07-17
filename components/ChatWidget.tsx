@@ -28,8 +28,14 @@ function renderContent(text: string) {
     /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
     '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#e8521a;text-decoration:underline">$1</a>'
   ).replace(
-    /(mailto:[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g,
-    '<a href="$1" style="color:#e8521a;text-decoration:underline">$1</a>'
+    /\[([^\]]+)\]\((mailto:[^\)]+)\)/g,
+    '<a href="$2" style="color:#e8521a;text-decoration:underline">$1</a>'
+  ).replace(
+    /(?<!\()mailto:[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g,
+    ''
+  ).replace(
+    /\b([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})\b/g,
+    '<a href="mailto:$1" style="color:#e8521a;text-decoration:underline">$1</a>'
   );
 }
 
