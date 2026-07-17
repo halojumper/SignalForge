@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import ContactForm from './ContactForm';
 import ServiceAreaMap from '@/components/ServiceAreaMap';
+import ScrollToForm from './ScrollToForm';
 export const metadata: Metadata = { title: 'Contact' };
 
 const EmailIcon = () => (
@@ -56,6 +57,8 @@ const contactItems = [
 export default function Contact() {
   return (
     <>
+    <ScrollToForm />
+     
       <style>{`
         .contact-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:48px; align-items:start; }
         .contact-hero-img { position:relative; width:100%; height:420px; overflow:hidden; }
