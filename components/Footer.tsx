@@ -82,8 +82,8 @@ export default function Footer() {
             <ul>
               <li><a href="https://calendly.com/signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
               <li><a href="/contact">Request a Quote</a></li>
-              <li><link href="/insights">Free Resources</link></li>
-              <li><link href="/referral">Refer a Client — Earn 10%</link></li>
+              <li><a href="/insights">Free Resources</a></li>
+              <li><a href="/referral">Refer a Client — Earn 10%</a></li>
             </ul>
          </div>
         </div>
