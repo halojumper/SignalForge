@@ -23,10 +23,20 @@ const CANNED: Record<string, string> = {
     "Depending on the scope of the engagement, our pricing is structured to fit businesses at different stages of growth — whether you're looking for a focused one-time project or an ongoing retainer partnership. We don't believe in one-size-fits-all packages, so we take the time to understand your needs before recommending the right investment level.\n\nWould you like to schedule a quick call with our team to talk through options?",
 };
 
+function renderContent(text: string) {
+  return text.replace(
+    /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+    '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#e8521a;text-decoration:underline">$1</a>'
+  ).replace(
+    /(mailto:[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g,
+    '<a href="$1" style="color:#e8521a;text-decoration:underline">$1</a>'
+  );
+}
+
 export default function ChatWidget() {
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [isClosed, setIsClosed] = useState(() => 
+  const [isClosed, setIsClosed] = useState(() =>
     typeof window !== 'undefined' && !!sessionStorage.getItem('sfChatDismissed')
   );
   const [messages, setMessages] = useState<Message[]>([]);
@@ -34,6 +44,7 @@ export default function ChatWidget() {
   const [isLoading, setIsLoading] = useState(false);
   const [viewportHeight, setViewportHeight] = useState<number | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messagesContainerRef = useRef<HTMLDivElement>(null);
 
   // Auto-open after 5s, respect session dismissal
   useEffect(() => {
@@ -42,33 +53,29 @@ export default function ChatWidget() {
     return () => clearTimeout(t);
   }, []);
 
-  // Android keyboard fix: visualViewport tracks the actually-visible area,
-  // which shrinks when the on-screen keyboard opens. dvh covers most modern
-  // browsers, but older Android WebViews (in-app browsers especially) don't
-  // support it reliably, so this is the JS fallback that pins the card's
-  // max-height to the real visible viewport so the input row can never get
-  // pushed below the fold.
+  // Android keyboard fix
   useEffect(() => {
     if (typeof window === 'undefined' || !window.visualViewport) return;
-
     const vv = window.visualViewport;
-
-    const handleResize = () => {
-      setViewportHeight(vv.height);
-    };
-
+    const handleResize = () => { setViewportHeight(vv.height); };
     handleResize();
     vv.addEventListener('resize', handleResize);
     vv.addEventListener('scroll', handleResize);
-
     return () => {
       vv.removeEventListener('resize', handleResize);
       vv.removeEventListener('scroll', handleResize);
     };
   }, []);
 
+  // Scroll to top of latest bot message
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messages.length === 0) return;
+    const container = messagesContainerRef.current;
+    if (!container) return;
+    const lastMsg = container.lastElementChild?.previousElementSibling as HTMLElement;
+    if (lastMsg) {
+      lastMsg.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
   }, [messages]);
 
   const closeCard = () => {
@@ -90,7 +97,6 @@ export default function ChatWidget() {
     setMessages(next);
     setInput('');
 
-    // Canned responses for pills
     if (CANNED[trimmed]) {
       setMessages([...next, { role: 'assistant', content: CANNED[trimmed] }]);
       return;
@@ -119,7 +125,7 @@ export default function ChatWidget() {
 
   return (
     <>
-      {/* Dock: bubble always + envelope after Aria closed */}
+      {/* Dock */}
       {!isVisible && (
         <div className="sf-dock">
           {isClosed && (
@@ -138,7 +144,7 @@ export default function ChatWidget() {
         </div>
       )}
 
-      {/* ── Aria card ── */}
+      {/* Aria card */}
       {isVisible && (
         <div
           className="sf-chat-card"
@@ -150,8 +156,6 @@ export default function ChatWidget() {
               : undefined
           }
         >
-
-          {/* Dismiss X — visible on hover (desktop) / always visible (mobile, see media query) */}
           <button className="sf-dismiss" onClick={closeCard} aria-label="Close chat">
             <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <line x1="1" y1="1" x2="13" y2="13" />
@@ -159,7 +163,6 @@ export default function ChatWidget() {
             </svg>
           </button>
 
-          {/* Header with coral-pink gradient */}
           <div className="sf-header">
             <div className="sf-avatar">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -172,8 +175,8 @@ export default function ChatWidget() {
             </div>
           </div>
 
-          {/* Messages — scrollable */}
-          <div className="sf-messages">
+          {/* Messages */}
+          <div className="sf-messages" ref={messagesContainerRef}>
             <div className="sf-msg sf-msg--bot">
               <p>Hi there! I'm Aria, SignalForge's AI-Powered Assistant. Do you have any questions about our marketing automation services?</p>
               <p>I'm here to help — whether you want to learn about what we do, explore solutions for your business, or get in touch with our team.</p>
@@ -182,7 +185,7 @@ export default function ChatWidget() {
             {messages.map((m, i) => (
               <div key={i} className={`sf-msg sf-msg--${m.role === 'user' ? 'user' : 'bot'}`}>
                 {m.content.split('\n').map((line, j) => (
-                  <p key={j}>{line}</p>
+                  <p key={j} dangerouslySetInnerHTML={{ __html: renderContent(line) }} />
                 ))}
               </div>
             ))}
@@ -195,7 +198,6 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick-reply pills — hide once conversation starts */}
           {!hasMessages && (
             <div className="sf-pills">
               {QUICK_REPLIES.map(q => (
@@ -206,7 +208,6 @@ export default function ChatWidget() {
             </div>
           )}
 
-          {/* Input */}
           <div className="sf-input-row">
             <input
               className="sf-input"
@@ -216,9 +217,6 @@ export default function ChatWidget() {
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
               onFocus={e => {
-                // Android: nudge the input into view once the keyboard
-                // finishes animating in, in case visualViewport hasn't
-                // settled yet on slower devices.
                 setTimeout(() => {
                   e.target.scrollIntoView({ block: 'center', behavior: 'smooth' });
                 }, 300);
@@ -238,7 +236,6 @@ export default function ChatWidget() {
             </button>
           </div>
 
-          {/* Disclaimer */}
           <div className="sf-disclaimer">
             By chatting with the AI-powered Assistant, you consent to the chat being transcribed and stored by SignalForge to improve our service.
           </div>
@@ -246,7 +243,6 @@ export default function ChatWidget() {
       )}
 
       <style jsx>{`
-        /* ── Bottom-right dock ── */
         .sf-dock {
           position: fixed;
           bottom: 28px;
@@ -255,6 +251,7 @@ export default function ChatWidget() {
           align-items: center;
           gap: 10px;
           z-index: 9999;
+          pointer-events: none;
           animation: sfSlideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
         }
         .sf-dock-btn {
@@ -272,14 +269,13 @@ export default function ChatWidget() {
           transition: transform 0.15s, box-shadow 0.15s;
           text-decoration: none;
           flex-shrink: 0;
-          pointer-events: auto;   /* ← add this line */
+          pointer-events: auto;
         }
         .sf-dock-btn:hover {
           transform: scale(1.08);
           box-shadow: 0 6px 24px rgba(232,82,26,0.55);
         }
 
-        /* ── Card ── */
         .sf-chat-card {
           position: fixed;
           bottom: 28px;
@@ -300,7 +296,6 @@ export default function ChatWidget() {
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        /* Dismiss — hidden until card hovered (desktop); always shown on mobile via media query below */
         .sf-dismiss {
           position: absolute;
           top: 10px;
@@ -329,7 +324,6 @@ export default function ChatWidget() {
           transform: scale(1.1);
         }
 
-        /* Header — charcoal to orange gradient */
         .sf-header {
           display: flex;
           align-items: center;
@@ -361,7 +355,6 @@ export default function ChatWidget() {
           margin-top: 1px;
         }
 
-        /* Messages — scrollable */
         .sf-messages {
           padding: 14px 16px 8px;
           display: flex;
@@ -395,7 +388,6 @@ export default function ChatWidget() {
           max-width: 100%;
         }
 
-        /* Typing dots */
         .sf-typing {
           display: inline-flex;
           gap: 4px;
@@ -415,7 +407,6 @@ export default function ChatWidget() {
           30%          { transform: translateY(-5px); }
         }
 
-        /* Pills */
         .sf-pills {
           display: flex;
           flex-wrap: wrap;
@@ -439,7 +430,6 @@ export default function ChatWidget() {
           transform: translateY(-1px);
         }
 
-        /* Input */
         .sf-input-row {
           display: flex;
           align-items: center;
@@ -480,7 +470,6 @@ export default function ChatWidget() {
         .sf-send:hover:not(:disabled) { background: #c94415; }
         .sf-send:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* Disclaimer */
         .sf-disclaimer {
           padding: 8px 14px 12px;
           font-size: 10.5px;
@@ -488,7 +477,6 @@ export default function ChatWidget() {
           line-height: 1.5;
         }
 
-        /* Mobile */
         @media (max-width: 480px) {
           .sf-chat-card {
             bottom: 0;
@@ -502,9 +490,6 @@ export default function ChatWidget() {
             bottom: 16px;
             right: 16px;
           }
-          /* Touch devices don't reliably trigger :hover, so force the
-             dismiss X to always be visible, overriding the hover-gated
-             base rule outright. */
           .sf-chat-card .sf-dismiss {
             opacity: 1 !important;
             pointer-events: auto !important;
