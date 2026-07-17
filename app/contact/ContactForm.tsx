@@ -78,7 +78,7 @@ export default function ContactForm() {
   const errStyle: React.CSSProperties = { fontSize: '0.78rem', color: '#e53e3e', marginTop: 4, display: 'block' };
 
   if (status === 'done') return (
-    <div id="contact form" style={{ background: 'var(--white)', borderRadius: 24, padding: '40px 36px', boxShadow: '0 8px 40px rgba(180,80,30,0.08)', border: '1px solid rgba(0,0,0,0.06)', textAlign: 'center' }}>
+    <div id="contact-form" style={{ background: 'var(--white)', borderRadius: 24, padding: '40px 36px', boxShadow: '0 8px 40px rgba(180,80,30,0.08)', border: '1px solid rgba(0,0,0,0.06)', textAlign: 'center' }}>
       {/* SVG check circle — no emoji rendering inconsistency */}
       <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 20 }}>
         <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
