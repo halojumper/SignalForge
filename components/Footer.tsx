@@ -69,11 +69,11 @@ export default function Footer() {
             <h5>Company</h5>
             <ul>
               <li><a href="/about">About</a></li>
-<li><a href="/how-it-works">How It Works</a></li>
-<li><a href="/results">Client Results</a></li>
-<li><a href="/insights">Insights & Tips</a></li>
-<li><a href="/constant-contact">Constant Contact</a></li>
-<li><a href="/contact">Contact Us</a></li>
+              <li><a href="/how-it-works">How It Works</a></li>
+              <li><a href="/results">Client Results</a></li>
+              <li><a href="/insights">Insights & Tips</a></li>
+              <li><a href="/constant-contact">Constant Contact</a></li>
+              <li><a href="/contact">Contact Us</a></li>
             </ul>
           </div>
 
@@ -81,7 +81,7 @@ export default function Footer() {
             <h5>Get Started</h5>
             <ul>
               <li><a href="https://calendly.com/signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
-              <li><a href="/contact">Request a Quote</a></li>
+              <li><a href="/contact#contact-form">Request a Quote</a></li>
               <li><a href="/insights">Free Resources</a></li>
               <li><a href="/referral">Refer a Client — Earn 10%</a></li>
             </ul>
