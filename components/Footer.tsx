@@ -56,12 +56,12 @@ export default function Footer() {
           <div className="footer-col">
             <h5>Services</h5>
             <ul>
-              <li><Link href="/services#marketing-automation">Marketing Automation</Link></li>
-              <li><Link href="/services#sms-marketing">SMS Marketing</Link></li>
-              <li><Link href="/services#social-media">Social Media Campaigns</Link></li>
-              <li><Link href="/services#ad-creative">Ad Creative Design</Link></li>
-              <li><Link href="/services#website-design">Website Design & Build</Link></li>
-              <li><Link href="/services#event-marketing">Event Marketing</Link></li>
+              <li><a href="/services#marketing-automation">Marketing Automation</a></li>
+              <li><a href="/services#sms-marketing">SMS Marketing</a></li>
+              <li><a href="/services#social-media">Social Media Campaigns</a></li>
+              <li><a href="/services#ad-creative">Ad Creative Design</a></li>
+              <li><a href="/services#website-design">Website Design & Build</a></li>
+              <li><a href="/services#event-marketing">Event Marketing</a></li>
             </ul>
           </div>
 
@@ -82,8 +82,8 @@ export default function Footer() {
             <ul>
               <li><a href="https://calendly.com/signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
               <li><a href="/contact">Request a Quote</a></li>
-              <li><Link href="/insights">Free Resources</Link></li>
-              <li><Link href="/referral">Refer a Client — Earn 10%</Link></li>
+              <li><link href="/insights">Free Resources</link></li>
+              <li><link href="/referral">Refer a Client — Earn 10%</link></li>
             </ul>
          </div>
         </div>
