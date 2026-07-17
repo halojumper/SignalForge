@@ -140,7 +140,10 @@ export default function Contact() {
                 </div>
               </div>
             </div>
-            <ContactForm />
+            <div style={{position:'relative'}}>
+  <div id="contact-form" style={{position:'absolute',top:-80}}/>
+  <ContactForm />
+</div>
           </div>
         </div>
       </section>
