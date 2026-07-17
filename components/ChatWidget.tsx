@@ -24,19 +24,24 @@ const CANNED: Record<string, string> = {
 };
 
 function renderContent(text: string) {
-  return text.replace(
-    /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
-    '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#e8521a;text-decoration:underline">$1</a>'
-  ).replace(
-    /\[([^\]]+)\]\((mailto:[^\)]+)\)/g,
-    '<a href="$2" style="color:#e8521a;text-decoration:underline">$1</a>'
-  ).replace(
-    /(?<!\()mailto:[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g,
-    ''
-  ).replace(
-    /\b([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})\b/g,
-    '<a href="mailto:$1" style="color:#e8521a;text-decoration:underline">$1</a>'
-  );
+  return text
+    .replace(/\*\*([^*]+)\*\*/g, '$1') // strip **bold**
+    .replace(
+      /\[([^\]]+)\]\((https?:\/\/[^\)]+)\)/g,
+      '<a href="$2" target="_blank" rel="noopener noreferrer" style="color:#e8521a;text-decoration:underline">$1</a>'
+    )
+    .replace(
+      /\[([^\]]+)\]\((mailto:[^\)]+)\)/g,
+      '<a href="$2" style="color:#e8521a;text-decoration:underline">$1</a>'
+    )
+    .replace(
+      /(?<!\()(https?:\/\/[^\s]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer" style="color:#e8521a;text-decoration:underline">$1</a>'
+    )
+    .replace(
+      /\b([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})\b/g,
+      '<a href="mailto:$1" style="color:#e8521a;text-decoration:underline">$1</a>'
+    );
 }
 
 export default function ChatWidget() {
