@@ -272,6 +272,7 @@ export default function ChatWidget() {
           transition: transform 0.15s, box-shadow 0.15s;
           text-decoration: none;
           flex-shrink: 0;
+          pointer-events: auto;   /* ← add this line */
         }
         .sf-dock-btn:hover {
           transform: scale(1.08);
