@@ -80,7 +80,7 @@ export default function Footer() {
          <div className="footer-col">
             <h5>Get Started</h5>
             <ul>
-              <li><a href="https://calendly.com/signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
+              <li><a href="https://calendly.com/_signalforge-marketing" target="_blank" rel="noopener noreferrer">Book a Free Call</a></li>
               <li><a href="/contact#contact-form">Request a Quote</a></li>
               <li><a href="/insights">Free Resources</a></li>
               <li><a href="/referral">Refer a Client — Earn 10%</a></li>

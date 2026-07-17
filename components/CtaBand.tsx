@@ -14,7 +14,7 @@ export default function CtaBand({
   label = 'Ready to Grow?',
   heading,
   sub,
-  primaryHref = 'https://calendly.com/signalforge-marketing',
+  primaryHref = 'https://calendly.com/_signalforge-marketing',
   primaryLabel = 'Schedule a Free Call',
   secondaryHref = '/services',
   secondaryLabel = 'Explore Services',
