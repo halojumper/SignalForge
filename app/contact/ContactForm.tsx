@@ -112,7 +112,7 @@ export default function ContactForm() {
   );
 
   return (
-    <div style={{ background: 'var(--white)', borderRadius: 24, padding: '40px 36px', boxShadow: '0 8px 40px rgba(180,80,30,0.08)', border: '1px solid rgba(0,0,0,0.06)' }}>
+    <div id="contact-form" style={{background:'var(--white)',borderRadius:24,padding:'40px 36px',boxShadow:'0 8px 40px rgba(180,80,30,0.08)',border:'1px solid rgba(0,0,0,0.06)'}}>
       <div style={{ marginBottom: 28 }}>
         <h3 style={{ fontFamily: 'Syne,sans-serif', fontSize: '1.35rem', fontWeight: 800, color: 'var(--text)', marginBottom: 6 }}>Send Us a Message</h3>
         <p style={{ fontSize: '0.9rem', color: 'var(--warm-gray)' }}>Fill out the form and we'll be in touch within one business day.</p>
