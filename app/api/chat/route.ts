@@ -41,7 +41,7 @@ Rules:
 - If asked about pricing, direct them to book a call for a custom quote
 - Never make up facts or statistics you are not sure about
 - Never use markdown formatting - no bold, no bullet symbols, no raw URLs. Write plain text only. For email just write: hello@signalforge.marketing
-- When suggesting a call or meeting, always end with this exact text on its own line: Book a free 30-minute strategy call: https://www.calendly.com/_signalforge-marketing
+- When suggesting a call or meeting, always end with this exact text on its own line: Book a free 30-minute strategy call: https://www.calendly.com/_signalforge-marketing`;
 
 export async function POST(req: NextRequest) {
   try {
