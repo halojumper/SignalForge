@@ -27,11 +27,11 @@ export default function AIEmailPersonalizationArticle() {
       </header>
 
       {/* Hero Image */}
-      <div style={{ marginBottom: "2.5rem", borderRadius: 16, overflow: "hidden" }}>
+      <div style={{ marginBottom: "2.5rem", borderRadius: 16, overflow: "hidden", aspectRatio: "16 / 9" }}>
         <img
           src="/images/ai-email-personalization-cover.jpg"
           alt="Email inbox on a laptop screen, representing personalized email marketing"
-          style={{ width: "100%", height: "auto", display: "block" }}
+          style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
         />
       </div>
 
