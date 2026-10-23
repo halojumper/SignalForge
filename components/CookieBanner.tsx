@@ -7,7 +7,12 @@ export default function CookieBanner() {
   const [hiding, setHiding] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem('sf_cookie_consent')) {
+    try {
+      if (!localStorage.getItem('sf_cookie_consent')) {
+        setVisible(true);
+      }
+    } catch {
+      // Private browsing blocks localStorage — show banner anyway
       setVisible(true);
     }
   }, []);
@@ -15,7 +20,11 @@ export default function CookieBanner() {
   function dismiss(choice: string) {
     setHiding(true);
     setTimeout(() => {
-      localStorage.setItem('sf_cookie_consent', choice);
+      try {
+        localStorage.setItem('sf_cookie_consent', choice);
+      } catch {
+        // Private browsing — can't save, banner just closes
+      }
       setVisible(false);
       setHiding(false);
     }, 320);
