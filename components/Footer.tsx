@@ -89,9 +89,7 @@ export default function Footer() {
         <div className="footer-bottom">
           <p>© {new Date().getFullYear()} SignalForge. All rights reserved.</p>
           <div style={{display:'flex',alignItems:'center',gap:20,flexWrap:'wrap'}}>
-            <Link href="/privacy-policy" style={{fontSize:'0.8rem',color:'var(--text-muted, #888)',textDecoration:'none',transition:'color 0.15s'}}
-              onMouseOver={e => (e.currentTarget.style.color='var(--coral)')}
-              onMouseOut={e => (e.currentTarget.style.color='var(--text-muted, #888)')}>
+            <Link href="/privacy-policy" className="footer-privacy-link">
               Privacy &amp; Cookie Policy
             </Link>
             <div className="footer-badges">

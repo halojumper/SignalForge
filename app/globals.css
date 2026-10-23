@@ -103,6 +103,15 @@ footer { background: var(--sand-deep); color: var(--warm-gray); padding: 72px 0 
 .footer-bottom p { font-size: 0.82rem; }
 .footer-badges { display: flex; gap: 10px; flex-wrap: wrap; }
 .footer-badge { padding: 6px 14px; border: 1px solid rgba(0,0,0,0.15); border-radius: 50px; font-size: 0.72rem; font-weight: 600; color: var(--warm-gray); font-family: 'Syne', sans-serif; }
+.footer-privacy-link {
+  font-size: 0.8rem;
+  color: var(--text-muted, #888);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+.footer-privacy-link:hover {
+  color: var(--coral);
+}
 
 /* Cookie banner */
 .cookie-banner { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 9999; width: calc(100% - 48px); max-width: 860px; background: var(--white); border: 1px solid rgba(232,85,42,0.15); border-radius: 18px; box-shadow: 0 16px 56px rgba(100,40,10,0.15); padding: 20px 24px; animation: slideUpBanner 0.45s cubic-bezier(0.16,1,0.3,1) both; z-index: 11000;}
