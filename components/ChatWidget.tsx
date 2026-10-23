@@ -1,11 +1,21 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 import ContactModal from '@/components/ContactModal';
 
 interface Message {
   role: 'user' | 'assistant';
   content: string;
+}
+
+// Callback collection states
+type CallbackStep = 'none' | 'ask_name' | 'ask_contact' | 'ask_time' | 'done';
+
+interface CallbackData {
+  name: string;
+  contact: string; // phone or email
+  time: string;
 }
 
 const QUICK_REPLIES = [
@@ -23,6 +33,25 @@ const CANNED: Record<string, string> = {
     "Depending on the scope of the engagement, our pricing is structured to fit businesses at different stages of growth — whether you're looking for a focused one-time project or an ongoing retainer partnership. We don't believe in one-size-fits-all packages, so we take the time to understand your needs before recommending the right investment level.\n\nWould you like to schedule a quick call with our team to talk through options?",
 };
 
+// Detect if a message contains a phone number or email address
+function detectContactInfo(text: string): boolean {
+  const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+  const phoneRegex = /(\+?1[\s.-]?)?(\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4})/;
+  return emailRegex.test(text) || phoneRegex.test(text);
+}
+
+// Detect if a message is requesting a callback / to be contacted
+function detectCallbackIntent(text: string): boolean {
+  const lower = text.toLowerCase();
+  const triggers = [
+    'call me', 'call us', 'give me a call', 'reach me', 'reach out',
+    'contact me', 'get in touch', 'speak with someone', 'talk to someone',
+    'speak to a person', 'talk to a real', 'human', 'someone call',
+    'have someone', 'email me', 'send me an email', 'follow up',
+  ];
+  return triggers.some(t => lower.includes(t));
+}
+
 export default function ChatWidget() {
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -35,30 +64,30 @@ export default function ChatWidget() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+
+  // Callback collection state
+  const [callbackStep, setCallbackStep] = useState<CallbackStep>('none');
+  const [callbackData, setCallbackData] = useState<CallbackData>({ name: '', contact: '', time: '' });
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Watch for cookie consent being set (so dock/card move up once banner disappears)
+  // Watch for cookie consent being set
   useEffect(() => {
-    const check = () => {
-      if (localStorage.getItem('sf_cookie_consent')) {
-        setCookieConsented(true);
-      }
-    };
-    // Poll every 500ms until consent is given — stops as soon as it's set
     if (!cookieConsented) {
       const interval = setInterval(() => {
-        check();
-        if (localStorage.getItem('sf_cookie_consent')) clearInterval(interval);
+        if (localStorage.getItem('sf_cookie_consent')) {
+          setCookieConsented(true);
+          clearInterval(interval);
+        }
       }, 500);
       return () => clearInterval(interval);
     }
   }, [cookieConsented]);
 
-  // Auto-open after 5s ONLY if cookie consent already given (or dismissed)
-  // If banner is still showing, wait for consent before starting the timer
+  // Auto-open after 5s only once cookie consent is given
   useEffect(() => {
     if (sessionStorage.getItem('sfChatDismissed')) return;
-    if (!cookieConsented) return; // Don't auto-open while cookie banner is visible
+    if (!cookieConsented) return;
     const t = setTimeout(() => setIsVisible(true), 5000);
     return () => clearTimeout(t);
   }, [cookieConsented]);
@@ -66,6 +95,10 @@ export default function ChatWidget() {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  const addBotMessage = (content: string) => {
+    setMessages(prev => [...prev, { role: 'assistant', content }]);
+  };
 
   const closeCard = () => {
     setIsVisible(false);
@@ -79,19 +112,102 @@ export default function ChatWidget() {
     sessionStorage.removeItem('sfChatDismissed');
   };
 
+  // Fire the EmailJS callback notification
+  const sendCallbackEmail = async (data: CallbackData, chatHistory: Message[]) => {
+    const historyText = chatHistory
+      .map(m => `${m.role === 'user' ? 'Visitor' : 'Aria'}: ${m.content}`)
+      .join('\n\n');
+
+    await emailjs.send(
+      'service_gky9cvq',
+      'template_yvq59vr',
+      {
+        from_name: data.name,
+        from_email: data.contact.includes('@') ? data.contact : 'via-chat@signalforge.marketing',
+        company: 'Requested via Aria chat',
+        phone: data.contact.includes('@') ? 'See contact field' : data.contact,
+        message: [
+          `*** CALLBACK REQUEST FROM ARIA CHAT ***`,
+          `Name: ${data.name}`,
+          `Contact: ${data.contact}`,
+          `Best time to reach: ${data.time}`,
+          ``,
+          `--- Chat transcript ---`,
+          historyText,
+        ].join('\n'),
+      },
+      '7p4O9_DB_4qMMLH1A'
+    );
+  };
+
   const sendMessage = async (text: string) => {
     const trimmed = text.trim();
     if (!trimmed || isLoading) return;
-    const next: Message[] = [...messages, { role: 'user', content: trimmed }];
+
+    const userMsg: Message = { role: 'user', content: trimmed };
+    const next = [...messages, userMsg];
     setMessages(next);
     setInput('');
 
-    // Canned responses for pills
+    // ── Callback collection flow ──
+    if (callbackStep === 'ask_name') {
+      const name = trimmed;
+      setCallbackData(prev => ({ ...prev, name }));
+      setCallbackStep('ask_contact');
+      addBotMessage(`Nice to meet you, ${name}! What's the best phone number or email address to reach you?`);
+      return;
+    }
+
+    if (callbackStep === 'ask_contact') {
+      const contact = trimmed;
+      setCallbackData(prev => ({ ...prev, contact }));
+      setCallbackStep('ask_time');
+      addBotMessage("Perfect. What's the best time to reach you — morning, afternoon, or a specific time window?");
+      return;
+    }
+
+    if (callbackStep === 'ask_time') {
+      const time = trimmed;
+      const finalData = { ...callbackData, time };
+      setCallbackData(finalData);
+      setCallbackStep('done');
+
+      addBotMessage("You're all set! I've passed your info to the SignalForge team and someone will be in touch with you soon. Is there anything else I can help you with in the meantime?");
+
+      // Fire the email — silently, no user-facing error if it fails
+      try {
+        await sendCallbackEmail(finalData, next);
+      } catch {
+        // Email failed silently — the user already got the confirmation message
+      }
+      return;
+    }
+
+    // ── Detect callback intent in free-form messages ──
+    if (callbackStep === 'none' && (detectCallbackIntent(trimmed) || detectContactInfo(trimmed))) {
+      setCallbackStep('ask_name');
+      // If they already dropped a phone/email, capture it and skip that step
+      if (detectContactInfo(trimmed)) {
+        setCallbackData(prev => ({ ...prev, contact: trimmed }));
+        setCallbackStep('ask_time');
+        addBotMessage("Happy to have someone reach out! I just need a couple of quick details. What's your name?");
+        // Override: go back to ask_name first so we have their name
+        setCallbackData({ name: '', contact: trimmed, time: '' });
+        setCallbackStep('ask_name');
+        addBotMessage("Happy to have someone reach out to you! What's your name?");
+      } else {
+        addBotMessage("Absolutely! Let me grab a few quick details so our team can reach out. What's your name?");
+      }
+      return;
+    }
+
+    // ── Canned pill responses ──
     if (CANNED[trimmed]) {
       setMessages([...next, { role: 'assistant', content: CANNED[trimmed] }]);
       return;
     }
 
+    // ── Live AI response ──
     setIsLoading(true);
     try {
       const res = await fetch('/api/chat', {
@@ -104,7 +220,7 @@ export default function ChatWidget() {
     } catch {
       setMessages([...next, {
         role: 'assistant',
-        content: "I'm having trouble connecting right now. Please try again or reach out directly.",
+        content: "I'm having trouble connecting right now. Please try again or reach out directly at hello@signalforge.marketing.",
       }]);
     } finally {
       setIsLoading(false);
@@ -112,14 +228,19 @@ export default function ChatWidget() {
   };
 
   const hasMessages = messages.length > 0;
-
-  // On mobile, push dock/card up when cookie banner is visible so they don't overlap
   const mobileBottom = cookieConsented ? '16px' : '80px';
   const desktopBottom = '28px';
 
+  // Placeholder hint changes based on callback step
+  const inputPlaceholder =
+    callbackStep === 'ask_name' ? 'Your full name...' :
+    callbackStep === 'ask_contact' ? 'Phone number or email...' :
+    callbackStep === 'ask_time' ? 'e.g. Weekday mornings, after 3pm...' :
+    'Ask a question';
+
   return (
     <>
-      {/* Dock: bubble always + envelope after Aria closed */}
+      {/* Dock */}
       {!isVisible && (
         <div className="sf-dock">
           {isClosed && (
@@ -142,7 +263,6 @@ export default function ChatWidget() {
       {isVisible && (
         <div className="sf-chat-card" role="dialog" aria-label="Aria — SignalForge AI Assistant">
 
-          {/* Dismiss X — visible on hover */}
           <button className="sf-dismiss" onClick={closeCard} aria-label="Close chat">
             <svg width="10" height="10" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round">
               <line x1="1" y1="1" x2="13" y2="13" />
@@ -150,7 +270,6 @@ export default function ChatWidget() {
             </svg>
           </button>
 
-          {/* Header */}
           <div className="sf-header">
             <div className="sf-avatar">
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -163,7 +282,6 @@ export default function ChatWidget() {
             </div>
           </div>
 
-          {/* Messages */}
           <div className="sf-messages">
             <div className="sf-msg sf-msg--bot">
               <p>Hi there! I'm Aria, SignalForge's AI-Powered Assistant. Do you have any questions about our marketing automation services?</p>
@@ -186,7 +304,6 @@ export default function ChatWidget() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick-reply pills */}
           {!hasMessages && (
             <div className="sf-pills">
               {QUICK_REPLIES.map(q => (
@@ -197,12 +314,11 @@ export default function ChatWidget() {
             </div>
           )}
 
-          {/* Input */}
           <div className="sf-input-row">
             <input
               className="sf-input"
               type="text"
-              placeholder="Ask a question"
+              placeholder={inputPlaceholder}
               value={input}
               onChange={e => setInput(e.target.value)}
               onKeyDown={e => e.key === 'Enter' && sendMessage(input)}
@@ -221,7 +337,6 @@ export default function ChatWidget() {
             </button>
           </div>
 
-          {/* Disclaimer */}
           <div className="sf-disclaimer">
             By chatting with the AI-powered Assistant, you consent to the chat being transcribed and stored by SignalForge to improve our service.
           </div>
@@ -229,7 +344,6 @@ export default function ChatWidget() {
       )}
 
       <style jsx>{`
-        /* Bottom-right dock */
         .sf-dock {
           position: fixed;
           bottom: ${desktopBottom};
@@ -260,8 +374,6 @@ export default function ChatWidget() {
           transform: scale(1.08);
           box-shadow: 0 6px 24px rgba(232,82,26,0.55);
         }
-
-        /* Card */
         .sf-chat-card {
           position: fixed;
           bottom: ${desktopBottom};
@@ -281,8 +393,6 @@ export default function ChatWidget() {
           from { opacity: 0; transform: translateY(20px) scale(0.97); }
           to   { opacity: 1; transform: translateY(0) scale(1); }
         }
-
-        /* Dismiss X */
         .sf-dismiss {
           position: absolute;
           top: 10px;
@@ -310,15 +420,12 @@ export default function ChatWidget() {
           background: rgba(0,0,0,0.45);
           transform: scale(1.1);
         }
-
-        /* Header */
         .sf-header {
           display: flex;
           align-items: center;
           gap: 12px;
           padding: 16px 16px 14px 40px;
           background: linear-gradient(135deg, #1a1a1a 0%, #7a2e0a 50%, #e8521a 100%);
-          border-bottom: none;
         }
         .sf-avatar {
           width: 40px;
@@ -331,19 +438,8 @@ export default function ChatWidget() {
           color: #fff;
           flex-shrink: 0;
         }
-        .sf-name {
-          font-weight: 700;
-          font-size: 15px;
-          color: #fff;
-          line-height: 1.2;
-        }
-        .sf-label {
-          font-size: 12px;
-          color: rgba(255,255,255,0.82);
-          margin-top: 1px;
-        }
-
-        /* Messages */
+        .sf-name { font-weight: 700; font-size: 15px; color: #fff; line-height: 1.2; }
+        .sf-label { font-size: 12px; color: rgba(255,255,255,0.82); margin-top: 1px; }
         .sf-messages {
           padding: 14px 16px 8px;
           display: flex;
@@ -356,12 +452,7 @@ export default function ChatWidget() {
         .sf-messages::-webkit-scrollbar { width: 4px; }
         .sf-messages::-webkit-scrollbar-track { background: transparent; }
         .sf-messages::-webkit-scrollbar-thumb { background: #e0e0e0; border-radius: 4px; }
-        .sf-msg p {
-          margin: 0 0 4px;
-          font-size: 14px;
-          line-height: 1.55;
-          color: #222;
-        }
+        .sf-msg p { margin: 0 0 4px; font-size: 14px; line-height: 1.55; color: #222; }
         .sf-msg p:empty { display: none; }
         .sf-msg p:last-child { margin-bottom: 0; }
         .sf-msg--user {
@@ -372,18 +463,8 @@ export default function ChatWidget() {
           max-width: 85%;
         }
         .sf-msg--user p { color: #fff; }
-        .sf-msg--bot {
-          align-self: flex-start;
-          max-width: 100%;
-        }
-
-        /* Typing dots */
-        .sf-typing {
-          display: inline-flex;
-          gap: 4px;
-          align-items: center;
-          padding: 4px 0;
-        }
+        .sf-msg--bot { align-self: flex-start; max-width: 100%; }
+        .sf-typing { display: inline-flex; gap: 4px; align-items: center; padding: 4px 0; }
         .sf-typing span {
           width: 6px; height: 6px;
           background: #bbb;
@@ -396,14 +477,7 @@ export default function ChatWidget() {
           0%,60%,100% { transform: translateY(0); }
           30%          { transform: translateY(-5px); }
         }
-
-        /* Pills */
-        .sf-pills {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 7px;
-          padding: 4px 16px 12px;
-        }
+        .sf-pills { display: flex; flex-wrap: wrap; gap: 7px; padding: 4px 16px 12px; }
         .sf-pill {
           background: #e8521a;
           color: #fff;
@@ -416,12 +490,7 @@ export default function ChatWidget() {
           transition: background 0.15s, transform 0.1s;
           white-space: nowrap;
         }
-        .sf-pill:hover {
-          background: #c94415;
-          transform: translateY(-1px);
-        }
-
-        /* Input */
+        .sf-pill:hover { background: #c94415; transform: translateY(-1px); }
         .sf-input-row {
           display: flex;
           align-items: center;
@@ -439,10 +508,7 @@ export default function ChatWidget() {
           background: #fafafa;
           transition: border-color 0.15s;
         }
-        .sf-input:focus {
-          border-color: #e8521a;
-          background: #fff;
-        }
+        .sf-input:focus { border-color: #e8521a; background: #fff; }
         .sf-input::placeholder { color: #aaa; }
         .sf-send {
           background: #e8521a;
@@ -460,27 +526,10 @@ export default function ChatWidget() {
         }
         .sf-send:hover:not(:disabled) { background: #c94415; }
         .sf-send:disabled { opacity: 0.4; cursor: not-allowed; }
-
-        /* Disclaimer */
-        .sf-disclaimer {
-          padding: 8px 14px 12px;
-          font-size: 10.5px;
-          color: #999;
-          line-height: 1.5;
-        }
-
-        /* Mobile — push dock/card up above cookie banner when it's visible */
+        .sf-disclaimer { padding: 8px 14px 12px; font-size: 10.5px; color: #999; line-height: 1.5; }
         @media (max-width: 480px) {
-          .sf-chat-card {
-            bottom: 0;
-            right: 0;
-            width: 100vw;
-            border-radius: 16px 16px 0 0;
-          }
-          .sf-dock {
-            bottom: ${mobileBottom};
-            right: 16px;
-          }
+          .sf-chat-card { bottom: 0; right: 0; width: 100vw; border-radius: 16px 16px 0 0; }
+          .sf-dock { bottom: ${mobileBottom}; right: 16px; }
         }
       `}</style>
       {showModal && <ContactModal onClose={() => setShowModal(false)} />}
