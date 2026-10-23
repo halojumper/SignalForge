@@ -1,12 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 
 export default function CookieBanner() {
   const [visible, setVisible] = useState(false);
   const [hiding, setHiding] = useState(false);
 
   useEffect(() => {
-    // Only runs in the browser — safe from Next.js server rendering
     if (!localStorage.getItem('sf_cookie_consent')) {
       setVisible(true);
     }
@@ -31,7 +31,7 @@ export default function CookieBanner() {
           <strong>We use cookies</strong>
           <p>
             We use cookies to enhance your experience and analyze traffic.
-            See our <a href="#">Cookie Policy</a> and <a href="#">Privacy Policy</a>.
+            See our <Link href="/privacy-policy">Privacy &amp; Cookie Policy</Link>.
           </p>
         </div>
         <div className="cookie-actions">
