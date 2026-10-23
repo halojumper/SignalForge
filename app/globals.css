@@ -48,6 +48,11 @@ img { max-width: 100%; display: block; }
 .topbar { background: var(--coral); color: rgba(255,255,255,0.9); font-size: 0.82rem; padding: 9px 0; text-align: center; }
 .topbar strong { color: var(--amber-lt); }
 .topbar a { color: var(--white); font-weight: 600; margin-left: 6px; text-decoration: underline; }
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 101;
+}
 
 /* Nav */
 nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 18px rgba(200,100,50,0.06); }
