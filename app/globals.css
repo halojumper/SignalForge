@@ -55,7 +55,7 @@ img { max-width: 100%; display: block; }
 }
 
 /* Nav */
-nav { position: sticky; top: 0; z-index: 100; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 18px rgba(200,100,50,0.06); }
+nav { position: sticky; top: 37px; z-index: 100; background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.07); box-shadow: 0 2px 18px rgba(200,100,50,0.06); }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 48px; }
 .nav-logo { font-family: 'Syne', sans-serif; font-size: 1.45rem; font-weight: 800; color: var(--text); display: flex; align-items: center; gap: 8px; }
 .nav-logo span { color: var(--coral); }
