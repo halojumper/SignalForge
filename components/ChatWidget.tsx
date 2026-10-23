@@ -52,6 +52,22 @@ function detectCallbackIntent(text: string): boolean {
   return triggers.some(t => lower.includes(t));
 }
 
+function safeLocalStorageGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function safeLocalStorageSet(key: string, value: string): void {
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    // Private browsing — silently ignore
+  }
+}
+
 export default function ChatWidget() {
   const [isVisible, setIsVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
@@ -59,7 +75,7 @@ export default function ChatWidget() {
     typeof window !== 'undefined' && !!sessionStorage.getItem('sfChatDismissed')
   );
   const [cookieConsented, setCookieConsented] = useState(() =>
-    typeof window !== 'undefined' && !!localStorage.getItem('sf_cookie_consent')
+    typeof window !== 'undefined' && !!safeLocalStorageGet('sf_cookie_consent')
   );
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -75,7 +91,7 @@ export default function ChatWidget() {
   useEffect(() => {
     if (!cookieConsented) {
       const interval = setInterval(() => {
-        if (localStorage.getItem('sf_cookie_consent')) {
+        if (safeLocalStorageGet('sf_cookie_consent')) {
           setCookieConsented(true);
           clearInterval(interval);
         }
@@ -84,7 +100,7 @@ export default function ChatWidget() {
     }
   }, [cookieConsented]);
 
-  // Auto-open after 5s only once cookie consent is given
+  // Auto-open after 1.5s only once cookie consent is given
   useEffect(() => {
     if (sessionStorage.getItem('sfChatDismissed')) return;
     if (!cookieConsented) return;
