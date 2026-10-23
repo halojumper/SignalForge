@@ -88,7 +88,7 @@ export default function ChatWidget() {
   useEffect(() => {
     if (sessionStorage.getItem('sfChatDismissed')) return;
     if (!cookieConsented) return;
-    const t = setTimeout(() => setIsVisible(true), 5000);
+    const t = setTimeout(() => setIsVisible(true), 1500);
     return () => clearTimeout(t);
   }, [cookieConsented]);
 
